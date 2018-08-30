@@ -1,0 +1,16 @@
+[
+{
+  "modid": "liquidblocks",
+  "name": "Liquid Blocks",
+  "description": "Need to fill spots fast?",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Mrbysco"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

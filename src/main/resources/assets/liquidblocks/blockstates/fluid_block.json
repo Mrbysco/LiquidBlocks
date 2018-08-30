@@ -1,0 +1,57 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "forge:fluid"
+	},
+	"variants": {
+		"liquiddirt": [
+			{
+				"custom": {
+					"fluid": "liquiddirt"
+				}
+			}
+		],
+		"liquidcoarsedirt": [
+			{
+				"custom": {
+					"fluid": "liquidcoarsedirt"
+				}
+			}
+		],
+		"liquidpodzol": [
+			{
+				"custom": {
+					"fluid": "liquidpodzol"
+				}
+			}
+		],
+		"liquidstone": [
+			{
+				"custom": {
+					"fluid": "liquidstone"
+				}
+			}
+		],
+		"liquidgranite": [
+			{
+				"custom": {
+					"fluid": "liquidgranite"
+				}
+			}
+		],
+		"liquiddiorite": [
+			{
+				"custom": {
+					"fluid": "liquiddiorite"
+				}
+			}
+		],
+		"liquidandesite": [
+			{
+				"custom": {
+					"fluid": "liquidandesite"
+				}
+			}
+		]
+	}
+}

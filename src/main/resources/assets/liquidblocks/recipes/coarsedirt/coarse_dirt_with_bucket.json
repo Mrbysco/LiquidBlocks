@@ -1,0 +1,23 @@
+{
+  "result": {
+	"type": "minecraft:item_nbt",
+    "item": "forge:bucketfilled",
+    "nbt": {
+		"FluidName": "liquidcoarsedirt",
+		"Amount": 1000
+	}
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+		{
+			"item": "minecraft:water_bucket"
+		},
+		{
+			"item": "minecraft:dirt",
+			"data": 1
+		}
+	],
+	"conditions": [{
+		"type": "liquidblocks:water_bucket_recipe"
+	}]
+}

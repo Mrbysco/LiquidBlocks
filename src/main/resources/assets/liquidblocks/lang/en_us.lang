@@ -1,0 +1,15 @@
+#Creative Tab Name
+itemGroup.liquidblocks=Liquid Blocks
+
+#Tile
+liquidblocks:liquid_tile=Liquid Tile
+
+#Fluid
+fluid.liquidblocks:liquiddirt.name=Liquid Dirt
+fluid.liquidblocks:liquidcoarsedirt.name=Liquid Dirt (coarse)
+fluid.liquidblocks:liquidpodzol.name=Liquid Podzol
+
+fluid.liquidblocks:liquidstone.name=Liquid Stone
+fluid.liquidblocks:liquidgranite.name=Liquid Granite
+fluid.liquidblocks:liquiddiorite.name=Liquid Diorite
+fluid.liquidblocks:liquidandesite.name=Liquid Andesite

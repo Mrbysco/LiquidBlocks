@@ -1,0 +1,23 @@
+{
+  "result": {
+	"type": "minecraft:item_nbt",
+    "item": "forge:bucketfilled",
+    "nbt": {
+		"FluidName": "liquidandesite",
+		"Amount": 1000
+	}
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+		{
+			"item": "minecraft:lava_bucket"
+		},
+		{
+			"item": "minecraft:stone",
+			"data": 5
+		}
+	],
+	"conditions": [{
+		"type": "liquidblocks:water_bucket_recipe"
+	}]
+}

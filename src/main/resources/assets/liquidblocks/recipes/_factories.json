@@ -1,0 +1,7 @@
+{
+	"conditions" : {
+        "ice_recipe": "com.Mrbysco.LiquidBlocks.init.conditions.craftingIceCondition",
+        "water_bottle_recipe": "com.Mrbysco.LiquidBlocks.init.conditions.craftingWaterBottleCondition",
+        "water_bucket_recipe": "com.Mrbysco.LiquidBlocks.init.conditions.craftingWaterBucketCondition"
+	}
+}
