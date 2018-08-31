@@ -4,6 +4,7 @@ import com.Mrbysco.LiquidBlocks.LiquidReference;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,6 +41,14 @@ public class LiquidTab extends CreativeTabs{
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidSoulsand, 1000)));
 		
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidOre, 1000)));
+		
+		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidClay, 1000)));
+		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidTerracotta, 1000)));
+		
+		for(int i = 0; i < EnumDyeColor.values().length; i++)
+	    {
+			list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidStainedTerracotta[i], 1000)));
+	    }
 		
 		super.displayAllRelevantItems(list);
 	}

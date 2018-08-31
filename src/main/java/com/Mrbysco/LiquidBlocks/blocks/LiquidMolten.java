@@ -29,7 +29,7 @@ public class LiquidMolten extends Fluid {
 		this.color = color;
 	
 	    this.setDensity(2000); // thicker than a bowl of oatmeal
-	    this.setViscosity(10000); // sloooow moving
+	    this.setViscosity(8500); // sloooow moving
 	    this.setTemperature(1000); // not exactly lava, but still hot. Should depend on the material
 	    this.setLuminosity(0);
 

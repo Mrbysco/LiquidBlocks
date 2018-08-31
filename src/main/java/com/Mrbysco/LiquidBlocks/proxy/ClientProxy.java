@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -40,6 +41,14 @@ public class ClientProxy extends CommonProxy{
 		registerFluidModels(LiquidRegistry.liquidSoulsand);
 		
 		registerFluidModels(LiquidRegistry.liquidOre);
+		
+		registerFluidModels(LiquidRegistry.liquidClay);
+		registerFluidModels(LiquidRegistry.liquidTerracotta);
+		
+		for(int i = 0; i < EnumDyeColor.values().length; i++)
+	    {
+			registerFluidModels(LiquidRegistry.liquidStainedTerracotta[i]);
+	    }
 	}
 	
 	public void registerFluidModels(Fluid fluid) {

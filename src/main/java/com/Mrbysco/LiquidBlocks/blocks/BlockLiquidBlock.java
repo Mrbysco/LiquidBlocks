@@ -103,7 +103,7 @@ public class BlockLiquidBlock extends BlockFluidClassic implements ITileEntityPr
 
                 if (expQuanta <= 0)
                 {
-                	if(LiquidConfigGen.liquid.completelyFill)
+                	if(LiquidConfigGen.general.completelyFill)
                 	{
                 		if (rand.nextInt(5) == 1)
                 		{
@@ -179,15 +179,18 @@ public class BlockLiquidBlock extends BlockFluidClassic implements ITileEntityPr
         world.removeTileEntity(pos);
         world.setBlockState(pos, this.block);
         
-        if(this.block.getBlock() == Blocks.NETHERRACK)
+        if(LiquidConfigGen.general.netherrackFireChance > 0)
         {
-        	if(!world.getBlockState(pos.up()).isFullCube() || world.getBlockState(pos.up()).getMaterial().isReplaceable())
-        	{
-        		if(world.rand.nextInt(20) <= 1)
-        		{
-        	        world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState().withProperty(BlockFire.AGE, world.rand.nextInt(15)));
-        		}
-        	}
+        	if(this.block.getBlock() == Blocks.NETHERRACK)
+            {
+            	if(!world.getBlockState(pos.up()).isFullCube() || world.getBlockState(pos.up()).getMaterial().isReplaceable())
+            	{
+            		if(world.rand.nextInt(LiquidConfigGen.general.netherrackFireChance) <= 1)
+            		{
+            	        world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState().withProperty(BlockFire.AGE, world.rand.nextInt(15)));
+            		}
+            	}
+            }
         }
     }
 	
@@ -199,11 +202,11 @@ public class BlockLiquidBlock extends BlockFluidClassic implements ITileEntityPr
             EntityLivingBase entity = (EntityLivingBase) entityIn;
             if(getFluid() == LiquidRegistry.liquidDirt || getFluid() == LiquidRegistry.liquidCoarseDirt || getFluid() == LiquidRegistry.liquidPodzol)
             {
-            	if(LiquidConfigGen.liquid.dirtCausesNausea)
+            	if(LiquidConfigGen.general.dirtCausesNausea)
                 {
                 	entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 200, 1));
                 }
-                if(LiquidConfigGen.liquid.dirtCausesSlowness)
+                if(LiquidConfigGen.general.dirtCausesSlowness)
                 {
                 	entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 1));
                 }

@@ -43,7 +43,7 @@ public class TileLiquidBlock extends TileEntity implements ITickable{
     		if (solidifyTimer > 0)
             {
     			solidifyTimer--;
-            	if(!LiquidConfigGen.liquid.completelyFill)
+            	if(!LiquidConfigGen.general.completelyFill)
             	{
             		IBlockState state = this.world.getBlockState(this.getPos());
         			if(state.getBlock() instanceof BlockLiquidBlock)

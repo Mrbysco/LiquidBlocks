@@ -101,6 +101,132 @@
 					"fluid": "liquidore"
 				}
 			}
+		],
+		"liquidclay": [
+			{
+				"custom": {
+					"fluid": "liquidclay"
+				}
+			}
+		],
+		"liquidterracotta": [
+			{
+				"custom": {
+					"fluid": "liquidterracotta"
+				}
+			}
+		],
+		"liquidstainedterracottawhite": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottawhite"
+				}
+			}
+		],
+		"liquidstainedterracottaorange": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottaorange"
+				}
+			}
+		],
+		"liquidstainedterracottamagenta": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottamagenta"
+				}
+			}
+		],
+		"liquidstainedterracottalightblue": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottalightblue"
+				}
+			}
+		],
+		"liquidstainedterracottayellow": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottayellow"
+				}
+			}
+		],
+		"liquidstainedterracottalime": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottalime"
+				}
+			}
+		],
+		"liquidstainedterracottapink": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottapink"
+				}
+			}
+		],
+		"liquidstainedterracottagray": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottagray"
+				}
+			}
+		],
+		"liquidstainedterracottasilver": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottasilver"
+				}
+			}
+		],
+		"liquidstainedterracottacyan": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottacyan"
+				}
+			}
+		],
+		"liquidstainedterracottapurple": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottapurple"
+				}
+			}
+		],
+		"liquidstainedterracottablue": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottablue"
+				}
+			}
+		],
+		"liquidstainedterracottabrown": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottabrown"
+				}
+			}
+		],
+		"liquidstainedterracottagreen": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottagreen"
+				}
+			}
+		],
+		"liquidstainedterracottared": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottared"
+				}
+			}
+		],
+		"liquidstainedterracottablack": [
+			{
+				"custom": {
+					"fluid": "liquidstainedterracottablack"
+				}
+			}
 		]
 	}
 }

@@ -11,30 +11,50 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = LiquidReference.MOD_ID)
 @Config.LangKey("liquidblocks.config.title")
 public class LiquidConfigGen {
+	@Config.Comment({"General settings"})
+	public static General general = new General();
+	
 	@Config.Comment({"Liquid settings"})
 	public static Liquid liquid = new Liquid();
 	
 	@Config.Comment({"Crafting settings"})
 	public static Crafting crafting = new Crafting();
 	
-	public static class Liquid{
-		@Config.Comment("The time liquid dirt types takes to solidify [default: 220]")
-		public int dirtSolidifyTime = 220;
-		
+	public static class General{
 		@Config.Comment("Liquid dirt causing nausea when swam in [default: true]")
 		public boolean dirtCausesNausea = true;
 		
 		@Config.Comment("Liquid dirt causing slowness when swam in [default: true]")
 		public boolean dirtCausesSlowness = true;
 		
-		@Config.Comment("The time liquid stone types takes to solidify [default: 200]")
-		public int stoneSolidifyTime = 200;
-		
-		@Config.Comment("The time liquid sand types takes to solidify [default: 200]")
-		public int sandSolidifyTime = 200;
-		
 		@Config.Comment("Turning this to true will make every bit of the liquid turn into a full block [default: true]")
 		public boolean completelyFill = true;
+		
+		@Config.Comment("Makes liquid netherrack have a 1 in X chance of drying with fire on top (0 = disabled) [default: 30]")
+		public int netherrackFireChance = 30;
+	}
+	
+	public static class Liquid{
+		@Config.Comment("The time liquid dirt types take to solidify [default: 220]")
+		public int dirtSolidifyTime = 220;
+		
+		@Config.Comment("The time liquid stone types take to solidify [default: 200]")
+		public int stoneSolidifyTime = 200;
+		
+		@Config.Comment("The time liquid sandstone type takes to solidify [default: 200]")
+		public int sandstoneSolidifyTime = 200;
+		
+		@Config.Comment("The time liquid sand types take to solidify [default: 200]")
+		public int sandSolidifyTime = 200;
+		
+		@Config.Comment("The time liquid nether liquid types take to solidify [default: 200]")
+		public int netherSolidifyTime = 200;
+		
+		@Config.Comment("The time liquid clay types take to solidify [default: 200]")
+		public int claySolidifyTime = 200;
+		
+		@Config.Comment("The time liquid terracotta types take to solidify [default: 200]")
+		public int terracottaSolidifyTime = 200;
 	}
 	
 	public static class Crafting{
