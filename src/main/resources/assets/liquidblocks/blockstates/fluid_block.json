@@ -52,6 +52,55 @@
 					"fluid": "liquidandesite"
 				}
 			}
+		],
+		"liquidsandstone": [
+			{
+				"custom": {
+					"fluid": "liquidsandstone"
+				}
+			}
+		],
+		"liquidredsandstone": [
+			{
+				"custom": {
+					"fluid": "liquidredsandstone"
+				}
+			}
+		],
+		"liquidnetherrack": [
+			{
+				"custom": {
+					"fluid": "liquidnetherrack"
+				}
+			}
+		],
+		"liquidsand": [
+			{
+				"custom": {
+					"fluid": "liquidsand"
+				}
+			}
+		],
+		"liquidredsand": [
+			{
+				"custom": {
+					"fluid": "liquidredsand"
+				}
+			}
+		],
+		"liquidsoulsand": [
+			{
+				"custom": {
+					"fluid": "liquidsoulsand"
+				}
+			}
+		],
+		"liquidore": [
+			{
+				"custom": {
+					"fluid": "liquidore"
+				}
+			}
 		]
 	}
 }

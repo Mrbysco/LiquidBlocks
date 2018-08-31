@@ -2,6 +2,7 @@
 	"conditions" : {
         "ice_recipe": "com.Mrbysco.LiquidBlocks.init.conditions.craftingIceCondition",
         "water_bottle_recipe": "com.Mrbysco.LiquidBlocks.init.conditions.craftingWaterBottleCondition",
-        "water_bucket_recipe": "com.Mrbysco.LiquidBlocks.init.conditions.craftingWaterBucketCondition"
+        "water_bucket_recipe": "com.Mrbysco.LiquidBlocks.init.conditions.craftingWaterBucketCondition",
+        "liquid_ore": "com.Mrbysco.LiquidBlocks.init.conditions.craftingLiquidOreCondition"
 	}
 }

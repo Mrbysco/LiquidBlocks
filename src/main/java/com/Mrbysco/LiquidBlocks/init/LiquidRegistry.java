@@ -6,11 +6,13 @@ import java.util.Locale;
 import com.Mrbysco.LiquidBlocks.LiquidBlocks;
 import com.Mrbysco.LiquidBlocks.LiquidReference;
 import com.Mrbysco.LiquidBlocks.blocks.BlockLiquidBlock;
+import com.Mrbysco.LiquidBlocks.blocks.BlockLiquidOre;
 import com.Mrbysco.LiquidBlocks.blocks.LiquidMolten;
 import com.Mrbysco.LiquidBlocks.config.LiquidConfigGen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +32,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 @EventBusSubscriber
 public class LiquidRegistry {
 	public static LiquidMolten liquidDirt, liquidCoarseDirt, liquidPodzol;
-	public static LiquidMolten liquidStone, liquidGranite, liquidDiorite, liquidAndesite;
+	public static LiquidMolten liquidStone, liquidGranite, liquidDiorite, liquidAndesite, liquidSandstone, liquidRedSandstone, liquidNetherrack;
+	
+	public static LiquidMolten liquidSand, liquidRedsand, liquidSoulsand;
+	
+	public static LiquidMolten liquidOre;
 	
 	public static ArrayList<Fluid> LIQUIDS = new ArrayList<>();
 	
@@ -39,6 +45,7 @@ public class LiquidRegistry {
 	{
 	    IForgeRegistry<Block> registry = event.getRegistry();
 	    
+	    //Dirt
 	    liquidDirt = createLiquid("liquiddirt", 0x392C20);
 	    registerFluidBlock(registry, liquidDirt, Material.WATER, Blocks.DIRT.getDefaultState(), LiquidConfigGen.liquid.dirtSolidifyTime);
 	    
@@ -48,6 +55,7 @@ public class LiquidRegistry {
 	    liquidPodzol = createLiquid("liquidpodzol", 0x442A14);
 	    registerFluidBlock(registry, liquidPodzol, Material.WATER, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL), LiquidConfigGen.liquid.dirtSolidifyTime);
 	
+	    //Stone
 	    liquidStone = createLiquid("liquidstone", 0x7f7f7f, 1000);
 	    registerFluidBlock(registry, liquidStone, Material.LAVA, Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE), LiquidConfigGen.liquid.stoneSolidifyTime);
 
@@ -59,7 +67,29 @@ public class LiquidRegistry {
 
 	    liquidAndesite = createLiquid("liquidandesite", 0xababac, 1000);
 	    registerFluidBlock(registry, liquidAndesite, Material.LAVA, Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE), LiquidConfigGen.liquid.stoneSolidifyTime);
+	    
+	    liquidSandstone = createLiquid("liquidsandstone", 0xe6d9ae, 1000);
+	    registerFluidBlock(registry, liquidSandstone, Material.LAVA, Blocks.SANDSTONE.getDefaultState(), LiquidConfigGen.liquid.stoneSolidifyTime);
+	    
+	    liquidRedSandstone = createLiquid("liquidredsandstone", 0xb45e26, 1000);
+	    registerFluidBlock(registry, liquidRedSandstone, Material.LAVA, Blocks.RED_SANDSTONE.getDefaultState(), LiquidConfigGen.liquid.stoneSolidifyTime);
+	    
+	    liquidNetherrack = createLiquid("liquidnetherrack", 0x9e5d5d, 1000);
+	    registerFluidBlock(registry, liquidNetherrack, Material.LAVA, Blocks.NETHERRACK.getDefaultState(), LiquidConfigGen.liquid.stoneSolidifyTime);
 
+	    //Sand
+	    liquidSand = createLiquid("liquidsand", 0xe6d9ae);
+	    registerFluidBlock(registry, liquidSand, Material.WATER, Blocks.SAND.getDefaultState(), LiquidConfigGen.liquid.sandSolidifyTime);
+	    
+	    liquidRedsand = createLiquid("liquidredsand", 0xb45e26);
+	    registerFluidBlock(registry, liquidRedsand, Material.WATER, Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND), LiquidConfigGen.liquid.sandSolidifyTime);
+
+	    liquidSoulsand = createLiquid("liquidsoulsand", 0x695243, 2800);
+	    registerFluidBlock(registry, liquidSoulsand, Material.LAVA, Blocks.SOUL_SAND.getDefaultState(), LiquidConfigGen.liquid.sandSolidifyTime);
+
+	    //Ore?????
+	    liquidOre = createLiquid("liquidore", 0x7f7f7f, 2000);
+	    registerFluidOreBlock(registry, liquidOre, Material.LAVA, LiquidConfigGen.liquid.stoneSolidifyTime);
 	}
 	
 	@SubscribeEvent
@@ -75,6 +105,16 @@ public class LiquidRegistry {
 		FluidRegistry.addBucketForFluid(liquidGranite);
 		FluidRegistry.addBucketForFluid(liquidDiorite);
 		FluidRegistry.addBucketForFluid(liquidAndesite);
+		
+		FluidRegistry.addBucketForFluid(liquidSandstone);
+		FluidRegistry.addBucketForFluid(liquidRedSandstone);
+		FluidRegistry.addBucketForFluid(liquidNetherrack);
+		
+		FluidRegistry.addBucketForFluid(liquidSand);
+		FluidRegistry.addBucketForFluid(liquidRedsand);
+		FluidRegistry.addBucketForFluid(liquidSoulsand);
+		
+		FluidRegistry.addBucketForFluid(liquidOre);
     }
 
 	@SubscribeEvent
@@ -155,6 +195,10 @@ public class LiquidRegistry {
 	
 	public static BlockFluidBase registerFluidBlock(IForgeRegistry<Block> registry, Fluid fluid, Material material, IBlockState state, int solidifyTime) {
 	    return registerBlock(registry, new BlockLiquidBlock(fluid, material, state, solidifyTime), fluid.getName());
+	}
+	
+	public static BlockFluidBase registerFluidOreBlock(IForgeRegistry<Block> registry, Fluid fluid, Material material, int solidifyTime) {
+	    return registerBlock(registry, new BlockLiquidOre(fluid, material, solidifyTime), fluid.getName());
 	}
 	
 	protected static <T extends Block> T registerBlock(IForgeRegistry<Block> registry, T block, String name) {

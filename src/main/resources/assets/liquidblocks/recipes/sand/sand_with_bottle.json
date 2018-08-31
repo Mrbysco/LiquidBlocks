@@ -1,0 +1,26 @@
+{
+  "result": {
+	"type": "minecraft:item_nbt",
+    "item": "forge:bucketfilled",
+    "nbt": {
+		"FluidName": "liquidsand",
+		"Amount": 1000
+	}
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+		{
+			"item": "#water_bottle"
+		},
+		{
+			"item": "minecraft:sand",
+			"data": 0
+		},
+		{
+			"item": "minecraft:bucket"
+		}
+	],
+	"conditions": [{
+		"type": "liquidblocks:water_bottle_recipe"
+	}]
+}

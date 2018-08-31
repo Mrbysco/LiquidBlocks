@@ -1,6 +1,7 @@
 package com.Mrbysco.LiquidBlocks.tile;
 
 import com.Mrbysco.LiquidBlocks.blocks.BlockLiquidBlock;
+import com.Mrbysco.LiquidBlocks.config.LiquidConfigGen;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,22 +43,24 @@ public class TileLiquidBlock extends TileEntity implements ITickable{
     		if (solidifyTimer > 0)
             {
     			solidifyTimer--;
-    			
-            	IBlockState state = this.world.getBlockState(this.getPos());
-    			if(state.getBlock() instanceof BlockLiquidBlock)
-    			{
-            		BlockLiquidBlock liquid = (BlockLiquidBlock) state.getBlock();
-            		boolean flag = !liquid.isSourceBlock(this.world, this.pos);
-            		if(flag)
-    				{
-            			decrementAgain();
-    				}
+            	if(!LiquidConfigGen.liquid.completelyFill)
+            	{
+            		IBlockState state = this.world.getBlockState(this.getPos());
+        			if(state.getBlock() instanceof BlockLiquidBlock)
+        			{
+                		BlockLiquidBlock liquid = (BlockLiquidBlock) state.getBlock();
+                		boolean flag = !liquid.isSourceBlock(this.world, this.pos);
+                		if(flag)
+        				{
+                			decrementAgain();
+        				}
 
-            		if(state.getValue(BlockFluidBase.LEVEL) > 5)
-            		{
-            			decrementAgain();
-            		}
-    			}
+                		if(state.getValue(BlockFluidBase.LEVEL) > 5)
+                		{
+                			decrementAgain();
+                		}
+        			}
+            	}
             }
             else if (solidifyTimer == 0)
             {

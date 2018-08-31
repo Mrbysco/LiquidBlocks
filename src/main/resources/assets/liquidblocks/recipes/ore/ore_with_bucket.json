@@ -1,0 +1,36 @@
+{
+  "result": {
+	"type": "minecraft:item_nbt",
+    "item": "forge:bucketfilled",
+    "nbt": {
+		"FluidName": "liquidore",
+		"Amount": 1000
+	}
+  },
+  "pattern": [
+    " D ",
+    "CBR",
+    " L "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:lava_bucket"
+    },
+    "D": {
+      "item": "minecraft:diamond_ore"
+    },
+    "R": {
+      "item": "minecraft:redstone_ore"
+    },
+	"L": {
+      "item": "minecraft:lapis_ore"
+    },
+	"C": {
+      "item": "minecraft:coal_ore"
+    }
+  },
+	"conditions": [{
+		"type": "liquidblocks:liquid_ore"
+	}]
+}

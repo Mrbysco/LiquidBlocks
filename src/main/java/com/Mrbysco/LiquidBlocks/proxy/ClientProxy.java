@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class ClientProxy extends CommonProxy{
 
@@ -31,6 +30,16 @@ public class ClientProxy extends CommonProxy{
 		registerFluidModels(LiquidRegistry.liquidGranite);
 		registerFluidModels(LiquidRegistry.liquidDiorite);
 		registerFluidModels(LiquidRegistry.liquidAndesite);
+		
+		registerFluidModels(LiquidRegistry.liquidSandstone);
+		registerFluidModels(LiquidRegistry.liquidRedSandstone);
+		registerFluidModels(LiquidRegistry.liquidNetherrack);
+		
+		registerFluidModels(LiquidRegistry.liquidSand);
+		registerFluidModels(LiquidRegistry.liquidRedsand);
+		registerFluidModels(LiquidRegistry.liquidSoulsand);
+		
+		registerFluidModels(LiquidRegistry.liquidOre);
 	}
 	
 	public void registerFluidModels(Fluid fluid) {

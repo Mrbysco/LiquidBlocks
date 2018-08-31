@@ -29,6 +29,12 @@ public class LiquidConfigGen {
 		
 		@Config.Comment("The time liquid stone types takes to solidify [default: 200]")
 		public int stoneSolidifyTime = 200;
+		
+		@Config.Comment("The time liquid sand types takes to solidify [default: 200]")
+		public int sandSolidifyTime = 200;
+		
+		@Config.Comment("Turning this to true will make every bit of the liquid turn into a full block [default: true]")
+		public boolean completelyFill = true;
 	}
 	
 	public static class Crafting{
@@ -40,6 +46,9 @@ public class LiquidConfigGen {
 
 		@Config.Comment("Enable crafting buckets with a bucket of the fitting liquid [default: true]")
 	    public boolean enableCraftingWithBucket = true;
+		
+		@Config.Comment("Enables the crafting of the Liquid Ore bucket [default: true]")
+		public boolean enableCraftingLiquidOre = true;
 	}
 	
 	@Mod.EventBusSubscriber(modid = LiquidReference.MOD_ID)
