@@ -48,6 +48,7 @@ public class ClientProxy extends CommonProxy{
 		for(int i = 0; i < EnumDyeColor.values().length; i++)
 	    {
 			registerFluidModels(LiquidRegistry.liquidStainedTerracotta[i]);
+			registerFluidModels(LiquidRegistry.liquidConcrete[i]);
 	    }
 	}
 	

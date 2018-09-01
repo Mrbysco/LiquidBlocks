@@ -1,6 +1,7 @@
 package com.Mrbysco.LiquidBlocks.blocks;
 
 import com.Mrbysco.LiquidBlocks.LiquidBlocks;
+import com.Mrbysco.LiquidBlocks.config.LiquidConfigGen;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +26,8 @@ public class BlockLiquidOre extends BlockLiquidBlock{
 	
 	public IBlockState getRandomOre(World worldIn)
 	{
-		int randNumber = worldIn.rand.nextInt(48);
+		int oreChance = LiquidConfigGen.general.oreChance; //Default 64
+		int randNumber = worldIn.rand.nextInt(oreChance);
 		
 		if(randNumber > 6)
 		{

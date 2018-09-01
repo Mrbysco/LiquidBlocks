@@ -3,7 +3,7 @@
 	"type": "minecraft:item_nbt",
     "item": "forge:bucketfilled",
     "nbt": {
-		"FluidName": "liquidclay",
+		"FluidName": "liquidconcreteyellow",
 		"Amount": 1000
 	}
   },
@@ -13,10 +13,11 @@
 			"item": "#water_bottle"
 		},
 		{
-			"item": "minecraft:bucket"
+			"item": "minecraft:concrete_powder",
+			"data": 4
 		},
 		{
-			"item": "minecraft:clay"
+			"item": "minecraft:bucket"
 		}
 	],
 	"conditions": [{

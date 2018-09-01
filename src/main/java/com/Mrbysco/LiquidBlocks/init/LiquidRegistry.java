@@ -9,8 +9,10 @@ import com.Mrbysco.LiquidBlocks.blocks.BlockLiquidBlock;
 import com.Mrbysco.LiquidBlocks.blocks.BlockLiquidOre;
 import com.Mrbysco.LiquidBlocks.blocks.LiquidMolten;
 import com.Mrbysco.LiquidBlocks.config.LiquidConfigGen;
+import com.Mrbysco.LiquidBlocks.util.LiquidUtil;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockStainedHardenedClay;
@@ -42,7 +44,7 @@ public class LiquidRegistry {
 	
 	public static LiquidMolten liquidClay, liquidTerracotta;
 	
-	public static LiquidMolten[] liquidStainedTerracotta;
+	public static LiquidMolten[] liquidStainedTerracotta, liquidConcrete;
 	
 	public static ArrayList<Fluid> LIQUIDS = new ArrayList<>();
 	
@@ -105,6 +107,9 @@ public class LiquidRegistry {
 	    registerFluidBlock(registry, liquidTerracotta, Material.LAVA, Blocks.HARDENED_CLAY.getDefaultState(), LiquidConfigGen.liquid.terracottaSolidifyTime);
 	    		
 	    liquidStainedTerracotta = registerTerracottaLiquid("liquidstainedterracotta", registry); //Block generation is done within this method
+	    
+	    //Concrete
+	    liquidConcrete = registerConcreteLiquid("liquidconcrete", registry); //Block generation is done within this method
 	}
 	
 	@SubscribeEvent
@@ -137,6 +142,7 @@ public class LiquidRegistry {
 		for(int i = 0; i < EnumDyeColor.values().length; i++)
 	    {
 			FluidRegistry.addBucketForFluid(liquidStainedTerracotta[i]);
+			FluidRegistry.addBucketForFluid(liquidConcrete[i]);
 	    }
     }
 
@@ -152,51 +158,25 @@ public class LiquidRegistry {
 		for(int i = 0; i < EnumDyeColor.values().length; i++)
 	    {
 			EnumDyeColor color = EnumDyeColor.byMetadata(i);
-			liquidTerracottas[i] = createLiquid("liquidstainedterracotta" + color.getUnlocalizedName().toLowerCase(), getColorForTerracotta(color), 1000);
+			liquidTerracottas[i] = createLiquid(liquidBaseName + color.getUnlocalizedName().toLowerCase(), LiquidUtil.getColorForTerracotta(color), 1000);
 		    registerFluidBlock(registry, liquidTerracottas[i], Material.LAVA, Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockStainedHardenedClay.COLOR, color), LiquidConfigGen.liquid.terracottaSolidifyTime);
 	    }
 		
 		return liquidTerracottas;
 	}
 	
-	public static int getColorForTerracotta(EnumDyeColor color)
+	public static LiquidMolten[] registerConcreteLiquid(String liquidBaseName, IForgeRegistry<Block> registry)
 	{
-		switch (color) {
-		case BLACK:
-			return 0x251710;
-		case BROWN:
-			return 0x251710;
-		case BLUE:
-			return 0x4d3b5c;
-		case CYAN:
-			return 0x55595a;
-		case GRAY:
-			return 0x392921;
-		case GREEN:
-			return 0x4b5229;
-		case LIGHT_BLUE:
-			return 0x726e8b;
-		case LIME:
-			return 0x6c7a39;
-		case MAGENTA:
-			return 0x9c5c70;
-		case ORANGE:
-			return 0x9f5224;
-		case PINK:
-			return 0xa04b4a;
-		case PURPLE:
-			return 0x764656;
-		case RED:
-			return 0x943d32;
-		case SILVER:
-			return 0x866a61;
-		case WHITE:
-			return 0xd2b1a1;
-		case YELLOW:
-			return 0xb88322;
-		default:
-			return 0x935940;
+		LiquidMolten[] liquidConcretes = new LiquidMolten[EnumDyeColor.values().length];
+		
+		for(int i = 0; i < EnumDyeColor.values().length; i++)
+		{
+			EnumDyeColor color = EnumDyeColor.byMetadata(i);
+			liquidConcretes[i] = createLiquid(liquidBaseName + color.getUnlocalizedName().toLowerCase(), LiquidUtil.getColorForConcrete(color), 1000);
+			registerFluidBlock(registry, liquidConcretes[i], Material.WATER, Blocks.CONCRETE.getDefaultState().withProperty(BlockColored.COLOR, color), LiquidConfigGen.liquid.concreteSolidifyTime);
 		}
+		
+		return liquidConcretes;
 	}
 	
 	public static LiquidMolten createLiquid(String liquidName, int color, int temperature, int density, int viscosity, int luminosity)

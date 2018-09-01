@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import com.Mrbysco.LiquidBlocks.LiquidBlocks;
 import com.Mrbysco.LiquidBlocks.config.LiquidConfigGen;
-import com.Mrbysco.LiquidBlocks.init.LiquidRegistry;
 import com.Mrbysco.LiquidBlocks.tile.TileLiquidBlock;
 
 import net.minecraft.block.BlockFire;
@@ -200,13 +199,13 @@ public class BlockLiquidBlock extends BlockFluidClassic implements ITileEntityPr
 		if (entityIn instanceof EntityLivingBase)
         {
             EntityLivingBase entity = (EntityLivingBase) entityIn;
-            if(getFluid() == LiquidRegistry.liquidDirt || getFluid() == LiquidRegistry.liquidCoarseDirt || getFluid() == LiquidRegistry.liquidPodzol)
+            if(state.getMaterial() == Material.WATER)
             {
-            	if(LiquidConfigGen.general.dirtCausesNausea)
+            	if(LiquidConfigGen.general.liquidsCausesNausea)
                 {
                 	entity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 200, 1));
                 }
-                if(LiquidConfigGen.general.dirtCausesSlowness)
+                if(LiquidConfigGen.general.liquidsCausesSlowness)
                 {
                 	entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 1));
                 }

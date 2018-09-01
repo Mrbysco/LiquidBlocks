@@ -227,6 +227,118 @@
 					"fluid": "liquidstainedterracottablack"
 				}
 			}
+		],
+		"liquidconcretewhite": [
+			{
+				"custom": {
+					"fluid": "liquidconcretewhite"
+				}
+			}
+		],
+		"liquidconcreteorange": [
+			{
+				"custom": {
+					"fluid": "liquidconcreteorange"
+				}
+			}
+		],
+		"liquidconcretemagenta": [
+			{
+				"custom": {
+					"fluid": "liquidconcretemagenta"
+				}
+			}
+		],
+		"liquidconcretelightblue": [
+			{
+				"custom": {
+					"fluid": "liquidconcretelightblue"
+				}
+			}
+		],
+		"liquidconcreteyellow": [
+			{
+				"custom": {
+					"fluid": "liquidconcreteyellow"
+				}
+			}
+		],
+		"liquidconcretelime": [
+			{
+				"custom": {
+					"fluid": "liquidconcretelime"
+				}
+			}
+		],
+		"liquidconcretepink": [
+			{
+				"custom": {
+					"fluid": "liquidconcretepink"
+				}
+			}
+		],
+		"liquidconcretegray": [
+			{
+				"custom": {
+					"fluid": "liquidconcretegray"
+				}
+			}
+		],
+		"liquidconcretesilver": [
+			{
+				"custom": {
+					"fluid": "liquidconcretesilver"
+				}
+			}
+		],
+		"liquidconcretecyan": [
+			{
+				"custom": {
+					"fluid": "liquidconcretecyan"
+				}
+			}
+		],
+		"liquidconcretepurple": [
+			{
+				"custom": {
+					"fluid": "liquidconcretepurple"
+				}
+			}
+		],
+		"liquidconcreteblue": [
+			{
+				"custom": {
+					"fluid": "liquidconcreteblue"
+				}
+			}
+		],
+		"liquidconcretebrown": [
+			{
+				"custom": {
+					"fluid": "liquidconcretebrown"
+				}
+			}
+		],
+		"liquidconcretegreen": [
+			{
+				"custom": {
+					"fluid": "liquidconcretegreen"
+				}
+			}
+		],
+		"liquidconcretered": [
+			{
+				"custom": {
+					"fluid": "liquidconcretered"
+				}
+			}
+		],
+		"liquidconcreteblack": [
+			{
+				"custom": {
+					"fluid": "liquidconcreteblack"
+				}
+			}
 		]
 	}
 }

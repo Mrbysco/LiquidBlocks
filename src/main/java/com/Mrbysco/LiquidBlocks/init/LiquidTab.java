@@ -48,6 +48,7 @@ public class LiquidTab extends CreativeTabs{
 		for(int i = 0; i < EnumDyeColor.values().length; i++)
 	    {
 			list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidStainedTerracotta[i], 1000)));
+			list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidConcrete[i], 1000)));
 	    }
 		
 		super.displayAllRelevantItems(list);

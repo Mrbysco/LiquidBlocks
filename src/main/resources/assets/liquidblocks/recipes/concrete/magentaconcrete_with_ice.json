@@ -3,23 +3,24 @@
 	"type": "minecraft:item_nbt",
     "item": "forge:bucketfilled",
     "nbt": {
-		"FluidName": "liquidclay",
+		"FluidName": "liquidconcretemagenta",
 		"Amount": 1000
 	}
   },
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
 		{
-			"item": "#water_bottle"
+			"item": "minecraft:ice"
+		},
+		{
+			"item": "minecraft:concrete_powder",
+			"data": 2
 		},
 		{
 			"item": "minecraft:bucket"
-		},
-		{
-			"item": "minecraft:clay"
 		}
 	],
 	"conditions": [{
-		"type": "liquidblocks:water_bottle_recipe"
+		"type": "liquidblocks:ice_recipe"
 	}]
 }

@@ -21,17 +21,21 @@ public class LiquidConfigGen {
 	public static Crafting crafting = new Crafting();
 	
 	public static class General{
-		@Config.Comment("Liquid dirt causing nausea when swam in [default: true]")
-		public boolean dirtCausesNausea = true;
+		@Config.Comment("Water based liquids causing nausea when swam in [default: true]")
+		public boolean liquidsCausesNausea = true;
 		
-		@Config.Comment("Liquid dirt causing slowness when swam in [default: true]")
-		public boolean dirtCausesSlowness = true;
+		@Config.Comment("Water based liquids causing when swam in [default: true]")
+		public boolean liquidsCausesSlowness = true;
 		
 		@Config.Comment("Turning this to true will make every bit of the liquid turn into a full block [default: true]")
 		public boolean completelyFill = true;
 		
 		@Config.Comment("Makes liquid netherrack have a 1 in X chance of drying with fire on top (0 = disabled) [default: 30]")
 		public int netherrackFireChance = 30;
+		
+		@Config.Comment("Makes liquid ore have a 1 in X chance of drying into an ore block (higher = less chance) [default: 64]")
+		@Config.RangeInt(min = 6)
+		public int oreChance = 64;
 	}
 	
 	public static class Liquid{
@@ -55,6 +59,9 @@ public class LiquidConfigGen {
 		
 		@Config.Comment("The time liquid terracotta types take to solidify [default: 200]")
 		public int terracottaSolidifyTime = 200;
+		
+		@Config.Comment("The time liquid concrete types take to solidify [default: 200]")
+		public int concreteSolidifyTime = 200;
 	}
 	
 	public static class Crafting{
