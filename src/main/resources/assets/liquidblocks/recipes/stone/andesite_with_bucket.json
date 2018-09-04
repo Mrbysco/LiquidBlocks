@@ -7,7 +7,7 @@
 		"Amount": 1000
 	}
   },
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:no_extras_shapeless",
   "ingredients": [
 		{
 			"item": "minecraft:lava_bucket"

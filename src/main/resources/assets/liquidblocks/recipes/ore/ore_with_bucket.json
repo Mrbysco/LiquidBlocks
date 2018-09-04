@@ -12,7 +12,7 @@
     "CBR",
     " L "
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "liquidblocks:no_extras_shaped",
   "key": {
     "B": {
       "item": "minecraft:lava_bucket"
