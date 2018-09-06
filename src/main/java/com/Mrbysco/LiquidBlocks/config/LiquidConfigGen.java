@@ -51,6 +51,9 @@ public class LiquidConfigGen {
 		@Config.Comment("The time liquid sand types take to solidify [default: 200]")
 		public int sandSolidifyTime = 200;
 		
+		@Config.Comment("The time liquid gravel takes to solidify [default: 200]")
+		public int gravelSolidifyTime = 200;
+		
 		@Config.Comment("The time liquid nether liquid types take to solidify [default: 200]")
 		public int netherSolidifyTime = 200;
 		

@@ -1,0 +1,25 @@
+{
+  "result": {
+	"type": "minecraft:item_nbt",
+    "item": "forge:bucketfilled",
+    "nbt": {
+		"FluidName": "liquidgravel",
+		"Amount": 1000
+	}
+  },
+  "type": "liquidblocks:no_extras_shapeless",
+  "ingredients": [
+		{
+			"item": "minecraft:ice"
+		},
+		{
+			"item": "minecraft:gravel"
+		},
+		{
+			"item": "minecraft:bucket"
+		}
+	],
+	"conditions": [{
+		"type": "liquidblocks:ice_recipe"
+	}]
+}

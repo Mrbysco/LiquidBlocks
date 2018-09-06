@@ -18,19 +18,23 @@
       "item": "minecraft:lava_bucket"
     },
     "D": {
-      "item": "minecraft:diamond_ore"
+      "ore": "oreDiamond",
+	  "type": "forge:ore_dict"
     },
     "R": {
-      "item": "minecraft:redstone_ore"
+      "ore": "oreRedstone",
+	  "type": "forge:ore_dict"
     },
 	"L": {
-      "item": "minecraft:lapis_ore"
+      "ore": "oreLapis",
+	  "type": "forge:ore_dict"
     },
 	"C": {
-      "item": "minecraft:coal_ore"
+      "ore": "oreCoal",
+	  "type": "forge:ore_dict"
     }
   },
-	"conditions": [{
-		"type": "liquidblocks:liquid_ore"
-	}]
+  "conditions": [{
+	"type": "liquidblocks:liquid_ore"
+  }]
 }

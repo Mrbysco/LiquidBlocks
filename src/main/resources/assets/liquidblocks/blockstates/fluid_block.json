@@ -339,6 +339,27 @@
 					"fluid": "liquidconcreteblack"
 				}
 			}
+		],
+		"liquidgravel": [
+			{
+				"custom": {
+					"fluid": "liquidgravel"
+				}
+			}
+		],
+		"liquidmagmablock": [
+			{
+				"custom": {
+					"fluid": "liquidmagmablock"
+				}
+			}
+		],
+		"liquidglowstone": [
+			{
+				"custom": {
+					"fluid": "liquidglowstone"
+				}
+			}
 		]
 	}
 }

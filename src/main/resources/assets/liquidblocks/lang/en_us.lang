@@ -54,3 +54,6 @@ fluid.liquidblocks:liquidconcretelightblue.name=Liquid Light Blue Concrete
 fluid.liquidblocks:liquidconcretemagenta.name=Liquid Magenta Concrete
 fluid.liquidblocks:liquidconcreteorange.name=Liquid Orange Concrete
 fluid.liquidblocks:liquidconcretewhite.name=Liquid White Concrete
+fluid.liquidblocks:liquidgravel.name=Liquid Gravel Concrete
+fluid.liquidblocks:liquidglowstone.name=Liquid Glowstone
+fluid.liquidblocks:liquidmagmablock.name=Liquid Magma Block

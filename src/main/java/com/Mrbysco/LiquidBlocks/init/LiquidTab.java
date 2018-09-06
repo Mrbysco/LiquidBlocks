@@ -34,11 +34,15 @@ public class LiquidTab extends CreativeTabs{
 		
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidSandstone, 1000)));
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidRedSandstone, 1000)));
+
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidNetherrack, 1000)));
-		
+		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidSoulsand, 1000)));
+		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidMagmablock, 1000)));
+		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidGlowstone, 1000)));
+
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidSand, 1000)));
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidRedsand, 1000)));
-		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidSoulsand, 1000)));
+		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidGravel, 1000)));
 		
 		list.add(FluidUtil.getFilledBucket(new FluidStack(LiquidRegistry.liquidOre, 1000)));
 		
