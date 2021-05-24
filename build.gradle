@@ -100,7 +100,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "EXAMPLE",
+            "Specification-Title": "liquidblocks",
             "Specification-Vendor": "Mrbysco",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
