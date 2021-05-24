@@ -1,0 +1,17 @@
+{
+  "result": {
+	  "item": "liquidblocks:liquid_diorite_bucket"
+  },
+  "type": "liquidblocks:shapeless_no_remainder",
+  "ingredients": [
+		{
+			"item": "minecraft:lava_bucket"
+		},
+		{
+			"item": "minecraft:diorite"
+		}
+	],
+	"conditions": [{
+		"type": "liquidblocks:craft_with_water_bucket"
+	}]
+}

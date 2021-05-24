@@ -1,0 +1,22 @@
+{
+  "result": {
+	  "item": "liquidblocks:liquid_coarse_dirt_bucket"
+  },
+  "type": "liquidblocks:shapeless_no_remainder",
+  "ingredients": [
+		{
+			    "type": "forge:nbt",
+	"item": "minecraft:potion",
+	"nbt": "{Potion:'minecraft:water'}"
+		},
+		{
+			"item": "minecraft:coarse_dirt"
+		},
+		{
+			"item": "minecraft:bucket"
+		}
+	],
+	"conditions": [{
+		"type": "liquidblocks:craft_with_water_bottle"
+	}]
+}
