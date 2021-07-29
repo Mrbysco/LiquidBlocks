@@ -9,12 +9,12 @@ public class LiquidBlockFluid {
 	public static class Flowing extends ForgeFlowingFluid {
 		public Flowing(Properties properties) {
 			super(properties);
-			setDefaultState(getStateContainer().getBaseState().with(LEVEL_1_8, 7));
+			registerDefaultState(getStateDefinition().any().setValue(LEVEL, 7));
 		}
 
-		protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder) {
-			super.fillStateContainer(builder);
-			builder.add(LEVEL_1_8);
+		protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder) {
+			super.createFluidStateDefinition(builder);
+			builder.add(LEVEL);
 		}
 
 		@Override
@@ -23,8 +23,8 @@ public class LiquidBlockFluid {
 		}
 
 		@Override
-		public int getLevel(FluidState state) {
-			return state.get(LEVEL_1_8);
+		public int getAmount(FluidState state) {
+			return state.getValue(LEVEL);
 		}
 	}
 
@@ -34,7 +34,7 @@ public class LiquidBlockFluid {
 			super(properties);
 		}
 
-		public int getLevel(FluidState state) {
+		public int getAmount(FluidState state) {
 			return 8;
 		}
 
@@ -43,7 +43,7 @@ public class LiquidBlockFluid {
 		}
 
 		@Override
-		protected boolean canSourcesMultiply() {
+		protected boolean canConvertToSource() {
 			return false;
 		}
 	}

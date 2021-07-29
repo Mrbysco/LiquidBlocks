@@ -52,7 +52,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
 		return NonNullList.create();
 	}
@@ -142,7 +142,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 			throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
 		} else {
 			for(int i = 0; i < astring.length; ++i) {
-				String s = JSONUtils.getString(jsonArr.get(i), "pattern[" + i + "]");
+				String s = JSONUtils.convertToString(jsonArr.get(i), "pattern[" + i + "]");
 				if (s.length() > MAX_WIDTH) {
 					throw new JsonSyntaxException("Invalid pattern: too many columns, " + MAX_WIDTH + " is maximum");
 				}
@@ -173,7 +173,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 				throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
 			}
 
-			map.put(entry.getKey(), Ingredient.deserialize(entry.getValue()));
+			map.put(entry.getKey(), Ingredient.fromJson(entry.getValue()));
 		}
 
 		map.put(" ", Ingredient.EMPTY);
@@ -181,54 +181,54 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 	}
 
 	public static ItemStack deserializeItem(JsonObject object) {
-		String s = JSONUtils.getString(object, "item");
+		String s = JSONUtils.getAsString(object, "item");
 		Item item = Registry.ITEM.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
 			return new JsonSyntaxException("Unknown item '" + s + "'");
 		});
 		if (object.has("data")) {
 			throw new JsonParseException("Disallowed data tag found");
 		} else {
-			int i = JSONUtils.getInt(object, "count", 1);
+			int i = JSONUtils.getAsInt(object, "count", 1);
 			return net.minecraftforge.common.crafting.CraftingHelper.getItemStack(object, true);
 		}
 	}
 
 	public static class SerializerShapedNoRemainderRecipe extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>>  implements IRecipeSerializer<ShapedNoRemainderRecipe> {
-		public ShapedNoRemainderRecipe read(ResourceLocation recipeId, JsonObject json) {
-			String s = JSONUtils.getString(json, "group", "");
-			Map<String, Ingredient> map = ShapedNoRemainderRecipe.deserializeKey(JSONUtils.getJsonObject(json, "key"));
-			String[] astring = ShapedNoRemainderRecipe.shrink(ShapedNoRemainderRecipe.patternFromJson(JSONUtils.getJsonArray(json, "pattern")));
+		public ShapedNoRemainderRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+			String s = JSONUtils.getAsString(json, "group", "");
+			Map<String, Ingredient> map = ShapedNoRemainderRecipe.deserializeKey(JSONUtils.getAsJsonObject(json, "key"));
+			String[] astring = ShapedNoRemainderRecipe.shrink(ShapedNoRemainderRecipe.patternFromJson(JSONUtils.getAsJsonArray(json, "pattern")));
 			int i = astring[0].length();
 			int j = astring.length;
 			NonNullList<Ingredient> nonnulllist = ShapedNoRemainderRecipe.deserializeIngredients(astring, map, i, j);
-			ItemStack itemstack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
+			ItemStack itemstack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
 			return new ShapedNoRemainderRecipe(recipeId, s, i, j, nonnulllist, itemstack);
 		}
 
-		public ShapedNoRemainderRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+		public ShapedNoRemainderRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
 			int i = buffer.readVarInt();
 			int j = buffer.readVarInt();
-			String s = buffer.readString(32767);
+			String s = buffer.readUtf(32767);
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i * j, Ingredient.EMPTY);
 
 			for(int k = 0; k < nonnulllist.size(); ++k) {
-				nonnulllist.set(k, Ingredient.read(buffer));
+				nonnulllist.set(k, Ingredient.fromNetwork(buffer));
 			}
 
-			ItemStack itemstack = buffer.readItemStack();
+			ItemStack itemstack = buffer.readItem();
 			return new ShapedNoRemainderRecipe(recipeId, s, i, j, nonnulllist, itemstack);
 		}
 
-		public void write(PacketBuffer buffer, ShapedNoRemainderRecipe recipe) {
+		public void toNetwork(PacketBuffer buffer, ShapedNoRemainderRecipe recipe) {
 			buffer.writeVarInt(recipe.recipeWidth);
 			buffer.writeVarInt(recipe.recipeHeight);
-			buffer.writeString(recipe.group);
+			buffer.writeUtf(recipe.group);
 
 			for(Ingredient ingredient : recipe.recipeItems) {
-				ingredient.write(buffer);
+				ingredient.toNetwork(buffer);
 			}
 
-			buffer.writeItemStack(recipe.recipeOutput);
+			buffer.writeItem(recipe.recipeOutput);
 		}
 	}
 }

@@ -65,12 +65,12 @@ public class LiquidBlockReg<B extends FlowingFluidBlock> {
 		);
 		if(name.equals("liquid_ore")) {
 			fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidOreBlock(
-					Block.Properties.create(material).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops(), source, blockSupplier));
+					Block.Properties.of(material).noCollission().strength(100.0F).noDrops(), source, blockSupplier));
 		} else {
 			fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
-					Block.Properties.create(material).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops(), source, blockSupplier));
+					Block.Properties.of(material).noCollission().strength(100.0F).noDrops(), source, blockSupplier));
 		}
-		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(LiquidTab.MAIN_TAB), source));
+		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
 	}
 
 	public LiquidBlockReg(String name, Supplier<Block> blockSupplier, Material material, int color, int luminosity) {
@@ -82,7 +82,7 @@ public class LiquidBlockReg<B extends FlowingFluidBlock> {
 				createProperties(FluidHelper.createAttributes(color).temperature(material == Material.WATER ? 300 : 1000).luminosity(luminosity), source, flowing, bucket, fluidblock))
 		);
 		fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
-				Block.Properties.create(material).doesNotBlockMovement().hardnessAndResistance(100.0F).tickRandomly().noDrops().setLightLevel(state -> luminosity), source, blockSupplier));
-		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(LiquidTab.MAIN_TAB), source));
+				Block.Properties.of(material).noCollission().strength(100.0F).randomTicks().noDrops().lightLevel(state -> luminosity), source, blockSupplier));
+		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
 	}
 }

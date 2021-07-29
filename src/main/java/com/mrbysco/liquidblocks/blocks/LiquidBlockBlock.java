@@ -30,14 +30,14 @@ public class LiquidBlockBlock extends FlowingFluidBlock {
 	}
 
 	public void convertBlock(World world, BlockPos pos) {
-		world.removeTileEntity(pos);
-		world.setBlockState(pos, blockSupplier.get().getDefaultState());
+		world.removeBlockEntity(pos);
+		world.setBlockAndUpdate(pos, blockSupplier.get().defaultBlockState());
 		int fireChance = LiquidConfig.COMMON.netherrackFireChance.get();
 		if(fireChance > 0) {
 			if(blockSupplier.get() == Blocks.NETHERRACK) {
-				if(!world.getBlockState(pos.up()).isSolid() || world.getBlockState(pos.up()).getMaterial().isReplaceable()) {
-					if(world.rand.nextInt(fireChance) <= 1) {
-						world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState().with(FireBlock.AGE, world.rand.nextInt(15)));
+				if(!world.getBlockState(pos.above()).canOcclude() || world.getBlockState(pos.above()).getMaterial().isReplaceable()) {
+					if(world.random.nextInt(fireChance) <= 1) {
+						world.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, world.random.nextInt(15)));
 					}
 				}
 			}
@@ -49,16 +49,16 @@ public class LiquidBlockBlock extends FlowingFluidBlock {
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		super.onEntityCollision(state, worldIn, pos, entityIn);
+	public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+		super.entityInside(state, worldIn, pos, entityIn);
 		if (entityIn instanceof LivingEntity) {
 			LivingEntity entity = (LivingEntity) entityIn;
 			if (state.getMaterial() == Material.WATER) {
 				if(LiquidConfig.COMMON.liquidCausesNausea.get()) {
-					entity.addPotionEffect(new EffectInstance(Effects.NAUSEA, 200, 1, false, false));
+					entity.addEffect(new EffectInstance(Effects.CONFUSION, 200, 1, false, false));
 				}
 				if(LiquidConfig.COMMON.liquidCausesSlowness.get()) {
-					entity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 200, 1, false, false));
+					entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
 				}
 			}
 		}

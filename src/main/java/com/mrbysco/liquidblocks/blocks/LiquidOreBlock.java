@@ -19,24 +19,24 @@ public class LiquidOreBlock extends LiquidBlockBlock {
 
 	@Override
 	public void convertBlock(World world, BlockPos pos) {
-		world.removeTileEntity(pos);
+		world.removeBlockEntity(pos);
 		world.removeBlock(pos, false);
-        world.setBlockState(pos, getRandomOre(world));
+        world.setBlockAndUpdate(pos, getRandomOre(world));
     }
 
 	public BlockState getRandomOre(World worldIn) {
 		int oreChance = LiquidConfig.COMMON.oreChance.get();
-		int randNumber = worldIn.rand.nextInt(oreChance);
+		int randNumber = worldIn.random.nextInt(oreChance);
 
 		if(randNumber == 0) {
-			if(!LiquidTags.ORES.getAllElements().isEmpty()) {
-				Block oreBlock = LiquidTags.ORES.getRandomElement(worldIn.rand);
-				return oreBlock.getDefaultState();
+			if(!LiquidTags.ORES.getValues().isEmpty()) {
+				Block oreBlock = LiquidTags.ORES.getRandomElement(worldIn.random);
+				return oreBlock.defaultBlockState();
 			} else {
-				return Blocks.STONE.getDefaultState();
+				return Blocks.STONE.defaultBlockState();
 			}
 		} else {
-			return Blocks.STONE.getDefaultState();
+			return Blocks.STONE.defaultBlockState();
 		}
 	}
 }

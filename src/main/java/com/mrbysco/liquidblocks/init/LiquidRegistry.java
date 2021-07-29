@@ -44,7 +44,7 @@ public class LiquidRegistry {
 
 	public static LiquidBlockReg LIQUID_ORE = new LiquidBlockReg("liquid_ore", () -> Blocks.STONE, Material.LAVA,0xFF7f7f7f);
 
-	public static final RegistryObject<TileEntityType<TileLiquidBlock>> LIQUID_TILE = TILES.register("liquid_tile", () -> TileEntityType.Builder.create(() -> new TileLiquidBlock(),
+	public static final RegistryObject<TileEntityType<TileLiquidBlock>> LIQUID_TILE = TILES.register("liquid_tile", () -> TileEntityType.Builder.of(() -> new TileLiquidBlock(),
 			LIQUID_DIRT.getFluidblock(), LIQUID_COARSE_DIRT.getFluidblock(), LIQUID_PODZOL.getFluidblock(),
 			LIQUID_STONE.getFluidblock(), LIQUID_GRANITE.getFluidblock(), LIQUID_DIORITE.getFluidblock(),
 			LIQUID_ANDESITE.getFluidblock(), LIQUID_SANDSTONE.getFluidblock(), LIQUID_RED_SANDSTONE.getFluidblock(),

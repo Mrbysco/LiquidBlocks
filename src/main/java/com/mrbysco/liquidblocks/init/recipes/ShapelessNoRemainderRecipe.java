@@ -3,7 +3,6 @@ package com.mrbysco.liquidblocks.init.recipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mrbysco.liquidblocks.LiquidBlocks;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -41,21 +40,21 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
 		return NonNullList.create();
 	}
 
 	public static class SerializerShapelessNoRemainderRecipe extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>>  implements IRecipeSerializer<ShapelessNoRemainderRecipe> {
-		public ShapelessNoRemainderRecipe read(ResourceLocation recipeId, JsonObject json) {
-			String s = JSONUtils.getString(json, "group", "");
-			NonNullList<Ingredient> nonnulllist = readIngredients(JSONUtils.getJsonArray(json, "ingredients"));
+		public ShapelessNoRemainderRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+			String s = JSONUtils.getAsString(json, "group", "");
+			NonNullList<Ingredient> nonnulllist = readIngredients(JSONUtils.getAsJsonArray(json, "ingredients"));
 			if (nonnulllist.isEmpty()) {
 				throw new JsonParseException("No ingredients for shapeless recipe");
 			} else if (nonnulllist.size() > ShapelessNoRemainderRecipe.MAX_WIDTH * ShapelessNoRemainderRecipe.MAX_HEIGHT) {
 				throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + (ShapelessNoRemainderRecipe.MAX_WIDTH * ShapelessNoRemainderRecipe.MAX_HEIGHT));
 			} else {
-				ItemStack itemstack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
+				ItemStack itemstack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
 				return new ShapelessNoRemainderRecipe(recipeId, s, itemstack, nonnulllist);
 			}
 		}
@@ -64,8 +63,8 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 			NonNullList<Ingredient> nonnulllist = NonNullList.create();
 
 			for(int i = 0; i < ingredientArray.size(); ++i) {
-				Ingredient ingredient = Ingredient.deserialize(ingredientArray.get(i));
-				if (!ingredient.hasNoMatchingItems()) {
+				Ingredient ingredient = Ingredient.fromJson(ingredientArray.get(i));
+				if (!ingredient.isEmpty()) {
 					nonnulllist.add(ingredient);
 				}
 			}
@@ -73,28 +72,28 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 			return nonnulllist;
 		}
 
-		public ShapelessNoRemainderRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-			String s = buffer.readString(32767);
+		public ShapelessNoRemainderRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+			String s = buffer.readUtf(32767);
 			int i = buffer.readVarInt();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
 
 			for(int j = 0; j < nonnulllist.size(); ++j) {
-				nonnulllist.set(j, Ingredient.read(buffer));
+				nonnulllist.set(j, Ingredient.fromNetwork(buffer));
 			}
 
-			ItemStack itemstack = buffer.readItemStack();
+			ItemStack itemstack = buffer.readItem();
 			return new ShapelessNoRemainderRecipe(recipeId, s, itemstack, nonnulllist);
 		}
 
-		public void write(PacketBuffer buffer, ShapelessNoRemainderRecipe recipe) {
-			buffer.writeString(recipe.group);
+		public void toNetwork(PacketBuffer buffer, ShapelessNoRemainderRecipe recipe) {
+			buffer.writeUtf(recipe.group);
 			buffer.writeVarInt(recipe.recipeItems.size());
 
 			for(Ingredient ingredient : recipe.recipeItems) {
-				ingredient.write(buffer);
+				ingredient.toNetwork(buffer);
 			}
 
-			buffer.writeItemStack(recipe.recipeOutput);
+			buffer.writeItem(recipe.recipeOutput);
 		}
 	}
 }

@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class LiquidTab{
 	public static final ItemGroup MAIN_TAB = new ItemGroup(LiquidBlocks.MOD_ID) {
 		@OnlyIn(Dist.CLIENT)
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(Items.BUCKET);
 		}
 	};
