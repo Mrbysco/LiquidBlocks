@@ -5,23 +5,23 @@ import com.mrbysco.liquidblocks.blocks.LiquidOreBlock;
 import com.mrbysco.liquidblocks.fluid.LiquidBlockFluid;
 import com.mrbysco.liquidblocks.item.LiquidBucketItem;
 import com.mrbysco.liquidblocks.util.FluidHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class LiquidBlockReg<B extends FlowingFluidBlock> {
+public class LiquidBlockReg<B extends LiquidBlock> {
 	private String name;
 	private RegistryObject<ForgeFlowingFluid> source;
 	private RegistryObject<ForgeFlowingFluid> flowing;
-	private RegistryObject<FlowingFluidBlock> fluidblock;
+	private RegistryObject<LiquidBlock> fluidblock;
 	private RegistryObject<Item> bucket;
 
 	@Nonnull
@@ -40,7 +40,7 @@ public class LiquidBlockReg<B extends FlowingFluidBlock> {
 	}
 
 	@Nonnull
-	public FlowingFluidBlock getFluidblock() {
+	public LiquidBlock getFluidblock() {
 		return fluidblock.get();
 	}
 
@@ -49,7 +49,7 @@ public class LiquidBlockReg<B extends FlowingFluidBlock> {
 	}
 
 	public static ForgeFlowingFluid.Properties createProperties(FluidAttributes.Builder attributeBuilder, Supplier<ForgeFlowingFluid> still,
-																Supplier<ForgeFlowingFluid> flowing, Supplier<Item> bucket, Supplier<FlowingFluidBlock> block) {
+																Supplier<ForgeFlowingFluid> flowing, Supplier<Item> bucket, Supplier<LiquidBlock> block) {
 		return new ForgeFlowingFluid.Properties(still, flowing,
 				attributeBuilder)
 				.bucket(bucket).block(block);

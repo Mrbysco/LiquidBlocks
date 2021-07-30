@@ -1,11 +1,9 @@
 package com.mrbysco.liquidblocks;
 
 import com.mrbysco.liquidblocks.config.LiquidConfig;
-import com.mrbysco.liquidblocks.handler.FluidEvents;
 import com.mrbysco.liquidblocks.init.LiquidConditions;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import com.mrbysco.liquidblocks.init.recipes.LiquidRecipes;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -30,9 +28,7 @@ public class LiquidBlocks {
 		LiquidRegistry.BLOCKS.register(eventBus);
 		LiquidRegistry.ITEMS.register(eventBus);
 		LiquidRegistry.FLUIDS.register(eventBus);
-		LiquidRegistry.TILES.register(eventBus);
+		LiquidRegistry.BLOCK_ENTITIES.register(eventBus);
 		LiquidRecipes.RECIPE_SERIALIZERS.register(eventBus);
-
-		MinecraftForge.EVENT_BUS.register(new FluidEvents());
 	}
 }

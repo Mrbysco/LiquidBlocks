@@ -2,12 +2,12 @@ package com.mrbysco.liquidblocks.blocks;
 
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidTags;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
 
 import java.util.function.Supplier;
 
@@ -18,19 +18,19 @@ public class LiquidOreBlock extends LiquidBlockBlock {
 	}
 
 	@Override
-	public void convertBlock(World world, BlockPos pos) {
-		world.removeBlockEntity(pos);
-		world.removeBlock(pos, false);
-        world.setBlockAndUpdate(pos, getRandomOre(world));
+	public void convertBlock(Level level, BlockPos pos) {
+		level.removeBlockEntity(pos);
+		level.removeBlock(pos, false);
+        level.setBlockAndUpdate(pos, getRandomOre(level));
     }
 
-	public BlockState getRandomOre(World worldIn) {
+	public BlockState getRandomOre(Level level) {
 		int oreChance = LiquidConfig.COMMON.oreChance.get();
-		int randNumber = worldIn.random.nextInt(oreChance);
+		int randNumber = level.random.nextInt(oreChance);
 
 		if(randNumber == 0) {
 			if(!LiquidTags.ORES.getValues().isEmpty()) {
-				Block oreBlock = LiquidTags.ORES.getRandomElement(worldIn.random);
+				Block oreBlock = LiquidTags.ORES.getRandomElement(level.random);
 				return oreBlock.defaultBlockState();
 			} else {
 				return Blocks.STONE.defaultBlockState();

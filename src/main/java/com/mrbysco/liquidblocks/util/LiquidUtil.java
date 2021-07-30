@@ -1,6 +1,6 @@
 package com.mrbysco.liquidblocks.util;
 
-import net.minecraft.item.DyeColor;
+import net.minecraft.world.item.DyeColor;
 
 public class LiquidUtil {
 

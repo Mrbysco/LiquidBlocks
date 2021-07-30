@@ -1,14 +1,14 @@
 package com.mrbysco.liquidblocks.init;
 
 import com.mrbysco.liquidblocks.LiquidBlocks;
-import com.mrbysco.liquidblocks.tile.TileLiquidBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.fml.RegistryObject;
+import com.mrbysco.liquidblocks.tile.LiquidBlockEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Material;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -16,7 +16,7 @@ public class LiquidRegistry {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, LiquidBlocks.MOD_ID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, LiquidBlocks.MOD_ID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, LiquidBlocks.MOD_ID);
-	public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, LiquidBlocks.MOD_ID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, LiquidBlocks.MOD_ID);
 
 	//Dirts
 	public static LiquidBlockReg LIQUID_DIRT = new LiquidBlockReg("liquid_dirt", () -> Blocks.DIRT, Material.WATER,0xFF392C20);
@@ -44,7 +44,7 @@ public class LiquidRegistry {
 
 	public static LiquidBlockReg LIQUID_ORE = new LiquidBlockReg("liquid_ore", () -> Blocks.STONE, Material.LAVA,0xFF7f7f7f);
 
-	public static final RegistryObject<TileEntityType<TileLiquidBlock>> LIQUID_TILE = TILES.register("liquid_tile", () -> TileEntityType.Builder.of(() -> new TileLiquidBlock(),
+	public static final RegistryObject<BlockEntityType<LiquidBlockEntity>> LIQUID_BLOCK_ENTITY = BLOCK_ENTITIES.register("liquid_tile", () -> BlockEntityType.Builder.of(LiquidBlockEntity::new,
 			LIQUID_DIRT.getFluidblock(), LIQUID_COARSE_DIRT.getFluidblock(), LIQUID_PODZOL.getFluidblock(),
 			LIQUID_STONE.getFluidblock(), LIQUID_GRANITE.getFluidblock(), LIQUID_DIORITE.getFluidblock(),
 			LIQUID_ANDESITE.getFluidblock(), LIQUID_SANDSTONE.getFluidblock(), LIQUID_RED_SANDSTONE.getFluidblock(),

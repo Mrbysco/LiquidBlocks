@@ -3,7 +3,7 @@ package com.mrbysco.liquidblocks.init.conditions;
 import com.google.gson.JsonObject;
 import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 

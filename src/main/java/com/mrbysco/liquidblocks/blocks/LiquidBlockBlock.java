@@ -1,27 +1,30 @@
 package com.mrbysco.liquidblocks.blocks;
 
 import com.mrbysco.liquidblocks.config.LiquidConfig;
-import com.mrbysco.liquidblocks.tile.TileLiquidBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FireBlock;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import com.mrbysco.liquidblocks.init.LiquidRegistry;
+import com.mrbysco.liquidblocks.tile.LiquidBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Material;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public class LiquidBlockBlock extends FlowingFluidBlock {
+public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 	private final Supplier<Block> blockSupplier;
 
 	public LiquidBlockBlock(Block.Properties properties, Supplier<? extends FlowingFluid> supplier, Supplier<Block> blockSupplier) {
@@ -29,15 +32,15 @@ public class LiquidBlockBlock extends FlowingFluidBlock {
 		this.blockSupplier = blockSupplier;
 	}
 
-	public void convertBlock(World world, BlockPos pos) {
-		world.removeBlockEntity(pos);
-		world.setBlockAndUpdate(pos, blockSupplier.get().defaultBlockState());
+	public void convertBlock(Level level, BlockPos pos) {
+		level.removeBlockEntity(pos);
+		level.setBlockAndUpdate(pos, blockSupplier.get().defaultBlockState());
 		int fireChance = LiquidConfig.COMMON.netherrackFireChance.get();
 		if(fireChance > 0) {
 			if(blockSupplier.get() == Blocks.NETHERRACK) {
-				if(!world.getBlockState(pos.above()).canOcclude() || world.getBlockState(pos.above()).getMaterial().isReplaceable()) {
-					if(world.random.nextInt(fireChance) <= 1) {
-						world.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, world.random.nextInt(15)));
+				if(!level.getBlockState(pos.above()).canOcclude() || level.getBlockState(pos.above()).getMaterial().isReplaceable()) {
+					if(level.random.nextInt(fireChance) <= 1) {
+						level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, level.random.nextInt(15)));
 					}
 				}
 			}
@@ -49,29 +52,39 @@ public class LiquidBlockBlock extends FlowingFluidBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		super.entityInside(state, worldIn, pos, entityIn);
-		if (entityIn instanceof LivingEntity) {
-			LivingEntity entity = (LivingEntity) entityIn;
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn) {
+		super.entityInside(state, level, pos, entityIn);
+		if (entityIn instanceof LivingEntity entity) {
 			if (state.getMaterial() == Material.WATER) {
 				if(LiquidConfig.COMMON.liquidCausesNausea.get()) {
-					entity.addEffect(new EffectInstance(Effects.CONFUSION, 200, 1, false, false));
+					entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 1, false, false));
 				}
 				if(LiquidConfig.COMMON.liquidCausesSlowness.get()) {
-					entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
+					entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
 				}
 			}
 		}
 	}
 
+	@Nullable
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new LiquidBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TileLiquidBlock();
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+		return createLiquidTicker(level, blockEntityType, LiquidRegistry.LIQUID_BLOCK_ENTITY.get());
+	}
+
+	@Nullable
+	protected static <T extends BlockEntity> BlockEntityTicker<T> createLiquidTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends LiquidBlockEntity> blockEntityType1) {
+		return level.isClientSide ? null : createTickerHelper(blockEntityType, blockEntityType1, LiquidBlockEntity::serverTick);
+	}
+
+	@Nullable
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> p_152133_, BlockEntityType<E> p_152134_, BlockEntityTicker<? super E> p_152135_) {
+		return p_152134_ == p_152133_ ? (BlockEntityTicker<A>) p_152135_ : null;
 	}
 }

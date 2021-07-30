@@ -1,8 +1,8 @@
 package com.mrbysco.liquidblocks.fluid;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 public class LiquidBlockFluid {
@@ -12,7 +12,7 @@ public class LiquidBlockFluid {
 			registerDefaultState(getStateDefinition().any().setValue(LEVEL, 7));
 		}
 
-		protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder) {
+		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
 			super.createFluidStateDefinition(builder);
 			builder.add(LEVEL);
 		}

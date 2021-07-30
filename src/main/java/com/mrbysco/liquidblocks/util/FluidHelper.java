@@ -1,8 +1,8 @@
 package com.mrbysco.liquidblocks.util;
 
 import com.mrbysco.liquidblocks.LiquidBlocks;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidHelper {
