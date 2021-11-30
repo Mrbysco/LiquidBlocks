@@ -1,4 +1,4 @@
-[![build](https://github.com/Mrbysco/LiquidBlocks/actions/workflows/build.yml/badge.svg)](https://github.com/Mrbysco/LiquidBlocks/actions/workflows/build.yml) [![](http://cf.way2muchnoise.eu/versions/301999_latest.svg)](https://www.curseforge.com/minecraft/mc-mods/liquid-blocks)
+[![build](https://github.com/Mrbysco/LiquidBlocks/actions/workflows/build.yml/badge.svg)](https://github.com/Mrbysco/LiquidBlocks/actions/workflows/build.yml) [![](http://cf.way2muchnoise.eu/versions/301999.svg)](https://www.curseforge.com/minecraft/mc-mods/liquid-blocks)
 
 # Liquid Blocks #
 
