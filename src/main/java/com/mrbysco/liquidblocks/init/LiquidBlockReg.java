@@ -12,13 +12,13 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class LiquidBlockReg<B extends LiquidBlock> {
-	private String name;
+	private final String name;
 	private RegistryObject<ForgeFlowingFluid> source;
 	private RegistryObject<ForgeFlowingFluid> flowing;
 	private RegistryObject<LiquidBlock> fluidblock;

@@ -12,7 +12,6 @@ import org.apache.commons.lang3.tuple.Pair;
 public class LiquidConfig {
 
 	public static class Common {
-
 		public final BooleanValue liquidCausesNausea;
 		public final BooleanValue liquidCausesSlowness;
 		public final BooleanValue completelyFill;

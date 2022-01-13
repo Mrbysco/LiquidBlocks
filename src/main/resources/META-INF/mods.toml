@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[37,)"
+loaderVersion="[39,)"
 issueTrackerURL="https://github.com/Mrbysco/LiquidBlocks/issues"
 license="MIT"
 
@@ -15,12 +15,6 @@ Need to fill spots fast?
 [[dependencies.liquidblocks]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.17.1,1.18)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.liquidblocks]]
-modId="forge"
-mandatory=true
-versionRange="[37.1.0,38)"
+versionRange="[1.18.1,1.19)"
 ordering="NONE"
 side="BOTH"

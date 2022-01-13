@@ -9,7 +9,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class LiquidTab{
 	public static final CreativeModeTab MAIN_TAB = new CreativeModeTab(LiquidBlocks.MOD_ID) {
-		@OnlyIn(Dist.CLIENT)
 		public ItemStack makeIcon() {
 			return new ItemStack(Items.BUCKET);
 		}
