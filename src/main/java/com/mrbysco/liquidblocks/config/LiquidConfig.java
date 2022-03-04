@@ -90,6 +90,6 @@ public class LiquidConfig {
 
 	@SubscribeEvent
 	public static void onFileChange(final ModConfigEvent.Reloading configEvent) {
-		LiquidBlocks.LOGGER.fatal("Liquid Blocks' config just got changed on the file system!");
+		LiquidBlocks.LOGGER.warn("Liquid Blocks' config just got changed on the file system!");
 	}
 }

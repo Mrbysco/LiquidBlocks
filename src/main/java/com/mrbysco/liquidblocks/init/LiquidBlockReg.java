@@ -63,7 +63,7 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 		flowing = LiquidRegistry.FLUIDS.register(name + "_flowing", () -> new LiquidBlockFluid.Flowing(
 				createProperties(FluidHelper.createAttributes(color).temperature(material == Material.WATER ? 300 : 1000), source, flowing, bucket, fluidblock))
 		);
-		if(name.equals("liquid_ore")) {
+		if (name.equals("liquid_ore")) {
 			fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidOreBlock(
 					Block.Properties.of(material).noCollission().strength(100.0F).noDrops(), source, blockSupplier));
 		} else {

@@ -43,7 +43,7 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 		return nonnulllist;
 	}
 
-	public static class SerializerShapelessNoRemainderRecipe extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>>  implements RecipeSerializer<ShapelessNoRemainderRecipe> {
+	public static class SerializerShapelessNoRemainderRecipe extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapelessNoRemainderRecipe> {
 		public ShapelessNoRemainderRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			String s = GsonHelper.getAsString(json, "group", "");
 			NonNullList<Ingredient> nonnulllist = readIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
@@ -60,7 +60,7 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 		private static NonNullList<Ingredient> readIngredients(JsonArray ingredientArray) {
 			NonNullList<Ingredient> nonnulllist = NonNullList.create();
 
-			for(int i = 0; i < ingredientArray.size(); ++i) {
+			for (int i = 0; i < ingredientArray.size(); ++i) {
 				Ingredient ingredient = Ingredient.fromJson(ingredientArray.get(i));
 				if (!ingredient.isEmpty()) {
 					nonnulllist.add(ingredient);
@@ -75,7 +75,7 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 			int i = buffer.readVarInt();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
 
-			for(int j = 0; j < nonnulllist.size(); ++j) {
+			for (int j = 0; j < nonnulllist.size(); ++j) {
 				nonnulllist.set(j, Ingredient.fromNetwork(buffer));
 			}
 
@@ -87,7 +87,7 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 			buffer.writeUtf(recipe.group);
 			buffer.writeVarInt(recipe.recipeItems.size());
 
-			for(Ingredient ingredient : recipe.recipeItems) {
+			for (Ingredient ingredient : recipe.recipeItems) {
 				ingredient.toNetwork(buffer);
 			}
 

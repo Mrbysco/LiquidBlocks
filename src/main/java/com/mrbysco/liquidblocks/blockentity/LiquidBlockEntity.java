@@ -1,4 +1,4 @@
-package com.mrbysco.liquidblocks.tile;
+package com.mrbysco.liquidblocks.blockentity;
 
 import com.mrbysco.liquidblocks.blocks.LiquidBlockBlock;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
@@ -18,11 +18,9 @@ public class LiquidBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	protected void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.putInt("TimeLeft", this.solidifyTimer);
-
-		return compound;
 	}
 
 	@Override
@@ -32,42 +30,42 @@ public class LiquidBlockEntity extends BlockEntity {
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, LiquidBlockEntity blockEntity) {
-    	if(level.getGameTime() % 20 == 0) {
-    		if(blockEntity.solidifyTimer == -1) {
-				if(state.getBlock() instanceof LiquidBlockBlock liquidBlock) {
-					if(liquidBlock.getLiquifiedBlock().get() != null) {
+		if (level.getGameTime() % 20 == 0) {
+			if (blockEntity.solidifyTimer == -1) {
+				if (state.getBlock() instanceof LiquidBlockBlock liquidBlock) {
+					if (liquidBlock.getLiquifiedBlock().get() != null) {
 						float hardness = liquidBlock.getLiquifiedBlock().get().defaultBlockState().getDestroySpeed(level, pos);
-						if(hardness > 0.0F) {
-							blockEntity.solidifyTimer = (int)Math.ceil((double)hardness * 7);
+						if (hardness > 0.0F) {
+							blockEntity.solidifyTimer = (int) Math.ceil((double) hardness * 7);
 						}
 					}
 				}
 			}
-    		if (blockEntity.solidifyTimer > 0) {
+			if (blockEntity.solidifyTimer > 0) {
 				blockEntity.solidifyTimer--;
-            	if(!LiquidConfig.COMMON.completelyFill.get()) {
-					if(state.getBlock() instanceof LiquidBlockBlock) {
+				if (!LiquidConfig.COMMON.completelyFill.get()) {
+					if (state.getBlock() instanceof LiquidBlockBlock) {
 						boolean flag = !(state.getValue(LiquidBlockBlock.LEVEL) == 0);
-						if(flag) {
+						if (flag) {
 							blockEntity.decrementAgain();
 						}
 
-						if(state.getValue(LiquidBlockBlock.LEVEL) > 5) {
+						if (state.getValue(LiquidBlockBlock.LEVEL) > 5) {
 							blockEntity.decrementAgain();
 						}
 					}
-            	}
-            } else if (blockEntity.solidifyTimer == 0) {
-            	if(state.getBlock() instanceof LiquidBlockBlock liquid) {
+				}
+			} else if (blockEntity.solidifyTimer == 0) {
+				if (state.getBlock() instanceof LiquidBlockBlock liquid) {
 					liquid.convertBlock(level, pos);
-            	}
-            }
-    	}
+				}
+			}
+		}
 	}
 
 	public void decrementAgain() {
 		solidifyTimer--;
-		if(solidifyTimer < 0) {
+		if (solidifyTimer < 0) {
 			solidifyTimer = 0;
 		}
 	}

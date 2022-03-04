@@ -25,7 +25,7 @@ public class LiquidUtil {
 			default -> 0x935940;
 		};
 	}
-	
+
 	public static int getColorForConcrete(DyeColor color) {
 		return switch (color) {
 			case BLACK -> 0x07090e;

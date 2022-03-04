@@ -1,5 +1,6 @@
 package com.mrbysco.liquidblocks;
 
+import com.mojang.logging.LogUtils;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidConditions;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
@@ -9,14 +10,12 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 @Mod(LiquidBlocks.MOD_ID)
 public class LiquidBlocks {
 	public static final String MOD_ID = "liquidblocks";
-	public static final String MOD_PREFIX = MOD_ID + ":";
-	public static final Logger LOGGER = LogManager.getLogger(LiquidBlocks.MOD_ID);
+	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public LiquidBlocks() {
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();

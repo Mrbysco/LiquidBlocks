@@ -60,8 +60,8 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 		Set<String> set = Sets.newHashSet(keys.keySet());
 		set.remove(" ");
 
-		for(int i = 0; i < pattern.length; ++i) {
-			for(int j = 0; j < pattern[i].length(); ++j) {
+		for (int i = 0; i < pattern.length; ++i) {
+			for (int j = 0; j < pattern[i].length(); ++j) {
 				String s = pattern[i].substring(j, j + 1);
 				Ingredient ingredient = keys.get(s);
 				if (ingredient == null) {
@@ -87,7 +87,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 		int k = 0;
 		int l = 0;
 
-		for(int i1 = 0; i1 < toShrink.length; ++i1) {
+		for (int i1 = 0; i1 < toShrink.length; ++i1) {
 			String s = toShrink[i1];
 			i = Math.min(i, firstNonSpace(s));
 			int j1 = lastNonSpace(s);
@@ -108,7 +108,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 		} else {
 			String[] astring = new String[toShrink.length - l - k];
 
-			for(int k1 = 0; k1 < astring.length; ++k1) {
+			for (int k1 = 0; k1 < astring.length; ++k1) {
 				astring[k1] = toShrink[k1 + k].substring(i, j + 1);
 			}
 
@@ -118,7 +118,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 
 	private static int firstNonSpace(String str) {
 		int i;
-		for(i = 0; i < str.length() && str.charAt(i) == ' '; ++i) {
+		for (i = 0; i < str.length() && str.charAt(i) == ' '; ++i) {
 		}
 
 		return i;
@@ -126,7 +126,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 
 	private static int lastNonSpace(String str) {
 		int i;
-		for(i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i) {
+		for (i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i) {
 		}
 
 		return i;
@@ -139,7 +139,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 		} else if (astring.length == 0) {
 			throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
 		} else {
-			for(int i = 0; i < astring.length; ++i) {
+			for (int i = 0; i < astring.length; ++i) {
 				String s = GsonHelper.convertToString(jsonArr.get(i), "pattern[" + i + "]");
 				if (s.length() > MAX_WIDTH) {
 					throw new JsonSyntaxException("Invalid pattern: too many columns, " + MAX_WIDTH + " is maximum");
@@ -162,9 +162,9 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 	private static Map<String, Ingredient> deserializeKey(JsonObject json) {
 		Map<String, Ingredient> map = Maps.newHashMap();
 
-		for(Entry<String, JsonElement> entry : json.entrySet()) {
+		for (Entry<String, JsonElement> entry : json.entrySet()) {
 			if (entry.getKey().length() != 1) {
-				throw new JsonSyntaxException("Invalid key entry: '" + (String)entry.getKey() + "' is an invalid symbol (must be 1 character only).");
+				throw new JsonSyntaxException("Invalid key entry: '" + (String) entry.getKey() + "' is an invalid symbol (must be 1 character only).");
 			}
 
 			if (" ".equals(entry.getKey())) {
@@ -191,7 +191,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 		}
 	}
 
-	public static class SerializerShapedNoRemainderRecipe extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>>  implements RecipeSerializer<ShapedNoRemainderRecipe> {
+	public static class SerializerShapedNoRemainderRecipe extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapedNoRemainderRecipe> {
 		public ShapedNoRemainderRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			String s = GsonHelper.getAsString(json, "group", "");
 			Map<String, Ingredient> map = ShapedNoRemainderRecipe.deserializeKey(GsonHelper.getAsJsonObject(json, "key"));
@@ -209,7 +209,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 			String s = buffer.readUtf();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i * j, Ingredient.EMPTY);
 
-			for(int k = 0; k < nonnulllist.size(); ++k) {
+			for (int k = 0; k < nonnulllist.size(); ++k) {
 				nonnulllist.set(k, Ingredient.fromNetwork(buffer));
 			}
 
@@ -222,7 +222,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 			buffer.writeVarInt(recipe.recipeHeight);
 			buffer.writeUtf(recipe.group);
 
-			for(Ingredient ingredient : recipe.recipeItems) {
+			for (Ingredient ingredient : recipe.recipeItems) {
 				ingredient.toNetwork(buffer);
 			}
 

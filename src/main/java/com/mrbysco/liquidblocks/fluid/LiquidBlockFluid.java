@@ -29,8 +29,7 @@ public class LiquidBlockFluid {
 	}
 
 	public static class Source extends ForgeFlowingFluid {
-		public Source(Properties properties)
-		{
+		public Source(Properties properties) {
 			super(properties);
 		}
 

@@ -2,7 +2,7 @@ package com.mrbysco.liquidblocks.blocks;
 
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
-import com.mrbysco.liquidblocks.tile.LiquidBlockEntity;
+import com.mrbysco.liquidblocks.blockentity.LiquidBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -36,10 +36,10 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 		level.removeBlockEntity(pos);
 		level.setBlockAndUpdate(pos, blockSupplier.get().defaultBlockState());
 		int fireChance = LiquidConfig.COMMON.netherrackFireChance.get();
-		if(fireChance > 0) {
-			if(blockSupplier.get() == Blocks.NETHERRACK) {
-				if(!level.getBlockState(pos.above()).canOcclude() || level.getBlockState(pos.above()).getMaterial().isReplaceable()) {
-					if(level.random.nextInt(fireChance) <= 1) {
+		if (fireChance > 0) {
+			if (blockSupplier.get() == Blocks.NETHERRACK) {
+				if (!level.getBlockState(pos.above()).canOcclude() || level.getBlockState(pos.above()).getMaterial().isReplaceable()) {
+					if (level.random.nextInt(fireChance) <= 1) {
 						level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, level.random.nextInt(15)));
 					}
 				}
@@ -56,10 +56,10 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 		super.entityInside(state, level, pos, entityIn);
 		if (entityIn instanceof LivingEntity entity) {
 			if (state.getMaterial() == Material.WATER) {
-				if(LiquidConfig.COMMON.liquidCausesNausea.get()) {
+				if (LiquidConfig.COMMON.liquidCausesNausea.get()) {
 					entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 1, false, false));
 				}
-				if(LiquidConfig.COMMON.liquidCausesSlowness.get()) {
+				if (LiquidConfig.COMMON.liquidCausesSlowness.get()) {
 					entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
 				}
 			}
