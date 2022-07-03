@@ -1,8 +1,8 @@
 package com.mrbysco.liquidblocks.blocks;
 
+import com.mrbysco.liquidblocks.blockentity.LiquidBlockEntity;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
-import com.mrbysco.liquidblocks.blockentity.LiquidBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
