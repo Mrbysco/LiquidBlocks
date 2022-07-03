@@ -43,7 +43,7 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 		return nonnulllist;
 	}
 
-	public static class SerializerShapelessNoRemainderRecipe implements RecipeSerializer<ShapelessNoRemainderRecipe> {
+	public static class SerializerShapelessNoRemainderRecipe extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ShapelessNoRemainderRecipe> {
 		public ShapelessNoRemainderRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			String s = GsonHelper.getAsString(json, "group", "");
 			NonNullList<Ingredient> nonnulllist = readIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));

@@ -1,24 +1,21 @@
 package com.mrbysco.liquidblocks.util;
 
-import net.minecraft.sounds.SoundEvents;
+import com.mrbysco.liquidblocks.LiquidBlocks;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.common.SoundActions;
-import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidHelper {
+	private static ResourceLocation STILL_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_still");
+	private static ResourceLocation FLOWING_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_flow");
 
-	public static FluidType.Properties createTypeProperties() {
-		return FluidType.Properties.create()
-				.canSwim(false)
-				.canDrown(false)
-				.pathType(BlockPathTypes.LAVA)
-				.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
-				.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+	public static FluidAttributes.Builder createAttributes(int color) {
+		return FluidAttributes.builder(STILL_METAL, FLOWING_METAL)
+				.color(color)
 				.rarity(Rarity.COMMON)
 				.density(2000)
 				.viscosity(8200)
 				.temperature(1000)
-				.lightLevel(0);
+				.luminosity(0);
 	}
 }

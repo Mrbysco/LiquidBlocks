@@ -16,7 +16,7 @@ public class CraftWithWaterBottleCondition implements ICondition {
 	}
 
 	@Override
-	public boolean test(IContext context) {
+	public boolean test() {
 		return LiquidConfig.COMMON.craftWithWaterBottle.get();
 	}
 

@@ -16,7 +16,7 @@ public class EnableLiquidOreCondition implements ICondition {
 	}
 
 	@Override
-	public boolean test(IContext context) {
+	public boolean test() {
 		return LiquidConfig.COMMON.craftLiquidOre.get();
 	}
 
