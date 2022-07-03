@@ -30,6 +30,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class LiquidBlockReg<B extends LiquidBlock> {
+	private static final ResourceLocation STILL_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_still");
+	private static final ResourceLocation FLOWING_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_flow");
+
 	private final String name;
 	private RegistryObject<FluidType> fluidType;
 	private RegistryObject<ForgeFlowingFluid> source;
@@ -40,6 +43,11 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 	@Nonnull
 	public String getName() {
 		return name;
+	}
+
+	@Nonnull
+	public RegistryObject<FluidType> getFluidType() {
+		return fluidType;
 	}
 
 	@Nonnull
@@ -84,8 +92,6 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 			@Override
 			public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
 				consumer.accept(new IFluidTypeRenderProperties() {
-					private static ResourceLocation STILL_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_still");
-					private static ResourceLocation FLOWING_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_flow");
 
 					@Override
 					public ResourceLocation getStillTexture() {
@@ -143,8 +149,6 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 			@Override
 			public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
 				consumer.accept(new IFluidTypeRenderProperties() {
-					private static ResourceLocation STILL_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_still");
-					private static ResourceLocation FLOWING_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_flow");
 
 					@Override
 					public ResourceLocation getStillTexture() {
