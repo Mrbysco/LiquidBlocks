@@ -18,3 +18,9 @@ mandatory=true
 versionRange="[1.19,1.20)"
 ordering="NONE"
 side="BOTH"
+[[dependencies.liquidblocks]]
+modId="forge"
+mandatory=true
+versionRange="[41.0.64,)"
+ordering="NONE"
+side="BOTH"

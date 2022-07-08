@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.IFluidTypeRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -90,8 +90,8 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 			}
 
 			@Override
-			public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
-				consumer.accept(new IFluidTypeRenderProperties() {
+			public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+				consumer.accept(new IClientFluidTypeExtensions() {
 
 					@Override
 					public ResourceLocation getStillTexture() {
@@ -104,13 +104,13 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 					}
 
 					@Override
-					public int getColorTint() {
+					public int getTintColor() {
 						return color;
 					}
 
 					@Override
 					public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-						int color = this.getColorTint();
+						int color = this.getTintColor();
 						return new Vector3f((color >> 16 & 0xFF) / 255F, (color >> 8 & 0xFF) / 255F, (color & 0xFF) / 255F);
 					}
 				});
@@ -147,8 +147,8 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 			}
 
 			@Override
-			public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
-				consumer.accept(new IFluidTypeRenderProperties() {
+			public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+				consumer.accept(new IClientFluidTypeExtensions() {
 
 					@Override
 					public ResourceLocation getStillTexture() {
@@ -161,13 +161,13 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 					}
 
 					@Override
-					public int getColorTint(FluidStack stack) {
+					public int getTintColor(FluidStack stack) {
 						return color;
 					}
 
 					@Override
 					public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-						int color = this.getColorTint();
+						int color = this.getTintColor();
 						return new Vector3f((color >> 16 & 0xFF) / 255F, (color >> 8 & 0xFF) / 255F, (color & 0xFF) / 255F);
 					}
 				});
