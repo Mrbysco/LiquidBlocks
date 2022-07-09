@@ -34,9 +34,9 @@ public class LiquidBlocks {
 		LiquidRegistry.BLOCK_ENTITIES.register(eventBus);
 		LiquidRecipes.RECIPE_SERIALIZERS.register(eventBus);
 
-
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 			eventBus.addListener(ClientHandler::registerBlockColors);
+			eventBus.addListener(ClientHandler::registerItemColors);
 		});
 	}
 }

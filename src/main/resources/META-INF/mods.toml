@@ -21,6 +21,6 @@ side="BOTH"
 [[dependencies.liquidblocks]]
 modId="forge"
 mandatory=true
-versionRange="[41.0.64,)"
+versionRange="[41.0.65,)"
 ordering="NONE"
 side="BOTH"

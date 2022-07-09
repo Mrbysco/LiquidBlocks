@@ -161,7 +161,7 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 					}
 
 					@Override
-					public int getTintColor(FluidStack stack) {
+					public int getTintColor() {
 						return color;
 					}
 
