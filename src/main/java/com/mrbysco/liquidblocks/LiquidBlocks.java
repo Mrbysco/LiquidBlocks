@@ -31,7 +31,7 @@ public class LiquidBlocks {
 		LiquidRegistry.ITEMS.register(eventBus);
 		LiquidRegistry.FLUIDS.register(eventBus);
 		LiquidRegistry.FLUID_TYPES.register(eventBus);
-		LiquidRegistry.BLOCK_ENTITIES.register(eventBus);
+		LiquidRegistry.BLOCK_ENTITY_TYPES.register(eventBus);
 		LiquidRecipes.RECIPE_SERIALIZERS.register(eventBus);
 
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
