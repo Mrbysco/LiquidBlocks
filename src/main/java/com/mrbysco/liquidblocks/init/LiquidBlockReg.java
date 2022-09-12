@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.RegistryObject;
@@ -34,7 +33,7 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 	private static final ResourceLocation FLOWING_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_flow");
 
 	private final String name;
-	private RegistryObject<FluidType> fluidType;
+	private final RegistryObject<FluidType> fluidType;
 	private RegistryObject<ForgeFlowingFluid> source;
 	private RegistryObject<ForgeFlowingFluid> flowing;
 	private RegistryObject<LiquidBlock> fluidblock;
@@ -51,8 +50,13 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 	}
 
 	@Nonnull
-	public RegistryObject<ForgeFlowingFluid> getSource() {
+	public RegistryObject<ForgeFlowingFluid> getSourceRegistry() {
 		return source;
+	}
+
+	@Nonnull
+	public ForgeFlowingFluid getSource() {
+		return source.get();
 	}
 
 	@Nonnull
@@ -65,8 +69,12 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 		return fluidblock.get();
 	}
 
-	public RegistryObject<Item> getBucket() {
+	public RegistryObject<Item> getBucketRegistry() {
 		return bucket;
+	}
+
+	public Item getBucket() {
+		return bucket.get();
 	}
 
 	public static ForgeFlowingFluid.Properties createProperties(Supplier<FluidType> type, Supplier<ForgeFlowingFluid> still, Supplier<ForgeFlowingFluid> flowing,

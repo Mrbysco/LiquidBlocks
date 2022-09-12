@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "liquidblocks:craft_with_ice"
+        }
+      ],
+      "recipe": {
+        "type": "liquidblocks:shapeless_no_remainder",
+        "group": "liquidblocks",
+        "ingredients": [
+          {
+            "item": "minecraft:light_gray_concrete"
+          },
+          {
+            "item": "minecraft:ice"
+          }
+        ],
+        "result": {
+          "item": "liquidblocks:liquid_light_gray_concrete_bucket"
+        }
+      }
+    }
+  ]
+}

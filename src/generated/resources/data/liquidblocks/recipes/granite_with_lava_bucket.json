@@ -1,0 +1,14 @@
+{
+  "type": "liquidblocks:shapeless_no_remainder",
+  "ingredients": [
+    {
+      "item": "minecraft:granite"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    }
+  ],
+  "result": {
+    "item": "liquidblocks:liquid_granite_bucket"
+  }
+}

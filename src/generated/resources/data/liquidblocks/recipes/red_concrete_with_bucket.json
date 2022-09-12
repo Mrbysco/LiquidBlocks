@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "liquidblocks:craft_with_water_bucket"
+        }
+      ],
+      "recipe": {
+        "type": "liquidblocks:shapeless_no_remainder",
+        "group": "liquidblocks",
+        "ingredients": [
+          {
+            "item": "minecraft:red_concrete"
+          },
+          {
+            "item": "minecraft:water_bucket"
+          }
+        ],
+        "result": {
+          "item": "liquidblocks:liquid_red_concrete_bucket"
+        }
+      }
+    }
+  ]
+}

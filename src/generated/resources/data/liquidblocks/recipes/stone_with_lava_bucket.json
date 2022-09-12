@@ -1,0 +1,14 @@
+{
+  "type": "liquidblocks:shapeless_no_remainder",
+  "ingredients": [
+    {
+      "item": "minecraft:stone"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    }
+  ],
+  "result": {
+    "item": "liquidblocks:liquid_stone_bucket"
+  }
+}

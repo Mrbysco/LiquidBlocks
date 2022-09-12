@@ -13,7 +13,6 @@ public class ClientHandler {
 	public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
 		for (RegistryObject<Block> blockObject : LiquidRegistry.BLOCKS.getEntries()) {
 			event.register((state, getter, pos, tintIndex) -> {
-//				return 0xFF3F76E4;
 				if (getter != null && pos != null) {
 					FluidState fluidState = getter.getFluidState(pos);
 					return IClientFluidTypeExtensions.of(fluidState).getTintColor(fluidState, getter, pos);
