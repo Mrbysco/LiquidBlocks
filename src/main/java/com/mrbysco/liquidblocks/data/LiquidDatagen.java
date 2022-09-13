@@ -104,22 +104,22 @@ public class LiquidDatagen {
 			buildLavaRecipe(LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA, Blocks.RED_GLAZED_TERRACOTTA, recipeConsumer);
 			buildLavaRecipe(LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA, Blocks.BLACK_GLAZED_TERRACOTTA, recipeConsumer);
 
-			buildWaterRecipes(LiquidRegistry.LIQUID_WHITE_CONCRETE, Blocks.WHITE_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIME_CONCRETE, Blocks.LIME_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PINK_CONCRETE, Blocks.PINK_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GRAY_CONCRETE, Blocks.GRAY_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_CYAN_CONCRETE, Blocks.CYAN_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BLUE_CONCRETE, Blocks.BLUE_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BROWN_CONCRETE, Blocks.BROWN_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GREEN_CONCRETE, Blocks.GREEN_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_RED_CONCRETE, Blocks.RED_CONCRETE, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BLACK_CONCRETE, Blocks.BLACK_CONCRETE, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GREEN_CONCRETE, Blocks.GREEN_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_RED_CONCRETE, Blocks.RED_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER, recipeConsumer);
 		}
 
 		private void buildWaterRecipes(LiquidBlockReg reg, Block block, Consumer<FinishedRecipe> recipeConsumer) {
