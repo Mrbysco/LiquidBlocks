@@ -1,11 +1,14 @@
 package com.mrbysco.liquidblocks;
 
 import com.mojang.logging.LogUtils;
+import com.mrbysco.liquidblocks.client.ClientHandler;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidConditions;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import com.mrbysco.liquidblocks.init.recipes.LiquidRecipes;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -29,5 +32,10 @@ public class LiquidBlocks {
 		LiquidRegistry.FLUIDS.register(eventBus);
 		LiquidRegistry.BLOCK_ENTITIES.register(eventBus);
 		LiquidRecipes.RECIPE_SERIALIZERS.register(eventBus);
+
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+			eventBus.addListener(ClientHandler::registerBlockColors);
+			eventBus.addListener(ClientHandler::registerItemColors);
+		});
 	}
 }

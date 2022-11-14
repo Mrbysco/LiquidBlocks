@@ -1,0 +1,14 @@
+{
+  "type": "liquidblocks:shapeless_no_remainder",
+  "ingredients": [
+    {
+      "item": "minecraft:black_glazed_terracotta"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    }
+  ],
+  "result": {
+    "item": "liquidblocks:liquid_black_glazed_terracotta_bucket"
+  }
+}

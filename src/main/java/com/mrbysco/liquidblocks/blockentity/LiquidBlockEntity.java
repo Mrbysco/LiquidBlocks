@@ -36,7 +36,8 @@ public class LiquidBlockEntity extends BlockEntity {
 					if (liquidBlock.getLiquifiedBlock().get() != null) {
 						float hardness = liquidBlock.getLiquifiedBlock().get().defaultBlockState().getDestroySpeed(level, pos);
 						if (hardness > 0.0F) {
-							blockEntity.solidifyTimer = (int) Math.ceil((double) hardness * 7);
+							int configuredTimer = LiquidConfig.COMMON.solidifyTimer.get();
+							blockEntity.solidifyTimer = configuredTimer == -1 ? (int) Math.ceil((double) hardness * 7) : configuredTimer;
 						}
 					}
 				}

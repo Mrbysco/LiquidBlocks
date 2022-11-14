@@ -1,10 +1,12 @@
 package com.mrbysco.liquidblocks.init;
 
+import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.blocks.LiquidBlockBlock;
 import com.mrbysco.liquidblocks.blocks.LiquidOreBlock;
 import com.mrbysco.liquidblocks.fluid.LiquidBlockFluid;
 import com.mrbysco.liquidblocks.item.LiquidBucketItem;
 import com.mrbysco.liquidblocks.util.FluidHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class LiquidBlockReg<B extends LiquidBlock> {
+public class LiquidBlockReg {
 	private final String name;
 	private RegistryObject<ForgeFlowingFluid> source;
 	private RegistryObject<ForgeFlowingFluid> flowing;
@@ -30,8 +32,13 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 	}
 
 	@Nonnull
-	public RegistryObject<ForgeFlowingFluid> getSource() {
+	public RegistryObject<ForgeFlowingFluid> getSourceRegistry() {
 		return source;
+	}
+
+	@Nonnull
+	public ForgeFlowingFluid getSource() {
+		return source.get();
 	}
 
 	@Nonnull
@@ -44,14 +51,17 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 		return fluidblock.get();
 	}
 
-	public RegistryObject<Item> getBucket() {
+	public RegistryObject<Item> getBucketRegistry() {
 		return bucket;
 	}
 
-	public static ForgeFlowingFluid.Properties createProperties(FluidAttributes.Builder attributeBuilder, Supplier<ForgeFlowingFluid> still,
-																Supplier<ForgeFlowingFluid> flowing, Supplier<Item> bucket, Supplier<LiquidBlock> block) {
-		return new ForgeFlowingFluid.Properties(still, flowing,
-				attributeBuilder)
+	public Item getBucket() {
+		return bucket.get();
+	}
+
+	public static ForgeFlowingFluid.Properties createProperties(FluidAttributes.Builder attributeBuilder, Supplier<ForgeFlowingFluid> still, Supplier<ForgeFlowingFluid> flowing,
+																Supplier<Item> bucket, Supplier<LiquidBlock> block) {
+		return new ForgeFlowingFluid.Properties(still, flowing, attributeBuilder)
 				.bucket(bucket).block(block);
 	}
 
@@ -70,19 +80,23 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 			fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
 					Block.Properties.of(material).noCollission().strength(100.0F).noDrops(), source, blockSupplier));
 		}
-		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
+		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties()
+				.craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
 	}
 
 	public LiquidBlockReg(String name, Supplier<Block> blockSupplier, Material material, int color, int luminosity) {
 		this.name = name;
 		source = LiquidRegistry.FLUIDS.register(name, () -> new LiquidBlockFluid.Source(
-				createProperties(FluidHelper.createAttributes(color).temperature(material == Material.WATER ? 300 : 1000).luminosity(luminosity), source, flowing, bucket, fluidblock))
+				createProperties(FluidHelper.createAttributes(color).temperature(material == Material.WATER ? 300 : 1000)
+						.luminosity(luminosity), source, flowing, bucket, fluidblock))
 		);
 		flowing = LiquidRegistry.FLUIDS.register(name + "_flowing", () -> new LiquidBlockFluid.Flowing(
-				createProperties(FluidHelper.createAttributes(color).temperature(material == Material.WATER ? 300 : 1000).luminosity(luminosity), source, flowing, bucket, fluidblock))
+				createProperties(FluidHelper.createAttributes(color).temperature(material == Material.WATER ? 300 : 1000)
+						.luminosity(luminosity), source, flowing, bucket, fluidblock))
 		);
 		fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
 				Block.Properties.of(material).noCollission().strength(100.0F).randomTicks().noDrops().lightLevel(state -> luminosity), source, blockSupplier));
-		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
+		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties()
+				.craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
 	}
 }

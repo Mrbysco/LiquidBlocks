@@ -1,18 +1,18 @@
 package com.mrbysco.liquidblocks.blocks;
 
 import com.mrbysco.liquidblocks.config.LiquidConfig;
-import com.mrbysco.liquidblocks.init.LiquidTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
+import net.minecraftforge.registries.tags.ITagManager;
 
-import java.util.Iterator;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class LiquidOreBlock extends LiquidBlockBlock {
@@ -33,19 +33,16 @@ public class LiquidOreBlock extends LiquidBlockBlock {
 		int randNumber = level.random.nextInt(oreChance);
 
 		if (randNumber == 0) {
-			boolean isEmpty = !Registry.BLOCK.getTag(LiquidTags.ORES).map(HolderSet.Named::iterator).map(Iterator::hasNext).orElse(false);
-			if (!isEmpty) {
-				Block oreState = Blocks.STONE;
-				oreState = Registry.BLOCK.getTag(LiquidTags.ORES).flatMap((blockNamed) -> {
-					return blockNamed.getRandomElement(level.random);
-				}).map((blockHolder) -> {
-					return blockHolder.value();
-				}).orElse(oreState);
-
-				return oreState.defaultBlockState();
-			} else {
-				return Blocks.STONE.defaultBlockState();
+			Block oreState = Blocks.STONE;
+			ITagManager<Block> blockITagManager = ForgeRegistries.BLOCKS.tags();
+			if (blockITagManager != null) {
+				ITag<Block> oresTag = blockITagManager.getTag(Tags.Blocks.ORES);
+				if (!oresTag.isEmpty()) {
+					Optional<Block> tagOreBlock = oresTag.getRandomElement(level.random);
+					oreState = tagOreBlock.orElse(Blocks.STONE);
+				}
 			}
+			return oreState.defaultBlockState();
 		} else {
 			return Blocks.STONE.defaultBlockState();
 		}

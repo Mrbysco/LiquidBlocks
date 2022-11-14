@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "liquidblocks:ore_bucket_with_bucket"
+    ]
+  },
+  "criteria": {
+    "has_lava_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:lava_bucket"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "liquidblocks:ore_bucket_with_bucket"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lava_bucket",
+      "has_the_recipe"
+    ]
+  ]
+}

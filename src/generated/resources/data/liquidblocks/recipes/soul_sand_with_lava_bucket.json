@@ -1,0 +1,14 @@
+{
+  "type": "liquidblocks:shapeless_no_remainder",
+  "ingredients": [
+    {
+      "item": "minecraft:soul_sand"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    }
+  ],
+  "result": {
+    "item": "liquidblocks:liquid_soul_sand_bucket"
+  }
+}

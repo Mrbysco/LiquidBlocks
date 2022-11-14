@@ -17,6 +17,7 @@ public class LiquidConfig {
 		public final BooleanValue completelyFill;
 		public final IntValue netherrackFireChance;
 		public final IntValue oreChance;
+		public final IntValue solidifyTimer;
 
 		public final BooleanValue craftWithIce;
 		public final BooleanValue craftWithWaterBottle;
@@ -47,6 +48,10 @@ public class LiquidConfig {
 			oreChance = builder
 					.comment("Makes liquid ore have a 1 in X chance of drying into an ore block (higher = less chance) [default: 64]")
 					.defineInRange("oreChance", 64, 6, Integer.MAX_VALUE);
+
+			solidifyTimer = builder
+					.comment("The amount of ticks before Liquid Blocks solidify (When set to -1 it'll use the block's hardness to calculate a timer [default: -1]")
+					.defineInRange("solidifyTimer", -1, -1, Integer.MAX_VALUE);
 
 			builder.pop();
 			//Crafting settings

@@ -1,0 +1,23 @@
+{
+  "type": "liquidblocks:shapeless_no_remainder",
+  "ingredients": [
+    {
+      "item": "minecraft:lava_bucket"
+    },
+    {
+      "tag": "forge:ores/diamond"
+    },
+    {
+      "tag": "forge:ores/redstone"
+    },
+    {
+      "tag": "forge:ores/lapis"
+    },
+    {
+      "tag": "forge:ores/coal"
+    }
+  ],
+  "result": {
+    "item": "liquidblocks:liquid_ore_bucket"
+  }
+}

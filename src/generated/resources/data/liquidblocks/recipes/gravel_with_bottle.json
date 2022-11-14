@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "liquidblocks:craft_with_water_bottle"
+        }
+      ],
+      "recipe": {
+        "type": "liquidblocks:shapeless_no_remainder",
+        "group": "liquidblocks",
+        "ingredients": [
+          {
+            "item": "minecraft:gravel"
+          },
+          {
+            "item": "minecraft:bucket"
+          },
+          {
+            "type": "forge:nbt",
+            "item": "minecraft:potion",
+            "count": 1,
+            "nbt": "{Potion:\"minecraft:water\"}"
+          }
+        ],
+        "result": {
+          "item": "liquidblocks:liquid_gravel_bucket"
+        }
+      }
+    }
+  ]
+}
