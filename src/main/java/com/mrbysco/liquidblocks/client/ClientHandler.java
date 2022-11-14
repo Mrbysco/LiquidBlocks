@@ -28,7 +28,7 @@ public class ClientHandler {
 			event.getItemColors().register((stack, tintIndex) -> {
 				if (tintIndex != 1) return 0xFFFFFFFF;
 				Optional<FluidStack> containedFluid = FluidUtil.getFluidContained(stack);
-				if(containedFluid.isPresent()) {
+				if (containedFluid.isPresent()) {
 					FluidStack fluidStack = containedFluid.get();
 					return fluidStack.getFluid().getAttributes().getColor(fluidStack);
 				} else {
