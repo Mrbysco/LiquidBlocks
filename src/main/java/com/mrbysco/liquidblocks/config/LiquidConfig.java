@@ -50,7 +50,7 @@ public class LiquidConfig {
 					.defineInRange("oreChance", 64, 6, Integer.MAX_VALUE);
 
 			solidifyTimer = builder
-					.comment("The amount of ticks before Liquid Blocks solidify (When set to -1 it'll use the block's hardness to calculate a timer [default: -1]")
+					.comment("The amount of seconds before Liquid Blocks solidify (When set to -1 it'll use the block's hardness to calculate a timer [default: -1]")
 					.defineInRange("solidifyTimer", -1, -1, Integer.MAX_VALUE);
 
 			builder.pop();
