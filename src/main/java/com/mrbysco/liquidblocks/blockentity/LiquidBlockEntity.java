@@ -41,7 +41,11 @@ public class LiquidBlockEntity extends BlockEntity {
 					}
 				}
 			}
-			if (blockEntity.solidifyTimer > 0) {
+			if (blockEntity.solidifyTimer == 0) {
+				if (state.getBlock() instanceof LiquidBlockBlock liquid) {
+					liquid.convertBlock(level, pos);
+				}
+			} else if (blockEntity.solidifyTimer > 0) {
 				blockEntity.solidifyTimer--;
 				if (!LiquidConfig.COMMON.completelyFill.get()) {
 					if (state.getBlock() instanceof LiquidBlockBlock) {
@@ -54,10 +58,6 @@ public class LiquidBlockEntity extends BlockEntity {
 							blockEntity.decrementAgain();
 						}
 					}
-				}
-			} else if (blockEntity.solidifyTimer == 0) {
-				if (state.getBlock() instanceof LiquidBlockBlock liquid) {
-					liquid.convertBlock(level, pos);
 				}
 			}
 		}
