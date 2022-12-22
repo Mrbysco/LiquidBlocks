@@ -1,6 +1,5 @@
 package com.mrbysco.liquidblocks.init;
 
-import com.mojang.math.Vector3f;
 import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.blocks.LiquidBlockBlock;
 import com.mrbysco.liquidblocks.blocks.LiquidOreBlock;
@@ -23,6 +22,7 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
@@ -137,7 +137,7 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 			fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
 					Block.Properties.of(material).noCollission().strength(100.0F).noLootTable(), source, blockSupplier));
 		}
-		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
+		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1), source));
 	}
 
 	public LiquidBlockReg(String name, Supplier<Block> blockSupplier, Material material, int color, int luminosity) {
@@ -190,6 +190,6 @@ public class LiquidBlockReg<B extends LiquidBlock> {
 
 		fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
 				Block.Properties.of(material).noCollission().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
-		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(LiquidTab.MAIN_TAB), source));
+		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1), source));
 	}
 }

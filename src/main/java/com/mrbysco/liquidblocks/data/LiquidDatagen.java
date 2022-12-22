@@ -8,6 +8,7 @@ import com.mrbysco.liquidblocks.init.conditions.CraftWithIceCondition;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBottleCondition;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBucketCondition;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -41,21 +42,22 @@ public class LiquidDatagen {
 	public static void gatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 		ExistingFileHelper helper = event.getExistingFileHelper();
+		PackOutput packOutput = generator.getPackOutput();
 
-		generator.addProvider(event.includeServer(), new Recipes(generator));
-		generator.addProvider(event.includeClient(), new Language(generator));
-		generator.addProvider(event.includeClient(), new ItemModels(generator, helper));
-		generator.addProvider(event.includeClient(), new BlockStates(generator, helper));
+		generator.addProvider(event.includeServer(), new Recipes(packOutput));
+		generator.addProvider(event.includeClient(), new Language(packOutput));
+		generator.addProvider(event.includeClient(), new ItemModels(packOutput, helper));
+		generator.addProvider(event.includeClient(), new BlockStates(packOutput, helper));
 	}
 
 	public static class Recipes extends RecipeProvider {
 
-		public Recipes(DataGenerator generator) {
-			super(generator);
+		public Recipes(PackOutput packOutput) {
+			super(packOutput);
 		}
 
 		@Override
-		protected void buildCraftingRecipes(Consumer<FinishedRecipe> recipeConsumer) {
+		protected void buildRecipes(Consumer<FinishedRecipe> recipeConsumer) {
 			buildWaterRecipes(LiquidRegistry.LIQUID_DIRT, Blocks.DIRT, recipeConsumer);
 			buildWaterRecipes(LiquidRegistry.LIQUID_COARSE_DIRT, Blocks.COARSE_DIRT, recipeConsumer);
 			buildWaterRecipes(LiquidRegistry.LIQUID_PODZOL, Blocks.PODZOL, recipeConsumer);
@@ -175,8 +177,8 @@ public class LiquidDatagen {
 	}
 
 	private static class Language extends LanguageProvider {
-		public Language(DataGenerator gen) {
-			super(gen, LiquidBlocks.MOD_ID, "en_us");
+		public Language(PackOutput packOutput) {
+			super(packOutput, LiquidBlocks.MOD_ID, "en_us");
 		}
 
 		@Override
@@ -250,8 +252,8 @@ public class LiquidDatagen {
 	}
 
 	private static class BlockStates extends BlockStateProvider {
-		public BlockStates(DataGenerator gen, ExistingFileHelper helper) {
-			super(gen, LiquidBlocks.MOD_ID, helper);
+		public BlockStates(PackOutput packOutput, ExistingFileHelper helper) {
+			super(packOutput, LiquidBlocks.MOD_ID, helper);
 		}
 
 		@Override
@@ -312,8 +314,8 @@ public class LiquidDatagen {
 	}
 
 	private static class ItemModels extends ItemModelProvider {
-		public ItemModels(DataGenerator gen, ExistingFileHelper helper) {
-			super(gen, LiquidBlocks.MOD_ID, helper);
+		public ItemModels(PackOutput packOutput, ExistingFileHelper helper) {
+			super(packOutput, LiquidBlocks.MOD_ID, helper);
 		}
 
 		@Override

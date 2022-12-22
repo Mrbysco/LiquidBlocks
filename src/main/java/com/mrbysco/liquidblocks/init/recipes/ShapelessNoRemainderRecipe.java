@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -24,7 +25,7 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 	private final boolean isSimple;
 
 	public ShapelessNoRemainderRecipe(ResourceLocation idIn, String groupIn, ItemStack recipeOutputIn, NonNullList<Ingredient> recipeItemsIn) {
-		super(idIn, groupIn, recipeOutputIn, recipeItemsIn);
+		super(idIn, groupIn, CraftingBookCategory.MISC, recipeOutputIn, recipeItemsIn);
 		this.group = groupIn;
 		this.recipeOutput = recipeOutputIn;
 		this.recipeItems = recipeItemsIn;

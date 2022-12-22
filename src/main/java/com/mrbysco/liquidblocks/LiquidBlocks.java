@@ -5,6 +5,7 @@ import com.mrbysco.liquidblocks.client.ClientHandler;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidConditions;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
+import com.mrbysco.liquidblocks.init.LiquidTab;
 import com.mrbysco.liquidblocks.init.recipes.LiquidRecipes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,6 +27,7 @@ public class LiquidBlocks {
 		eventBus.register(LiquidConfig.class);
 
 		eventBus.register(new LiquidConditions());
+		eventBus.register(new LiquidTab());
 
 		LiquidRegistry.BLOCKS.register(eventBus);
 		LiquidRegistry.ITEMS.register(eventBus);
