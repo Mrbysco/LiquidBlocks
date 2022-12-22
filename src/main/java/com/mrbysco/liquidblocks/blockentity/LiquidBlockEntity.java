@@ -46,7 +46,7 @@ public class LiquidBlockEntity extends BlockEntity {
 				if (state.getBlock() instanceof LiquidBlockBlock liquid) {
 					liquid.convertBlock(level, pos);
 				}
-			} else if (blockEntity.solidifyTimer == 0) {
+			} else if (blockEntity.solidifyTimer > 0) {
 				blockEntity.solidifyTimer--;
 				if (!LiquidConfig.COMMON.completelyFill.get()) {
 					if (state.getBlock() instanceof LiquidBlockBlock) {
