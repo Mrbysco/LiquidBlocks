@@ -1,12 +1,10 @@
 package com.mrbysco.liquidblocks.init;
 
-import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.blocks.LiquidBlockBlock;
 import com.mrbysco.liquidblocks.blocks.LiquidOreBlock;
 import com.mrbysco.liquidblocks.fluid.LiquidBlockFluid;
 import com.mrbysco.liquidblocks.item.LiquidBucketItem;
 import com.mrbysco.liquidblocks.util.FluidHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
