@@ -20,7 +20,7 @@ public class LiquidTab {
 		MAIN_TAB = event.registerCreativeModeTab(new ResourceLocation(LiquidBlocks.MOD_ID, "tab"), builder ->
 				builder.icon(() -> new ItemStack(Items.BUCKET))
 						.title(Component.translatable("itemGroup.liquidblocks"))
-						.displayItems((features, output, hasPermissions) -> {
+						.displayItems((displayParameters, output) -> {
 							List<ItemStack> stacks = LiquidRegistry.ITEMS.getEntries().stream().map(reg -> new ItemStack(reg.get())).toList();
 							output.acceptAll(stacks);
 						}));
