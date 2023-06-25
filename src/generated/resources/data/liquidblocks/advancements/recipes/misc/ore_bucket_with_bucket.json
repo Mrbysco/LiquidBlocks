@@ -30,5 +30,6 @@
     "recipes": [
       "liquidblocks:ore_bucket_with_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

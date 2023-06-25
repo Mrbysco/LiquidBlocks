@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Material;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -38,7 +37,7 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 		int fireChance = LiquidConfig.COMMON.netherrackFireChance.get();
 		if (fireChance > 0) {
 			if (blockSupplier.get() == Blocks.NETHERRACK) {
-				if (!level.getBlockState(pos.above()).canOcclude() || level.getBlockState(pos.above()).getMaterial().isReplaceable()) {
+				if (!level.getBlockState(pos.above()).canOcclude() || level.getBlockState(pos.above()).canBeReplaced()) {
 					if (level.random.nextInt(fireChance) <= 1) {
 						level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, level.random.nextInt(15)));
 					}
@@ -55,7 +54,7 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn) {
 		super.entityInside(state, level, pos, entityIn);
 		if (entityIn instanceof LivingEntity entity) {
-			if (state.getMaterial() == Material.WATER) {
+			if (state.getBlock() instanceof LiquidBlockBlock) {
 				if (LiquidConfig.COMMON.liquidCausesNausea.get()) {
 					entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 1, false, false));
 				}

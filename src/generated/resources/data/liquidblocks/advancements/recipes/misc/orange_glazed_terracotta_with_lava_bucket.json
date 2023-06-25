@@ -30,5 +30,6 @@
     "recipes": [
       "liquidblocks:orange_glazed_terracotta_with_lava_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

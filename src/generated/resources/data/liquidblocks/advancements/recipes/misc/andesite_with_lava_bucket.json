@@ -30,5 +30,6 @@
     "recipes": [
       "liquidblocks:andesite_with_lava_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

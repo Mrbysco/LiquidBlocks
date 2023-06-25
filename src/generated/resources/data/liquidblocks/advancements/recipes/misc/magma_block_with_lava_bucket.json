@@ -30,5 +30,6 @@
     "recipes": [
       "liquidblocks:magma_block_with_lava_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }
