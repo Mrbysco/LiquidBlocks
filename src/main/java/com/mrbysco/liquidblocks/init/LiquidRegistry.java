@@ -5,6 +5,7 @@ import com.mrbysco.liquidblocks.blockentity.LiquidBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -121,6 +122,7 @@ public class LiquidRegistry {
 
 	public static final RegistryObject<CreativeModeTab> MAIN_TAB = CREATIVE_MODE_TABS.register("tab", () -> CreativeModeTab.builder()
 			.icon(() -> new ItemStack(Items.BUCKET))
+			.withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
 			.title(Component.translatable("itemGroup.liquidblocks"))
 			.displayItems((displayParameters, output) -> {
 				List<ItemStack> stacks = LiquidRegistry.ITEMS.getEntries().stream().map(reg -> new ItemStack(reg.get())).toList();
