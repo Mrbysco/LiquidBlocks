@@ -4,10 +4,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
 public class LiquidBlockFluid {
-	public static class Flowing extends ForgeFlowingFluid {
+	public static class Flowing extends BaseFlowingFluid {
 		public Flowing(Properties properties) {
 			super(properties);
 			registerDefaultState(getStateDefinition().any().setValue(LEVEL, 7));
@@ -29,7 +29,7 @@ public class LiquidBlockFluid {
 		}
 	}
 
-	public static class Source extends ForgeFlowingFluid {
+	public static class Source extends BaseFlowingFluid {
 		public Source(Properties properties) {
 			super(properties);
 		}

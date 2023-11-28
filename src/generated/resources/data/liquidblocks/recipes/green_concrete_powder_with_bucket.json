@@ -1,27 +1,21 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "neoforge:conditions": [
     {
-      "conditions": [
-        {
-          "type": "liquidblocks:craft_with_water_bucket"
-        }
-      ],
-      "recipe": {
-        "type": "liquidblocks:shapeless_no_remainder",
-        "group": "liquidblocks",
-        "ingredients": [
-          {
-            "item": "minecraft:green_concrete_powder"
-          },
-          {
-            "item": "minecraft:water_bucket"
-          }
-        ],
-        "result": {
-          "item": "liquidblocks:liquid_green_concrete_bucket"
-        }
-      }
+      "type": "liquidblocks:craft_with_water_bucket"
     }
-  ]
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "liquidblocks",
+  "ingredients": [
+    {
+      "item": "minecraft:green_concrete_powder"
+    },
+    {
+      "item": "minecraft:water_bucket"
+    }
+  ],
+  "result": {
+    "item": "liquidblocks:liquid_green_concrete_bucket"
+  }
 }

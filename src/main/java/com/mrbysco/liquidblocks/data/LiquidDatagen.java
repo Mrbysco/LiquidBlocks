@@ -7,9 +7,11 @@ import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithIceCondition;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBottleCondition;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBucketCondition;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -18,23 +20,22 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.ConditionalRecipe;
-import net.minecraftforge.common.crafting.StrictNBTIngredient;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.StrictNBTIngredient;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class LiquidDatagen {
@@ -44,7 +45,7 @@ public class LiquidDatagen {
 		ExistingFileHelper helper = event.getExistingFileHelper();
 		PackOutput packOutput = generator.getPackOutput();
 
-		generator.addProvider(event.includeServer(), new Recipes(packOutput));
+		generator.addProvider(event.includeServer(), new Recipes(packOutput, event.getLookupProvider()));
 		generator.addProvider(event.includeClient(), new Language(packOutput));
 		generator.addProvider(event.includeClient(), new ItemModels(packOutput, helper));
 		generator.addProvider(event.includeClient(), new BlockStates(packOutput, helper));
@@ -52,123 +53,102 @@ public class LiquidDatagen {
 
 	public static class Recipes extends RecipeProvider {
 
-		public Recipes(PackOutput packOutput) {
-			super(packOutput);
+		public Recipes(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+			super(packOutput, lookupProvider);
 		}
 
 		@Override
-		protected void buildRecipes(Consumer<FinishedRecipe> recipeConsumer) {
-			buildWaterRecipes(LiquidRegistry.LIQUID_DIRT, Blocks.DIRT, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_COARSE_DIRT, Blocks.COARSE_DIRT, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PODZOL, Blocks.PODZOL, recipeConsumer);
+		protected void buildRecipes(RecipeOutput recipeOutput) {
+			buildWaterRecipes(LiquidRegistry.LIQUID_DIRT, Blocks.DIRT, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_COARSE_DIRT, Blocks.COARSE_DIRT, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PODZOL, Blocks.PODZOL, recipeOutput);
 
-			buildLavaRecipe(LiquidRegistry.LIQUID_STONE, Blocks.STONE, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GRANITE, Blocks.GRANITE, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_DIORITE, Blocks.DIORITE, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_ANDESITE, Blocks.ANDESITE, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_SANDSTONE, Blocks.SANDSTONE, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_RED_SANDSTONE, Blocks.RED_SANDSTONE, recipeConsumer);
+			buildLavaRecipe(LiquidRegistry.LIQUID_STONE, Blocks.STONE, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GRANITE, Blocks.GRANITE, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_DIORITE, Blocks.DIORITE, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_ANDESITE, Blocks.ANDESITE, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_SANDSTONE, Blocks.SANDSTONE, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_RED_SANDSTONE, Blocks.RED_SANDSTONE, recipeOutput);
 
-			buildLavaRecipe(LiquidRegistry.LIQUID_NETHERRACK, Blocks.NETHERRACK, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_SOUL_SAND, Blocks.SOUL_SAND, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_MAGMA, Blocks.MAGMA_BLOCK, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GLOWSTONE, Blocks.GLOWSTONE, recipeConsumer);
+			buildLavaRecipe(LiquidRegistry.LIQUID_NETHERRACK, Blocks.NETHERRACK, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_SOUL_SAND, Blocks.SOUL_SAND, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_MAGMA, Blocks.MAGMA_BLOCK, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GLOWSTONE, Blocks.GLOWSTONE, recipeOutput);
 
-			buildWaterRecipes(LiquidRegistry.LIQUID_SAND, Blocks.SAND, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_RED_SAND, Blocks.RED_SAND, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GRAVEL, Blocks.GRAVEL, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_SAND, Blocks.SAND, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_RED_SAND, Blocks.RED_SAND, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GRAVEL, Blocks.GRAVEL, recipeOutput);
 
 			ShapelessRecipeNoRemainderBuilder.shapeless(LiquidRegistry.LIQUID_ORE.getBucket())
 					.requires(Items.LAVA_BUCKET)
 					.requires(Tags.Items.ORES_DIAMOND).requires(Tags.Items.ORES_REDSTONE)
 					.requires(Tags.Items.ORES_LAPIS).requires(Tags.Items.ORES_COAL)
 					.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-					.save(recipeConsumer, "liquidblocks:ore_bucket_with_bucket");
+					.save(recipeOutput, "liquidblocks:ore_bucket_with_bucket");
 
 
-			buildWaterRecipes(LiquidRegistry.LIQUID_CLAY, Blocks.CLAY, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_TERRACOTTA, Blocks.TERRACOTTA, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_CLAY, Blocks.CLAY, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_TERRACOTTA, Blocks.TERRACOTTA, recipeOutput);
 
-			buildLavaRecipe(LiquidRegistry.LIQUID_WHITE_GLAZED_TERRACOTTA, Blocks.WHITE_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_ORANGE_GLAZED_TERRACOTTA, Blocks.ORANGE_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_MAGENTA_GLAZED_TERRACOTTA, Blocks.MAGENTA_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_YELLOW_GLAZED_TERRACOTTA, Blocks.YELLOW_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_LIME_GLAZED_TERRACOTTA, Blocks.LIME_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_PINK_GLAZED_TERRACOTTA, Blocks.PINK_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GRAY_GLAZED_TERRACOTTA, Blocks.GRAY_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA, Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_CYAN_GLAZED_TERRACOTTA, Blocks.CYAN_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_PURPLE_GLAZED_TERRACOTTA, Blocks.PURPLE_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_BLUE_GLAZED_TERRACOTTA, Blocks.BLUE_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_BROWN_GLAZED_TERRACOTTA, Blocks.BROWN_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GREEN_GLAZED_TERRACOTTA, Blocks.GREEN_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA, Blocks.RED_GLAZED_TERRACOTTA, recipeConsumer);
-			buildLavaRecipe(LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA, Blocks.BLACK_GLAZED_TERRACOTTA, recipeConsumer);
+			buildLavaRecipe(LiquidRegistry.LIQUID_WHITE_GLAZED_TERRACOTTA, Blocks.WHITE_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_ORANGE_GLAZED_TERRACOTTA, Blocks.ORANGE_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_MAGENTA_GLAZED_TERRACOTTA, Blocks.MAGENTA_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_YELLOW_GLAZED_TERRACOTTA, Blocks.YELLOW_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_LIME_GLAZED_TERRACOTTA, Blocks.LIME_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_PINK_GLAZED_TERRACOTTA, Blocks.PINK_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GRAY_GLAZED_TERRACOTTA, Blocks.GRAY_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA, Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_CYAN_GLAZED_TERRACOTTA, Blocks.CYAN_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_PURPLE_GLAZED_TERRACOTTA, Blocks.PURPLE_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_BLUE_GLAZED_TERRACOTTA, Blocks.BLUE_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_BROWN_GLAZED_TERRACOTTA, Blocks.BROWN_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GREEN_GLAZED_TERRACOTTA, Blocks.GREEN_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA, Blocks.RED_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA, Blocks.BLACK_GLAZED_TERRACOTTA, recipeOutput);
 
-			buildWaterRecipes(LiquidRegistry.LIQUID_WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GREEN_CONCRETE, Blocks.GREEN_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_RED_CONCRETE, Blocks.RED_CONCRETE_POWDER, recipeConsumer);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER, recipeConsumer);
+			buildWaterRecipes(LiquidRegistry.LIQUID_WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GREEN_CONCRETE, Blocks.GREEN_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_RED_CONCRETE, Blocks.RED_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER, recipeOutput);
 		}
 
-		private void buildWaterRecipes(LiquidBlockReg reg, Block block, Consumer<FinishedRecipe> recipeConsumer) {
-			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
+		private void buildWaterRecipes(LiquidBlockReg reg, Block block, RecipeOutput recipeOutput) {
+			ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
 			ItemStack waterBottle = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
-			new ConditionalRecipe.Builder()
-					.addCondition(
-							new CraftWithWaterBottleCondition()
-					)
-					.addRecipe(
-							ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
-									.requires(block).requires(Items.BUCKET).requires(StrictNBTIngredient.of(waterBottle))
-									.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-									::save
-					)
-					.build(recipeConsumer,
-							new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_bottle"));
 
-			new ConditionalRecipe.Builder()
-					.addCondition(
-							new CraftWithWaterBucketCondition()
-					)
-					.addRecipe(
-							ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
-									.requires(block).requires(Items.WATER_BUCKET)
-									.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-									::save
-					)
-					.build(recipeConsumer,
+			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
+					.requires(block).requires(Items.BUCKET).requires(StrictNBTIngredient.of(waterBottle))
+					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
+					.save(recipeOutput.withConditions(new CraftWithWaterBottleCondition()), new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_bottle"));
+
+			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
+					.requires(block).requires(Items.WATER_BUCKET)
+					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
+					.save(recipeOutput.withConditions(new CraftWithWaterBucketCondition()),
 							new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_bucket"));
 
-			new ConditionalRecipe.Builder()
-					.addCondition(
-							new CraftWithIceCondition()
-					)
-					.addRecipe(
-							ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
-									.requires(block).requires(Items.ICE)
-									.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-									::save
-					)
-					.build(recipeConsumer,
+			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
+					.requires(block).requires(Items.ICE)
+					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
+					.save(recipeOutput.withConditions(new CraftWithIceCondition()),
 							new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_ice"));
 		}
 
-		private void buildLavaRecipe(LiquidBlockReg reg, Block block, Consumer<FinishedRecipe> recipeConsumer) {
-			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
+		private void buildLavaRecipe(LiquidBlockReg reg, Block block, RecipeOutput recipeConsumer) {
+			ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
 			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
 					.requires(block).requires(Items.LAVA_BUCKET)
 					.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
@@ -246,7 +226,7 @@ public class LiquidDatagen {
 			addItem(blockReg.getBucketRegistry(), name + " Bucket");
 		}
 
-		private void addFluid(String name, RegistryObject<ForgeFlowingFluid> registryObject) {
+		private void addFluid(String name, DeferredHolder<Fluid, BaseFlowingFluid> registryObject) {
 			add("fluid." + registryObject.getId().getNamespace() + "." + registryObject.getId().getPath(), name);
 		}
 	}
@@ -374,7 +354,7 @@ public class LiquidDatagen {
 		}
 
 		private void generateBucket(LiquidBlockReg blockReg) {
-			withExistingParent(blockReg.getBucketRegistry().getId().getPath(), new ResourceLocation("forge", "item/bucket"))
+			withExistingParent(blockReg.getBucketRegistry().getId().getPath(), new ResourceLocation("neoforge", "item/bucket"))
 					.customLoader(DynamicFluidContainerModelBuilder::begin)
 					.fluid(blockReg.getSource());
 		}

@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "liquidblocks:craft_with_ice"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_orange_concrete_powder": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:orange_concrete_powder"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "liquidblocks:orange_concrete_powder_with_ice"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_orange_concrete_powder"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "liquidblocks:orange_concrete_powder_with_ice"
+    ]
+  },
+  "sends_telemetry_event": false
+}

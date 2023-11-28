@@ -1,47 +1,47 @@
 package com.mrbysco.liquidblocks.init.recipes;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingRecipeCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import org.apache.commons.lang3.NotImplementedException;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class ShapedNoRemainderRecipe extends ShapedRecipe {
 	static int MAX_WIDTH = 3;
 	static int MAX_HEIGHT = 3;
 
-	private final int recipeWidth;
-	private final int recipeHeight;
-	private final NonNullList<Ingredient> recipeItems;
-	private final ItemStack recipeOutput;
-	private final String group;
+	final int width;
+	final int height;
+	final NonNullList<Ingredient> recipeItems;
+	final ItemStack result;
+	final String group;
+	final CraftingBookCategory category;
+	final boolean showNotification;
 
-	public ShapedNoRemainderRecipe(ResourceLocation idIn, String groupIn, int recipeWidthIn, int recipeHeightIn, NonNullList<Ingredient> recipeItemsIn, ItemStack recipeOutputIn) {
-		super(idIn, groupIn, CraftingBookCategory.MISC, recipeWidthIn, recipeHeightIn, recipeItemsIn, recipeOutputIn);
+	public ShapedNoRemainderRecipe(String groupIn, CraftingBookCategory bookCategory, int recipeWidthIn, int recipeHeightIn, NonNullList<Ingredient> recipeItemsIn, ItemStack recipeOutputIn, boolean showNotif) {
+		super(groupIn, bookCategory, recipeWidthIn, recipeHeightIn, recipeItemsIn, recipeOutputIn, showNotif);
 		this.group = groupIn;
-		this.recipeWidth = recipeWidthIn;
-		this.recipeHeight = recipeHeightIn;
+		this.category = bookCategory;
+		this.width = recipeWidthIn;
+		this.height = recipeHeightIn;
 		this.recipeItems = recipeItemsIn;
-		this.recipeOutput = recipeOutputIn;
+		this.result = recipeOutputIn;
+		this.showNotification = showNotif;
 	}
 
 	@Override
@@ -56,40 +56,15 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 		return nonnulllist;
 	}
 
-	private static NonNullList<Ingredient> deserializeIngredients(String[] pattern, Map<String, Ingredient> keys, int patternWidth, int patternHeight) {
-		NonNullList<Ingredient> nonnulllist = NonNullList.withSize(patternWidth * patternHeight, Ingredient.EMPTY);
-		Set<String> set = Sets.newHashSet(keys.keySet());
-		set.remove(" ");
-
-		for (int i = 0; i < pattern.length; ++i) {
-			for (int j = 0; j < pattern[i].length(); ++j) {
-				String s = pattern[i].substring(j, j + 1);
-				Ingredient ingredient = keys.get(s);
-				if (ingredient == null) {
-					throw new JsonSyntaxException("Pattern references symbol '" + s + "' but it's not defined in the key");
-				}
-
-				set.remove(s);
-				nonnulllist.set(j + patternWidth * i, ingredient);
-			}
-		}
-
-		if (!set.isEmpty()) {
-			throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
-		} else {
-			return nonnulllist;
-		}
-	}
-
 	@VisibleForTesting
-	static String[] shrink(String... toShrink) {
+	static String[] shrink(List<String> p_301102_) {
 		int i = Integer.MAX_VALUE;
 		int j = 0;
 		int k = 0;
 		int l = 0;
 
-		for (int i1 = 0; i1 < toShrink.length; ++i1) {
-			String s = toShrink[i1];
+		for (int i1 = 0; i1 < p_301102_.size(); ++i1) {
+			String s = p_301102_.get(i1);
 			i = Math.min(i, firstNonSpace(s));
 			int j1 = lastNonSpace(s);
 			j = Math.max(j, j1);
@@ -104,130 +79,159 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 			}
 		}
 
-		if (toShrink.length == l) {
+		if (p_301102_.size() == l) {
 			return new String[0];
 		} else {
-			String[] astring = new String[toShrink.length - l - k];
+			String[] astring = new String[p_301102_.size() - l - k];
 
 			for (int k1 = 0; k1 < astring.length; ++k1) {
-				astring[k1] = toShrink[k1 + k].substring(i, j + 1);
+				astring[k1] = p_301102_.get(k1 + k).substring(i, j + 1);
 			}
 
 			return astring;
 		}
 	}
 
-	private static int firstNonSpace(String str) {
-		int i;
-		for (i = 0; i < str.length() && str.charAt(i) == ' '; ++i) {
+	@Override
+	public boolean isIncomplete() {
+		NonNullList<Ingredient> nonnulllist = this.getIngredients();
+		return nonnulllist.isEmpty() || nonnulllist.stream().filter(p_151277_ -> !p_151277_.isEmpty()).anyMatch(net.neoforged.neoforge.common.CommonHooks::hasNoElements);
+	}
+
+	private static int firstNonSpace(String p_44185_) {
+		int i = 0;
+
+		while (i < p_44185_.length() && p_44185_.charAt(i) == ' ') {
+			++i;
 		}
 
 		return i;
 	}
 
-	private static int lastNonSpace(String str) {
-		int i;
-		for (i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i) {
+	private static int lastNonSpace(String p_44201_) {
+		int i = p_44201_.length() - 1;
+
+		while (i >= 0 && p_44201_.charAt(i) == ' ') {
+			--i;
 		}
 
 		return i;
 	}
 
-	private static String[] patternFromJson(JsonArray jsonArr) {
-		String[] astring = new String[jsonArr.size()];
-		if (astring.length > MAX_HEIGHT) {
-			throw new JsonSyntaxException("Invalid pattern: too many rows, " + MAX_HEIGHT + " is maximum");
-		} else if (astring.length == 0) {
-			throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
-		} else {
-			for (int i = 0; i < astring.length; ++i) {
-				String s = GsonHelper.convertToString(jsonArr.get(i), "pattern[" + i + "]");
-				if (s.length() > MAX_WIDTH) {
-					throw new JsonSyntaxException("Invalid pattern: too many columns, " + MAX_WIDTH + " is maximum");
+	public static class Serializer implements RecipeSerializer<ShapedNoRemainderRecipe> {
+		private static final net.minecraft.resources.ResourceLocation NAME = new net.minecraft.resources.ResourceLocation("minecraft", "crafting_shaped");
+		static final Codec<List<String>> PATTERN_CODEC = Codec.STRING.listOf().flatXmap(p_300940_ -> {
+			if (p_300940_.size() > MAX_HEIGHT) {
+				return DataResult.error(() -> "Invalid pattern: too many rows, %s is maximum".formatted(MAX_HEIGHT));
+			} else if (p_300940_.isEmpty()) {
+				return DataResult.error(() -> "Invalid pattern: empty pattern not allowed");
+			} else {
+				int i = p_300940_.get(0).length();
+
+				for (String s : p_300940_) {
+					if (s.length() > MAX_WIDTH) {
+						return DataResult.error(() -> "Invalid pattern: too many columns, %s is maximum".formatted(MAX_WIDTH));
+					}
+
+					if (i != s.length()) {
+						return DataResult.error(() -> "Invalid pattern: each row must be the same width");
+					}
 				}
 
-				if (i > 0 && astring[0].length() != s.length()) {
-					throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
-				}
-
-				astring[i] = s;
+				return DataResult.success(p_300940_);
 			}
-
-			return astring;
-		}
-	}
-
-	/**
-	 * Returns a key json object as a Java HashMap.
-	 */
-	private static Map<String, Ingredient> deserializeKey(JsonObject json) {
-		Map<String, Ingredient> map = Maps.newHashMap();
-
-		for (Entry<String, JsonElement> entry : json.entrySet()) {
-			if (entry.getKey().length() != 1) {
-				throw new JsonSyntaxException("Invalid key entry: '" + (String) entry.getKey() + "' is an invalid symbol (must be 1 character only).");
+		}, DataResult::success);
+		static final Codec<String> SINGLE_CHARACTER_STRING_CODEC = Codec.STRING.flatXmap(p_300861_ -> {
+			if (p_300861_.length() != 1) {
+				return DataResult.error(() -> "Invalid key entry: '" + p_300861_ + "' is an invalid symbol (must be 1 character only).");
+			} else {
+				return " ".equals(p_300861_) ? DataResult.error(() -> "Invalid key entry: ' ' is a reserved symbol.") : DataResult.success(p_300861_);
 			}
-
-			if (" ".equals(entry.getKey())) {
-				throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
-			}
-
-			map.put(entry.getKey(), Ingredient.fromJson(entry.getValue()));
-		}
-
-		map.put(" ", Ingredient.EMPTY);
-		return map;
-	}
-
-	public static ItemStack deserializeItem(JsonObject object) {
-		String s = GsonHelper.getAsString(object, "item");
-		Item item = BuiltInRegistries.ITEM.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
-			return new JsonSyntaxException("Unknown item '" + s + "'");
-		});
-		if (object.has("data")) {
-			throw new JsonParseException("Disallowed data tag found");
-		} else {
-			int i = GsonHelper.getAsInt(object, "count", 1);
-			return net.minecraftforge.common.crafting.CraftingHelper.getItemStack(object, true);
-		}
-	}
-
-	public static class SerializerShapedNoRemainderRecipe implements RecipeSerializer<ShapedNoRemainderRecipe> {
-		public ShapedNoRemainderRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			String s = GsonHelper.getAsString(json, "group", "");
-			Map<String, Ingredient> map = ShapedNoRemainderRecipe.deserializeKey(GsonHelper.getAsJsonObject(json, "key"));
-			String[] astring = ShapedNoRemainderRecipe.shrink(ShapedNoRemainderRecipe.patternFromJson(GsonHelper.getAsJsonArray(json, "pattern")));
+		}, DataResult::success);
+		private static final Codec<ShapedNoRemainderRecipe> CODEC = ShapedNoRemainderRecipe.Serializer.RawShapedRecipe.CODEC.flatXmap(p_301248_ -> {
+			String[] astring = ShapedNoRemainderRecipe.shrink(p_301248_.pattern);
 			int i = astring[0].length();
 			int j = astring.length;
-			NonNullList<Ingredient> nonnulllist = ShapedNoRemainderRecipe.deserializeIngredients(astring, map, i, j);
-			ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-			return new ShapedNoRemainderRecipe(recipeId, s, i, j, nonnulllist, itemstack);
+			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i * j, Ingredient.EMPTY);
+			Set<String> set = Sets.newHashSet(p_301248_.key.keySet());
+
+			for (int k = 0; k < astring.length; ++k) {
+				String s = astring[k];
+
+				for (int l = 0; l < s.length(); ++l) {
+					String s1 = s.substring(l, l + 1);
+					Ingredient ingredient = s1.equals(" ") ? Ingredient.EMPTY : p_301248_.key.get(s1);
+					if (ingredient == null) {
+						return DataResult.error(() -> "Pattern references symbol '" + s1 + "' but it's not defined in the key");
+					}
+
+					set.remove(s1);
+					nonnulllist.set(l + i * k, ingredient);
+				}
+			}
+
+			if (!set.isEmpty()) {
+				return DataResult.error(() -> "Key defines symbols that aren't used in pattern: " + set);
+			} else {
+				ShapedNoRemainderRecipe shapedrecipe = new ShapedNoRemainderRecipe(p_301248_.group, p_301248_.category, i, j, nonnulllist, p_301248_.result, p_301248_.showNotification);
+				return DataResult.success(shapedrecipe);
+			}
+		}, p_300934_ -> {
+			throw new NotImplementedException("Serializing ShapedNoRemainderRecipe is not implemented yet.");
+		});
+
+		@Override
+		public Codec<ShapedNoRemainderRecipe> codec() {
+			return CODEC;
 		}
 
-		public ShapedNoRemainderRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			int i = buffer.readVarInt();
-			int j = buffer.readVarInt();
-			String s = buffer.readUtf();
+		public ShapedNoRemainderRecipe fromNetwork(FriendlyByteBuf p_44240_) {
+			int i = p_44240_.readVarInt();
+			int j = p_44240_.readVarInt();
+			String s = p_44240_.readUtf();
+			CraftingBookCategory craftingbookcategory = p_44240_.readEnum(CraftingBookCategory.class);
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i * j, Ingredient.EMPTY);
 
 			for (int k = 0; k < nonnulllist.size(); ++k) {
-				nonnulllist.set(k, Ingredient.fromNetwork(buffer));
+				nonnulllist.set(k, Ingredient.fromNetwork(p_44240_));
 			}
 
-			ItemStack itemstack = buffer.readItem();
-			return new ShapedNoRemainderRecipe(recipeId, s, i, j, nonnulllist, itemstack);
+			ItemStack itemstack = p_44240_.readItem();
+			boolean flag = p_44240_.readBoolean();
+			return new ShapedNoRemainderRecipe(s, craftingbookcategory, i, j, nonnulllist, itemstack, flag);
 		}
 
-		public void toNetwork(FriendlyByteBuf buffer, ShapedNoRemainderRecipe recipe) {
-			buffer.writeVarInt(recipe.recipeWidth);
-			buffer.writeVarInt(recipe.recipeHeight);
-			buffer.writeUtf(recipe.group);
+		public void toNetwork(FriendlyByteBuf p_44227_, ShapedNoRemainderRecipe p_44228_) {
+			p_44227_.writeVarInt(p_44228_.width);
+			p_44227_.writeVarInt(p_44228_.height);
+			p_44227_.writeUtf(p_44228_.group);
+			p_44227_.writeEnum(p_44228_.category);
 
-			for (Ingredient ingredient : recipe.recipeItems) {
-				ingredient.toNetwork(buffer);
+			for (Ingredient ingredient : p_44228_.recipeItems) {
+				ingredient.toNetwork(p_44227_);
 			}
 
-			buffer.writeItem(recipe.recipeOutput);
+			p_44227_.writeItem(p_44228_.result);
+			p_44227_.writeBoolean(p_44228_.showNotification);
+		}
+
+		static record RawShapedRecipe(
+				String group, CraftingBookCategory category, Map<String, Ingredient> key, List<String> pattern,
+				ItemStack result, boolean showNotification
+		) {
+			public static final Codec<ShapedNoRemainderRecipe.Serializer.RawShapedRecipe> CODEC = RecordCodecBuilder.create(
+					p_300891_ -> p_300891_.group(
+									ExtraCodecs.strictOptionalField(Codec.STRING, "group", "").forGetter(p_301109_ -> p_301109_.group),
+									CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(p_301117_ -> p_301117_.category),
+									ExtraCodecs.strictUnboundedMap(ShapedNoRemainderRecipe.Serializer.SINGLE_CHARACTER_STRING_CODEC, Ingredient.CODEC_NONEMPTY)
+											.fieldOf("key")
+											.forGetter(p_301234_ -> p_301234_.key),
+									ShapedNoRemainderRecipe.Serializer.PATTERN_CODEC.fieldOf("pattern").forGetter(p_301164_ -> p_301164_.pattern),
+									CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result").forGetter(p_301076_ -> p_301076_.result),
+									ExtraCodecs.strictOptionalField(Codec.BOOL, "show_notification", true).forGetter(p_301293_ -> p_301293_.showNotification)
+							)
+							.apply(p_300891_, ShapedNoRemainderRecipe.Serializer.RawShapedRecipe::new)
+			);
 		}
 	}
 }

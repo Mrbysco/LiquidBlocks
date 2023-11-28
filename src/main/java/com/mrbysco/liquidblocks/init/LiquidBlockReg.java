@@ -2,6 +2,7 @@ package com.mrbysco.liquidblocks.init;
 
 import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.blocks.LiquidBlockBlock;
+import com.mrbysco.liquidblocks.blocks.LiquidOreBlock;
 import com.mrbysco.liquidblocks.fluid.LiquidBlockFluid;
 import com.mrbysco.liquidblocks.item.LiquidBucketItem;
 import com.mrbysco.liquidblocks.util.FluidHelper;
@@ -10,18 +11,20 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -34,11 +37,11 @@ public class LiquidBlockReg {
 	private static final ResourceLocation FLOWING_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_flow");
 
 	private final String name;
-	private final RegistryObject<FluidType> fluidType;
-	private RegistryObject<ForgeFlowingFluid> source;
-	private RegistryObject<ForgeFlowingFluid> flowing;
-	private RegistryObject<LiquidBlock> fluidblock;
-	private RegistryObject<Item> bucket;
+	private final DeferredHolder<FluidType, FluidType> fluidType;
+	private DeferredHolder<Fluid, BaseFlowingFluid> source;
+	private DeferredHolder<Fluid, BaseFlowingFluid> flowing;
+	private DeferredBlock<LiquidBlock> fluidblock;
+	private DeferredItem<LiquidBucketItem> bucket;
 
 	@Nonnull
 	public String getName() {
@@ -46,22 +49,22 @@ public class LiquidBlockReg {
 	}
 
 	@Nonnull
-	public RegistryObject<FluidType> getFluidType() {
+	public DeferredHolder<FluidType, FluidType> getFluidType() {
 		return fluidType;
 	}
 
 	@Nonnull
-	public RegistryObject<ForgeFlowingFluid> getSourceRegistry() {
+	public DeferredHolder<Fluid, BaseFlowingFluid> getSourceRegistry() {
 		return source;
 	}
 
 	@Nonnull
-	public ForgeFlowingFluid getSource() {
+	public BaseFlowingFluid getSource() {
 		return source.get();
 	}
 
 	@Nonnull
-	public RegistryObject<ForgeFlowingFluid> getFlowing() {
+	public DeferredHolder<Fluid, BaseFlowingFluid> getFlowing() {
 		return flowing;
 	}
 
@@ -70,7 +73,7 @@ public class LiquidBlockReg {
 		return fluidblock.get();
 	}
 
-	public RegistryObject<Item> getBucketRegistry() {
+	public DeferredItem<LiquidBucketItem> getBucketRegistry() {
 		return bucket;
 	}
 
@@ -78,9 +81,9 @@ public class LiquidBlockReg {
 		return bucket.get();
 	}
 
-	public static ForgeFlowingFluid.Properties createProperties(Supplier<FluidType> type, Supplier<ForgeFlowingFluid> still, Supplier<ForgeFlowingFluid> flowing,
-																Supplier<Item> bucket, Supplier<LiquidBlock> block) {
-		return new ForgeFlowingFluid.Properties(type, still, flowing)
+	public static BaseFlowingFluid.Properties createProperties(Supplier<FluidType> type, Supplier<BaseFlowingFluid> still, Supplier<BaseFlowingFluid> flowing,
+															   DeferredItem<LiquidBucketItem> bucket, Supplier<LiquidBlock> block) {
+		return new BaseFlowingFluid.Properties(type, still, flowing)
 				.bucket(bucket).block(block);
 	}
 
@@ -132,8 +135,13 @@ public class LiquidBlockReg {
 				createProperties(fluidType, source, flowing, bucket, fluidblock))
 		);
 
-		fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
-				Block.Properties.of().mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollission().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
+		if (name.equals("ore")) {
+			fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidOreBlock(
+					Block.Properties.of().mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollission().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
+		} else {
+			fluidblock = LiquidRegistry.BLOCKS.register(name, () -> new LiquidBlockBlock(
+					Block.Properties.of().mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollission().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
+		}
 		bucket = LiquidRegistry.ITEMS.register(name + "_bucket", () -> new LiquidBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1), source));
 	}
 

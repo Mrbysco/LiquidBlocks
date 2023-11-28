@@ -1,38 +1,25 @@
 package com.mrbysco.liquidblocks.init.conditions;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
+import net.neoforged.neoforge.common.conditions.ICondition;
 
 public class CraftWithWaterBottleCondition implements ICondition {
-	private static final ResourceLocation ID = new ResourceLocation(LiquidBlocks.MOD_ID, "craft_with_water_bottle");
 
-	@Override
-	public ResourceLocation getID() {
-		return ID;
-	}
+	public static final CraftWithWaterBottleCondition INSTANCE = new CraftWithWaterBottleCondition();
+
+	public static Codec<CraftWithWaterBottleCondition> CODEC = Codec.unit(INSTANCE).stable();
+	private static final ResourceLocation ID = new ResourceLocation(LiquidBlocks.MOD_ID, "craft_with_water_bottle");
 
 	@Override
 	public boolean test(IContext context) {
 		return LiquidConfig.COMMON.craftWithWaterBottle.get();
 	}
 
-	public static class Serializer implements IConditionSerializer<CraftWithWaterBottleCondition> {
-		public static final CraftWithWaterBottleCondition.Serializer INSTANCE = new CraftWithWaterBottleCondition.Serializer();
-
-		public void write(JsonObject json, CraftWithWaterBottleCondition value) {
-
-		}
-
-		public CraftWithWaterBottleCondition read(JsonObject json) {
-			return new CraftWithWaterBottleCondition();
-		}
-
-		public ResourceLocation getID() {
-			return CraftWithWaterBottleCondition.ID;
-		}
+	@Override
+	public Codec<? extends ICondition> codec() {
+		return CODEC;
 	}
 }

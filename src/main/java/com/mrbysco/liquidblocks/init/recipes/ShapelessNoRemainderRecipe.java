@@ -1,15 +1,15 @@
 package com.mrbysco.liquidblocks.init.recipes;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingRecipeCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -19,16 +19,18 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 	static int MAX_WIDTH = 3;
 	static int MAX_HEIGHT = 3;
 
-	private final String group;
-	private final ItemStack recipeOutput;
-	private final NonNullList<Ingredient> recipeItems;
+	final String group;
+	final CraftingBookCategory category;
+	final ItemStack result;
+	final NonNullList<Ingredient> ingredients;
 	private final boolean isSimple;
 
-	public ShapelessNoRemainderRecipe(ResourceLocation idIn, String groupIn, ItemStack recipeOutputIn, NonNullList<Ingredient> recipeItemsIn) {
-		super(idIn, groupIn, CraftingBookCategory.MISC, recipeOutputIn, recipeItemsIn);
+	public ShapelessNoRemainderRecipe(String groupIn, CraftingBookCategory bookCategory, ItemStack recipeOutputIn, NonNullList<Ingredient> recipeItemsIn) {
+		super(groupIn, bookCategory, recipeOutputIn, recipeItemsIn);
 		this.group = groupIn;
-		this.recipeOutput = recipeOutputIn;
-		this.recipeItems = recipeItemsIn;
+		this.category = bookCategory;
+		this.result = recipeOutputIn;
+		this.ingredients = recipeItemsIn;
 		this.isSimple = recipeItemsIn.stream().allMatch(Ingredient::isSimple);
 	}
 
@@ -44,55 +46,64 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 		return nonnulllist;
 	}
 
-	public static class SerializerShapelessNoRemainderRecipe implements RecipeSerializer<ShapelessNoRemainderRecipe> {
-		public ShapelessNoRemainderRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			String s = GsonHelper.getAsString(json, "group", "");
-			NonNullList<Ingredient> nonnulllist = readIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
-			if (nonnulllist.isEmpty()) {
-				throw new JsonParseException("No ingredients for shapeless recipe");
-			} else if (nonnulllist.size() > ShapelessNoRemainderRecipe.MAX_WIDTH * ShapelessNoRemainderRecipe.MAX_HEIGHT) {
-				throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + (ShapelessNoRemainderRecipe.MAX_WIDTH * ShapelessNoRemainderRecipe.MAX_HEIGHT));
-			} else {
-				ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-				return new ShapelessNoRemainderRecipe(recipeId, s, itemstack, nonnulllist);
-			}
+	public static class Serializer implements RecipeSerializer<ShapelessNoRemainderRecipe> {
+		private static final net.minecraft.resources.ResourceLocation NAME = new net.minecraft.resources.ResourceLocation("minecraft", "crafting_shapeless");
+		private static final Codec<ShapelessNoRemainderRecipe> CODEC = RecordCodecBuilder.create(
+				p_300958_ -> p_300958_.group(
+								ExtraCodecs.strictOptionalField(Codec.STRING, "group", "").forGetter(p_301127_ -> p_301127_.group),
+								CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(p_301133_ -> p_301133_.category),
+								CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result").forGetter(p_301142_ -> p_301142_.result),
+								Ingredient.CODEC_NONEMPTY
+										.listOf()
+										.fieldOf("ingredients")
+										.flatXmap(
+												p_301021_ -> {
+													Ingredient[] aingredient = p_301021_
+															.toArray(Ingredient[]::new); //Forge skip the empty check and immediatly create the array.
+													if (aingredient.length == 0) {
+														return DataResult.error(() -> "No ingredients for shapeless recipe");
+													} else {
+														return aingredient.length > ShapedNoRemainderRecipe.MAX_HEIGHT * ShapedNoRemainderRecipe.MAX_WIDTH
+																? DataResult.error(() -> "Too many ingredients for shapeless recipe. The maximum is: %s".formatted(ShapedNoRemainderRecipe.MAX_HEIGHT * ShapedNoRemainderRecipe.MAX_WIDTH))
+																: DataResult.success(NonNullList.of(Ingredient.EMPTY, aingredient));
+													}
+												},
+												DataResult::success
+										)
+										.forGetter(p_300975_ -> p_300975_.ingredients)
+						)
+						.apply(p_300958_, ShapelessNoRemainderRecipe::new)
+		);
+
+		@Override
+		public Codec<ShapelessNoRemainderRecipe> codec() {
+			return CODEC;
 		}
 
-		private static NonNullList<Ingredient> readIngredients(JsonArray ingredientArray) {
-			NonNullList<Ingredient> nonnulllist = NonNullList.create();
-
-			for (int i = 0; i < ingredientArray.size(); ++i) {
-				Ingredient ingredient = Ingredient.fromJson(ingredientArray.get(i));
-				if (!ingredient.isEmpty()) {
-					nonnulllist.add(ingredient);
-				}
-			}
-
-			return nonnulllist;
-		}
-
-		public ShapelessNoRemainderRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			String s = buffer.readUtf();
-			int i = buffer.readVarInt();
+		public ShapelessNoRemainderRecipe fromNetwork(FriendlyByteBuf p_44294_) {
+			String s = p_44294_.readUtf();
+			CraftingBookCategory craftingbookcategory = p_44294_.readEnum(CraftingBookCategory.class);
+			int i = p_44294_.readVarInt();
 			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
 
-			for (int j = 0; j < nonnulllist.size(); ++j) {
-				nonnulllist.set(j, Ingredient.fromNetwork(buffer));
+			for(int j = 0; j < nonnulllist.size(); ++j) {
+				nonnulllist.set(j, Ingredient.fromNetwork(p_44294_));
 			}
 
-			ItemStack itemstack = buffer.readItem();
-			return new ShapelessNoRemainderRecipe(recipeId, s, itemstack, nonnulllist);
+			ItemStack itemstack = p_44294_.readItem();
+			return new ShapelessNoRemainderRecipe(s, craftingbookcategory, itemstack, nonnulllist);
 		}
 
-		public void toNetwork(FriendlyByteBuf buffer, ShapelessNoRemainderRecipe recipe) {
-			buffer.writeUtf(recipe.group);
-			buffer.writeVarInt(recipe.recipeItems.size());
+		public void toNetwork(FriendlyByteBuf p_44281_, ShapelessNoRemainderRecipe p_44282_) {
+			p_44281_.writeUtf(p_44282_.group);
+			p_44281_.writeEnum(p_44282_.category);
+			p_44281_.writeVarInt(p_44282_.ingredients.size());
 
-			for (Ingredient ingredient : recipe.recipeItems) {
-				ingredient.toNetwork(buffer);
+			for(Ingredient ingredient : p_44282_.ingredients) {
+				ingredient.toNetwork(p_44281_);
 			}
 
-			buffer.writeItem(recipe.recipeOutput);
+			p_44281_.writeItem(p_44282_.result);
 		}
 	}
 }

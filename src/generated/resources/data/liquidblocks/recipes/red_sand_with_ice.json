@@ -1,27 +1,21 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "neoforge:conditions": [
     {
-      "conditions": [
-        {
-          "type": "liquidblocks:craft_with_ice"
-        }
-      ],
-      "recipe": {
-        "type": "liquidblocks:shapeless_no_remainder",
-        "group": "liquidblocks",
-        "ingredients": [
-          {
-            "item": "minecraft:red_sand"
-          },
-          {
-            "item": "minecraft:ice"
-          }
-        ],
-        "result": {
-          "item": "liquidblocks:liquid_red_sand_bucket"
-        }
-      }
+      "type": "liquidblocks:craft_with_ice"
     }
-  ]
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "liquidblocks",
+  "ingredients": [
+    {
+      "item": "minecraft:red_sand"
+    },
+    {
+      "item": "minecraft:ice"
+    }
+  ],
+  "result": {
+    "item": "liquidblocks:liquid_red_sand_bucket"
+  }
 }

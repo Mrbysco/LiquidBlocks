@@ -1,16 +1,17 @@
 package com.mrbysco.liquidblocks.init.recipes;
 
 import com.mrbysco.liquidblocks.LiquidBlocks;
-import com.mrbysco.liquidblocks.init.recipes.ShapedNoRemainderRecipe.SerializerShapedNoRemainderRecipe;
-import com.mrbysco.liquidblocks.init.recipes.ShapelessNoRemainderRecipe.SerializerShapelessNoRemainderRecipe;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
 
 public class LiquidRecipes {
-	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, LiquidBlocks.MOD_ID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, LiquidBlocks.MOD_ID);
 
-	public static final RegistryObject<SerializerShapedNoRemainderRecipe> SHAPED_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shaped_no_remainder", SerializerShapedNoRemainderRecipe::new);
-	public static final RegistryObject<SerializerShapelessNoRemainderRecipe> SHAPELESS_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shapeless_no_remainder", SerializerShapelessNoRemainderRecipe::new);
+	public static final Supplier<ShapedNoRemainderRecipe.Serializer> SHAPED_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shaped_no_remainder", ShapedNoRemainderRecipe.Serializer::new);
+	public static final Supplier<ShapelessNoRemainderRecipe.Serializer> SHAPELESS_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shapeless_no_remainder", ShapelessNoRemainderRecipe.Serializer::new);
 }
