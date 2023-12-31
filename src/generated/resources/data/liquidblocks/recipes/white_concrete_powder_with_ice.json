@@ -1,7 +1,8 @@
 {
   "neoforge:conditions": [
     {
-      "type": "liquidblocks:craft_with_ice"
+      "type": "liquidblocks:craft_with_ice",
+      "value": {}
     }
   ],
   "type": "minecraft:crafting_shapeless",

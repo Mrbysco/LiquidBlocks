@@ -28,7 +28,7 @@ import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.StrictNBTIngredient;
+import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -130,7 +130,7 @@ public class LiquidDatagen {
 			ItemStack waterBottle = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
 
 			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
-					.requires(block).requires(Items.BUCKET).requires(StrictNBTIngredient.of(waterBottle))
+					.requires(block).requires(Items.BUCKET).requires(NBTIngredient.of(true, waterBottle))
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
 					.save(recipeOutput.withConditions(new CraftWithWaterBottleCondition()), new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_bottle"));
 

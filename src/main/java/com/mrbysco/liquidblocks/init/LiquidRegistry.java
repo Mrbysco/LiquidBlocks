@@ -2,18 +2,24 @@ package com.mrbysco.liquidblocks.init;
 
 import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.blockentity.LiquidBlockEntity;
+import com.mrbysco.liquidblocks.item.LiquidBucketItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
@@ -126,4 +132,13 @@ public class LiquidRegistry {
 				List<ItemStack> stacks = LiquidRegistry.ITEMS.getEntries().stream().map(reg -> new ItemStack(reg.get())).toList();
 				output.acceptAll(stacks);
 			}).build());
+
+
+	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		for (DeferredHolder<Item, ? extends Item> itemDeferredHolder : LiquidRegistry.ITEMS.getEntries()) {
+			if (itemDeferredHolder.get() instanceof LiquidBucketItem) {
+				event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), itemDeferredHolder.get());
+			}
+		}
+	}
 }

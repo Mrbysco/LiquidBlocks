@@ -1,7 +1,8 @@
 {
   "neoforge:conditions": [
     {
-      "type": "liquidblocks:craft_with_water_bottle"
+      "type": "liquidblocks:craft_with_water_bottle",
+      "value": {}
     }
   ],
   "type": "minecraft:crafting_shapeless",
@@ -16,11 +17,9 @@
     },
     {
       "type": "neoforge:nbt",
-      "Count": 1,
-      "id": "minecraft:potion",
-      "tag": {
-        "Potion": "minecraft:water"
-      }
+      "item": "minecraft:potion",
+      "strict": true,
+      "tag": "{Potion:\"minecraft:water\"}"
     }
   ],
   "result": {

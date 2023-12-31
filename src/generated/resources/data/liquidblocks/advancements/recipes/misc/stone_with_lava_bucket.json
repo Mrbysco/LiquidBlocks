@@ -30,6 +30,5 @@
     "recipes": [
       "liquidblocks:stone_with_lava_bucket"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

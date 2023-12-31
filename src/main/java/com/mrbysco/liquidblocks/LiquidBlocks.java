@@ -10,7 +10,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
@@ -19,8 +18,7 @@ public class LiquidBlocks {
 	public static final String MOD_ID = "liquidblocks";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	public LiquidBlocks() {
-		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+	public LiquidBlocks(IEventBus eventBus) {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LiquidConfig.commonSpec);
 		eventBus.register(LiquidConfig.class);
 
@@ -32,6 +30,8 @@ public class LiquidBlocks {
 		LiquidRegistry.CREATIVE_MODE_TABS.register(eventBus);
 		LiquidRecipes.RECIPE_SERIALIZERS.register(eventBus);
 		LiquidConditions.CONDITION_CODECS.register(eventBus);
+
+		eventBus.addListener(LiquidRegistry::registerCapabilities);
 
 		if (FMLEnvironment.dist.isClient()) {
 			eventBus.addListener(ClientHandler::registerBlockColors);
