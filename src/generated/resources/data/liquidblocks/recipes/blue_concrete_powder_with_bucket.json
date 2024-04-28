@@ -1,8 +1,7 @@
 {
   "neoforge:conditions": [
     {
-      "type": "liquidblocks:craft_with_water_bucket",
-      "value": {}
+      "type": "liquidblocks:craft_with_water_bucket"
     }
   ],
   "type": "minecraft:crafting_shapeless",
@@ -17,6 +16,7 @@
     }
   ],
   "result": {
-    "item": "liquidblocks:liquid_blue_concrete_bucket"
+    "count": 1,
+    "id": "liquidblocks:liquid_blue_concrete_bucket"
   }
 }

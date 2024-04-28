@@ -1,6 +1,6 @@
 package com.mrbysco.liquidblocks.init.conditions;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -10,7 +10,7 @@ public class CraftWithWaterBottleCondition implements ICondition {
 
 	public static final CraftWithWaterBottleCondition INSTANCE = new CraftWithWaterBottleCondition();
 
-	public static Codec<CraftWithWaterBottleCondition> CODEC = Codec.unit(INSTANCE).stable();
+	public static MapCodec<CraftWithWaterBottleCondition> CODEC = MapCodec.unit(INSTANCE).stable();
 	private static final ResourceLocation ID = new ResourceLocation(LiquidBlocks.MOD_ID, "craft_with_water_bottle");
 
 	@Override
@@ -19,7 +19,7 @@ public class CraftWithWaterBottleCondition implements ICondition {
 	}
 
 	@Override
-	public Codec<? extends ICondition> codec() {
+	public MapCodec<? extends ICondition> codec() {
 		return CODEC;
 	}
 }

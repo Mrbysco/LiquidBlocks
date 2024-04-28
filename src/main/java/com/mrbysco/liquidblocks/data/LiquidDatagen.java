@@ -16,19 +16,17 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.NBTIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -37,7 +35,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class LiquidDatagen {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
@@ -127,10 +125,10 @@ public class LiquidDatagen {
 
 		private void buildWaterRecipes(LiquidBlockReg reg, Block block, RecipeOutput recipeOutput) {
 			ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
-			ItemStack waterBottle = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
+			ItemStack waterBottle = Items.POTION.getDefaultInstance();
 
 			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
-					.requires(block).requires(Items.BUCKET).requires(NBTIngredient.of(true, waterBottle))
+					.requires(block).requires(Items.BUCKET).requires(DataComponentIngredient.of(true, waterBottle))
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
 					.save(recipeOutput.withConditions(new CraftWithWaterBottleCondition()), new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_bottle"));
 

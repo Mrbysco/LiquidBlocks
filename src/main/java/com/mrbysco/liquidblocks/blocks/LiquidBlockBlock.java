@@ -27,7 +27,7 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 	private final Supplier<Block> blockSupplier;
 
 	public LiquidBlockBlock(Block.Properties properties, Supplier<? extends FlowingFluid> supplier, Supplier<Block> blockSupplier) {
-		super(supplier, properties);
+		super(supplier.get(), properties);
 		this.blockSupplier = blockSupplier;
 	}
 

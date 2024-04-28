@@ -3,8 +3,6 @@ package com.mrbysco.liquidblocks.init.recipes;
 import com.mrbysco.liquidblocks.LiquidBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;

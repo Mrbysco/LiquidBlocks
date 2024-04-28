@@ -1,8 +1,7 @@
 {
   "neoforge:conditions": [
     {
-      "type": "liquidblocks:craft_with_water_bottle",
-      "value": {}
+      "type": "liquidblocks:craft_with_water_bottle"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -11,9 +10,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:brown_concrete_powder"
-            ]
+            "items": "minecraft:brown_concrete_powder"
           }
         ]
       },

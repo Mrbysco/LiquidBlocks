@@ -7,6 +7,6 @@ import java.util.function.Supplier;
 
 public class LiquidBucketItem extends BucketItem {
 	public LiquidBucketItem(Properties builder, Supplier<? extends Fluid> supplier) {
-		super(supplier, builder);
+		super(supplier.get(), builder);
 	}
 }

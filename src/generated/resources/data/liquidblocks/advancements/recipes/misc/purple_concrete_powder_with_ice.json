@@ -1,8 +1,7 @@
 {
   "neoforge:conditions": [
     {
-      "type": "liquidblocks:craft_with_ice",
-      "value": {}
+      "type": "liquidblocks:craft_with_ice"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -11,9 +10,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:purple_concrete_powder"
-            ]
+            "items": "minecraft:purple_concrete_powder"
           }
         ]
       },

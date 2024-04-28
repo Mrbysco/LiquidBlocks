@@ -6,19 +6,20 @@
       "item": "minecraft:lava_bucket"
     },
     {
-      "tag": "forge:ores/diamond"
+      "tag": "c:ores/diamond"
     },
     {
-      "tag": "forge:ores/redstone"
+      "tag": "c:ores/redstone"
     },
     {
-      "tag": "forge:ores/lapis"
+      "tag": "c:ores/lapis"
     },
     {
-      "tag": "forge:ores/coal"
+      "tag": "c:ores/coal"
     }
   ],
   "result": {
-    "item": "liquidblocks:liquid_ore_bucket"
+    "count": 1,
+    "id": "liquidblocks:liquid_ore_bucket"
   }
 }

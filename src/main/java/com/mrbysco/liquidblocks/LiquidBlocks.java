@@ -6,11 +6,11 @@ import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidConditions;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import com.mrbysco.liquidblocks.init.recipes.LiquidRecipes;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 @Mod(LiquidBlocks.MOD_ID)
@@ -18,8 +18,8 @@ public class LiquidBlocks {
 	public static final String MOD_ID = "liquidblocks";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	public LiquidBlocks(IEventBus eventBus) {
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LiquidConfig.commonSpec);
+	public LiquidBlocks(IEventBus eventBus, Dist dist, ModContainer container) {
+		container.registerConfig(ModConfig.Type.COMMON, LiquidConfig.commonSpec);
 		eventBus.register(LiquidConfig.class);
 
 		LiquidRegistry.BLOCKS.register(eventBus);
@@ -33,7 +33,7 @@ public class LiquidBlocks {
 
 		eventBus.addListener(LiquidRegistry::registerCapabilities);
 
-		if (FMLEnvironment.dist.isClient()) {
+		if (dist.isClient()) {
 			eventBus.addListener(ClientHandler::registerBlockColors);
 			eventBus.addListener(ClientHandler::registerItemColors);
 		}

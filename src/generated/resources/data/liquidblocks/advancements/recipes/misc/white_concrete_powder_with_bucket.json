@@ -1,8 +1,7 @@
 {
   "neoforge:conditions": [
     {
-      "type": "liquidblocks:craft_with_water_bucket",
-      "value": {}
+      "type": "liquidblocks:craft_with_water_bucket"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -17,9 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:white_concrete_powder"
-            ]
+            "items": "minecraft:white_concrete_powder"
           }
         ]
       },
