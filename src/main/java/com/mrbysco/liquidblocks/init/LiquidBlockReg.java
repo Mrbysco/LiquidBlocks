@@ -82,7 +82,7 @@ public class LiquidBlockReg {
 	}
 
 	public static BaseFlowingFluid.Properties createProperties(Supplier<FluidType> type, Supplier<BaseFlowingFluid> still, Supplier<BaseFlowingFluid> flowing,
-															   DeferredItem<LiquidBucketItem> bucket, Supplier<LiquidBlock> block) {
+	                                                           DeferredItem<LiquidBucketItem> bucket, Supplier<LiquidBlock> block) {
 		return new BaseFlowingFluid.Properties(type, still, flowing)
 				.bucket(bucket).block(block);
 	}

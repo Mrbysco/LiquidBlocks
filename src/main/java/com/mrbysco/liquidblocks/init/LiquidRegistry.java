@@ -60,42 +60,42 @@ public class LiquidRegistry {
 
 	public static final LiquidBlockReg LIQUID_ORE = new LiquidBlockReg.Builder("liquid_ore", () -> Blocks.STONE, 0xFF7f7f7f).hot().mapColor(MapColor.STONE).build();
 
-	public static final LiquidBlockReg LIQUID_CLAY = new LiquidBlockReg.Builder("liquid_clay", () -> Blocks.CLAY, 0xa9afbb).mapColor(MapColor.CLAY).build();
-	public static final LiquidBlockReg LIQUID_TERRACOTTA = new LiquidBlockReg.Builder("liquid_terracotta", () -> Blocks.TERRACOTTA, 0x935940).hot().mapColor(MapColor.COLOR_ORANGE).build();
+	public static final LiquidBlockReg LIQUID_CLAY = new LiquidBlockReg.Builder("liquid_clay", () -> Blocks.CLAY, 0xFFa9afbb).mapColor(MapColor.CLAY).build();
+	public static final LiquidBlockReg LIQUID_TERRACOTTA = new LiquidBlockReg.Builder("liquid_terracotta", () -> Blocks.TERRACOTTA, 0xFF935940).hot().mapColor(MapColor.COLOR_ORANGE).build();
 
-	public static final LiquidBlockReg LIQUID_WHITE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_white_glazed_terracotta", () -> Blocks.WHITE_GLAZED_TERRACOTTA, 16777215).hot().mapColor(MapColor.TERRACOTTA_WHITE).build();
-	public static final LiquidBlockReg LIQUID_ORANGE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_orange_glazed_terracotta", () -> Blocks.ORANGE_GLAZED_TERRACOTTA, 14188339).hot().mapColor(MapColor.TERRACOTTA_ORANGE).build();
-	public static final LiquidBlockReg LIQUID_MAGENTA_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_magenta_glazed_terracotta", () -> Blocks.MAGENTA_GLAZED_TERRACOTTA, 11685080).hot().mapColor(MapColor.TERRACOTTA_MAGENTA).build();
-	public static final LiquidBlockReg LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_light_blue_glazed_terracotta", () -> Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, 6724056).hot().mapColor(MapColor.TERRACOTTA_LIGHT_BLUE).build();
-	public static final LiquidBlockReg LIQUID_YELLOW_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_yellow_glazed_terracotta", () -> Blocks.YELLOW_GLAZED_TERRACOTTA, 15066419).hot().mapColor(MapColor.TERRACOTTA_YELLOW).build();
-	public static final LiquidBlockReg LIQUID_LIME_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_lime_glazed_terracotta", () -> Blocks.LIME_GLAZED_TERRACOTTA, 8375321).hot().mapColor(MapColor.TERRACOTTA_LIGHT_GREEN).build();
-	public static final LiquidBlockReg LIQUID_PINK_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_pink_glazed_terracotta", () -> Blocks.PINK_GLAZED_TERRACOTTA, 15892389).hot().mapColor(MapColor.TERRACOTTA_PINK).build();
-	public static final LiquidBlockReg LIQUID_GRAY_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_gray_glazed_terracotta", () -> Blocks.GRAY_GLAZED_TERRACOTTA, 5000268).hot().mapColor(MapColor.TERRACOTTA_GRAY).build();
-	public static final LiquidBlockReg LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_light_gray_glazed_terracotta", () -> Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, 10066329).hot().mapColor(MapColor.TERRACOTTA_LIGHT_GRAY).build();
-	public static final LiquidBlockReg LIQUID_CYAN_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_cyan_glazed_terracotta", () -> Blocks.CYAN_GLAZED_TERRACOTTA, 5013401).hot().mapColor(MapColor.TERRACOTTA_CYAN).build();
-	public static final LiquidBlockReg LIQUID_PURPLE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_purple_glazed_terracotta", () -> Blocks.PURPLE_GLAZED_TERRACOTTA, 8339378).hot().mapColor(MapColor.TERRACOTTA_PURPLE).build();
-	public static final LiquidBlockReg LIQUID_BLUE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_blue_glazed_terracotta", () -> Blocks.BLUE_GLAZED_TERRACOTTA, 3361970).hot().mapColor(MapColor.TERRACOTTA_BLUE).build();
-	public static final LiquidBlockReg LIQUID_BROWN_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_brown_glazed_terracotta", () -> Blocks.BROWN_GLAZED_TERRACOTTA, 6704179).hot().mapColor(MapColor.TERRACOTTA_BROWN).build();
-	public static final LiquidBlockReg LIQUID_GREEN_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_green_glazed_terracotta", () -> Blocks.GREEN_GLAZED_TERRACOTTA, 6717235).hot().mapColor(MapColor.TERRACOTTA_GREEN).build();
-	public static final LiquidBlockReg LIQUID_RED_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_red_glazed_terracotta", () -> Blocks.RED_GLAZED_TERRACOTTA, 10040115).hot().mapColor(MapColor.TERRACOTTA_RED).build();
-	public static final LiquidBlockReg LIQUID_BLACK_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_black_glazed_terracotta", () -> Blocks.BLACK_GLAZED_TERRACOTTA, 1644825).hot().mapColor(MapColor.TERRACOTTA_BLACK).build();
+	public static final LiquidBlockReg LIQUID_WHITE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_white_glazed_terracotta", () -> Blocks.WHITE_GLAZED_TERRACOTTA, 0xFFf9fffe).hot().mapColor(MapColor.TERRACOTTA_WHITE).build();
+	public static final LiquidBlockReg LIQUID_ORANGE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_orange_glazed_terracotta", () -> Blocks.ORANGE_GLAZED_TERRACOTTA, 0xFFf9801d).hot().mapColor(MapColor.TERRACOTTA_ORANGE).build();
+	public static final LiquidBlockReg LIQUID_MAGENTA_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_magenta_glazed_terracotta", () -> Blocks.MAGENTA_GLAZED_TERRACOTTA, 0xFFc74ebd).hot().mapColor(MapColor.TERRACOTTA_MAGENTA).build();
+	public static final LiquidBlockReg LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_light_blue_glazed_terracotta", () -> Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, 0xFF3ab3da).hot().mapColor(MapColor.TERRACOTTA_LIGHT_BLUE).build();
+	public static final LiquidBlockReg LIQUID_YELLOW_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_yellow_glazed_terracotta", () -> Blocks.YELLOW_GLAZED_TERRACOTTA, 0xFFfed83d).hot().mapColor(MapColor.TERRACOTTA_YELLOW).build();
+	public static final LiquidBlockReg LIQUID_LIME_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_lime_glazed_terracotta", () -> Blocks.LIME_GLAZED_TERRACOTTA, 0xFF80c71f).hot().mapColor(MapColor.TERRACOTTA_LIGHT_GREEN).build();
+	public static final LiquidBlockReg LIQUID_PINK_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_pink_glazed_terracotta", () -> Blocks.PINK_GLAZED_TERRACOTTA, 0xFFf38baa).hot().mapColor(MapColor.TERRACOTTA_PINK).build();
+	public static final LiquidBlockReg LIQUID_GRAY_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_gray_glazed_terracotta", () -> Blocks.GRAY_GLAZED_TERRACOTTA, 0xFF474f52).hot().mapColor(MapColor.TERRACOTTA_GRAY).build();
+	public static final LiquidBlockReg LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_light_gray_glazed_terracotta", () -> Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, 0xFF9d9d97).hot().mapColor(MapColor.TERRACOTTA_LIGHT_GRAY).build();
+	public static final LiquidBlockReg LIQUID_CYAN_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_cyan_glazed_terracotta", () -> Blocks.CYAN_GLAZED_TERRACOTTA, 0xFF169c9c).hot().mapColor(MapColor.TERRACOTTA_CYAN).build();
+	public static final LiquidBlockReg LIQUID_PURPLE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_purple_glazed_terracotta", () -> Blocks.PURPLE_GLAZED_TERRACOTTA, 0xFF8932b8).hot().mapColor(MapColor.TERRACOTTA_PURPLE).build();
+	public static final LiquidBlockReg LIQUID_BLUE_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_blue_glazed_terracotta", () -> Blocks.BLUE_GLAZED_TERRACOTTA, 0xFF3c44aa).hot().mapColor(MapColor.TERRACOTTA_BLUE).build();
+	public static final LiquidBlockReg LIQUID_BROWN_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_brown_glazed_terracotta", () -> Blocks.BROWN_GLAZED_TERRACOTTA, 0xFF835432).hot().mapColor(MapColor.TERRACOTTA_BROWN).build();
+	public static final LiquidBlockReg LIQUID_GREEN_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_green_glazed_terracotta", () -> Blocks.GREEN_GLAZED_TERRACOTTA, 0xFF5e7c16).hot().mapColor(MapColor.TERRACOTTA_GREEN).build();
+	public static final LiquidBlockReg LIQUID_RED_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_red_glazed_terracotta", () -> Blocks.RED_GLAZED_TERRACOTTA, 0xFFb02e26).hot().mapColor(MapColor.TERRACOTTA_RED).build();
+	public static final LiquidBlockReg LIQUID_BLACK_GLAZED_TERRACOTTA = new LiquidBlockReg.Builder("liquid_black_glazed_terracotta", () -> Blocks.BLACK_GLAZED_TERRACOTTA, 0xFF1d1d21).hot().mapColor(MapColor.TERRACOTTA_BLACK).build();
 
-	public static final LiquidBlockReg LIQUID_WHITE_CONCRETE = new LiquidBlockReg.Builder("liquid_white_concrete", () -> Blocks.WHITE_CONCRETE, 16777215).mapColor(DyeColor.WHITE.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_ORANGE_CONCRETE = new LiquidBlockReg.Builder("liquid_orange_concrete", () -> Blocks.ORANGE_CONCRETE, 14188339).mapColor(DyeColor.ORANGE.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_MAGENTA_CONCRETE = new LiquidBlockReg.Builder("liquid_magenta_concrete", () -> Blocks.MAGENTA_CONCRETE, 11685080).mapColor(DyeColor.MAGENTA.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_LIGHT_BLUE_CONCRETE = new LiquidBlockReg.Builder("liquid_light_blue_concrete", () -> Blocks.LIGHT_BLUE_CONCRETE, 6724056).mapColor(DyeColor.LIGHT_BLUE.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_YELLOW_CONCRETE = new LiquidBlockReg.Builder("liquid_yellow_concrete", () -> Blocks.YELLOW_CONCRETE, 15066419).mapColor(DyeColor.YELLOW.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_LIME_CONCRETE = new LiquidBlockReg.Builder("liquid_lime_concrete", () -> Blocks.LIME_CONCRETE, 8375321).mapColor(DyeColor.LIME.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_PINK_CONCRETE = new LiquidBlockReg.Builder("liquid_pink_concrete", () -> Blocks.PINK_CONCRETE, 15892389).mapColor(DyeColor.PINK.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_GRAY_CONCRETE = new LiquidBlockReg.Builder("liquid_gray_concrete", () -> Blocks.GRAY_CONCRETE, 5000268).mapColor(DyeColor.GRAY.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_LIGHT_GRAY_CONCRETE = new LiquidBlockReg.Builder("liquid_light_gray_concrete", () -> Blocks.LIGHT_GRAY_CONCRETE, 10066329).mapColor(DyeColor.LIGHT_GRAY.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_CYAN_CONCRETE = new LiquidBlockReg.Builder("liquid_cyan_concrete", () -> Blocks.CYAN_CONCRETE, 5013401).mapColor(DyeColor.CYAN.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_PURPLE_CONCRETE = new LiquidBlockReg.Builder("liquid_purple_concrete", () -> Blocks.PURPLE_CONCRETE, 8339378).mapColor(DyeColor.PURPLE.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_BLUE_CONCRETE = new LiquidBlockReg.Builder("liquid_blue_concrete", () -> Blocks.BLUE_CONCRETE, 3361970).mapColor(DyeColor.BLUE.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_BROWN_CONCRETE = new LiquidBlockReg.Builder("liquid_brown_concrete", () -> Blocks.BROWN_CONCRETE, 6704179).mapColor(DyeColor.BROWN.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_GREEN_CONCRETE = new LiquidBlockReg.Builder("liquid_green_concrete", () -> Blocks.GREEN_CONCRETE, 6717235).mapColor(DyeColor.GREEN.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_RED_CONCRETE = new LiquidBlockReg.Builder("liquid_red_concrete", () -> Blocks.RED_CONCRETE, 10040115).mapColor(DyeColor.RED.getMapColor()).build();
-	public static final LiquidBlockReg LIQUID_BLACK_CONCRETE = new LiquidBlockReg.Builder("liquid_black_concrete", () -> Blocks.BLACK_CONCRETE, 1644825).mapColor(DyeColor.BLACK.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_WHITE_CONCRETE = new LiquidBlockReg.Builder("liquid_white_concrete", () -> Blocks.WHITE_CONCRETE, 0xFFf9fffe).mapColor(DyeColor.WHITE.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_ORANGE_CONCRETE = new LiquidBlockReg.Builder("liquid_orange_concrete", () -> Blocks.ORANGE_CONCRETE, 0xFFf9801d).mapColor(DyeColor.ORANGE.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_MAGENTA_CONCRETE = new LiquidBlockReg.Builder("liquid_magenta_concrete", () -> Blocks.MAGENTA_CONCRETE, 0xFFc74ebd).mapColor(DyeColor.MAGENTA.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_LIGHT_BLUE_CONCRETE = new LiquidBlockReg.Builder("liquid_light_blue_concrete", () -> Blocks.LIGHT_BLUE_CONCRETE, 0xFF3ab3da).mapColor(DyeColor.LIGHT_BLUE.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_YELLOW_CONCRETE = new LiquidBlockReg.Builder("liquid_yellow_concrete", () -> Blocks.YELLOW_CONCRETE, 0xFFfed83d).mapColor(DyeColor.YELLOW.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_LIME_CONCRETE = new LiquidBlockReg.Builder("liquid_lime_concrete", () -> Blocks.LIME_CONCRETE, 0xFF80c71f).mapColor(DyeColor.LIME.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_PINK_CONCRETE = new LiquidBlockReg.Builder("liquid_pink_concrete", () -> Blocks.PINK_CONCRETE, 0xFFf38baa).mapColor(DyeColor.PINK.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_GRAY_CONCRETE = new LiquidBlockReg.Builder("liquid_gray_concrete", () -> Blocks.GRAY_CONCRETE, 0xFF474f52).mapColor(DyeColor.GRAY.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_LIGHT_GRAY_CONCRETE = new LiquidBlockReg.Builder("liquid_light_gray_concrete", () -> Blocks.LIGHT_GRAY_CONCRETE, 0xFF9d9d97).mapColor(DyeColor.LIGHT_GRAY.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_CYAN_CONCRETE = new LiquidBlockReg.Builder("liquid_cyan_concrete", () -> Blocks.CYAN_CONCRETE, 0xFF169c9c).mapColor(DyeColor.CYAN.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_PURPLE_CONCRETE = new LiquidBlockReg.Builder("liquid_purple_concrete", () -> Blocks.PURPLE_CONCRETE, 0xFF8932b8).mapColor(DyeColor.PURPLE.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_BLUE_CONCRETE = new LiquidBlockReg.Builder("liquid_blue_concrete", () -> Blocks.BLUE_CONCRETE, 0xFF3c44aa).mapColor(DyeColor.BLUE.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_BROWN_CONCRETE = new LiquidBlockReg.Builder("liquid_brown_concrete", () -> Blocks.BROWN_CONCRETE, 0xFF835432).mapColor(DyeColor.BROWN.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_GREEN_CONCRETE = new LiquidBlockReg.Builder("liquid_green_concrete", () -> Blocks.GREEN_CONCRETE, 0xFF5e7c16).mapColor(DyeColor.GREEN.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_RED_CONCRETE = new LiquidBlockReg.Builder("liquid_red_concrete", () -> Blocks.RED_CONCRETE, 0xFFb02e26).mapColor(DyeColor.RED.getMapColor()).build();
+	public static final LiquidBlockReg LIQUID_BLACK_CONCRETE = new LiquidBlockReg.Builder("liquid_black_concrete", () -> Blocks.BLACK_CONCRETE, 0xFF1d1d21).mapColor(DyeColor.BLACK.getMapColor()).build();
 
 	public static final Supplier<BlockEntityType<LiquidBlockEntity>> LIQUID_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("liquid_tile",
 			() -> BlockEntityType.Builder.of(LiquidBlockEntity::new,

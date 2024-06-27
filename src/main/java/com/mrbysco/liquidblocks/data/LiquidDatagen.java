@@ -352,7 +352,8 @@ public class LiquidDatagen {
 		}
 
 		private void generateBucket(LiquidBlockReg blockReg) {
-			withExistingParent(blockReg.getBucketRegistry().getId().getPath(), ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket"))
+			withExistingParent(blockReg.getBucketRegistry().getId().getPath(),
+					ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket"))
 					.customLoader(DynamicFluidContainerModelBuilder::begin)
 					.fluid(blockReg.getSource());
 		}
