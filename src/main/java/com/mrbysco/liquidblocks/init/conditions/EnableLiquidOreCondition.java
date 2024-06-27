@@ -11,7 +11,7 @@ public class EnableLiquidOreCondition implements ICondition {
 	public static final EnableLiquidOreCondition INSTANCE = new EnableLiquidOreCondition();
 
 	public static MapCodec<EnableLiquidOreCondition> CODEC = MapCodec.unit(INSTANCE).stable();
-	private static final ResourceLocation ID = new ResourceLocation(LiquidBlocks.MOD_ID, "enable_liquid_ore");
+	private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, "enable_liquid_ore");
 
 	@Override
 	public boolean test(IContext context) {

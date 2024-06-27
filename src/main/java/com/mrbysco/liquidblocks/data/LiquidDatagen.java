@@ -130,19 +130,19 @@ public class LiquidDatagen {
 			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
 					.requires(block).requires(Items.BUCKET).requires(DataComponentIngredient.of(true, waterBottle))
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-					.save(recipeOutput.withConditions(new CraftWithWaterBottleCondition()), new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_bottle"));
+					.save(recipeOutput.withConditions(new CraftWithWaterBottleCondition()), ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, location.getPath() + "_with_bottle"));
 
 			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
 					.requires(block).requires(Items.WATER_BUCKET)
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
 					.save(recipeOutput.withConditions(new CraftWithWaterBucketCondition()),
-							new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_bucket"));
+							ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, location.getPath() + "_with_bucket"));
 
 			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
 					.requires(block).requires(Items.ICE)
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
 					.save(recipeOutput.withConditions(new CraftWithIceCondition()),
-							new ResourceLocation(LiquidBlocks.MOD_ID, location.getPath() + "_with_ice"));
+							ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, location.getPath() + "_with_ice"));
 		}
 
 		private void buildLavaRecipe(LiquidBlockReg reg, Block block, RecipeOutput recipeConsumer) {
@@ -352,7 +352,7 @@ public class LiquidDatagen {
 		}
 
 		private void generateBucket(LiquidBlockReg blockReg) {
-			withExistingParent(blockReg.getBucketRegistry().getId().getPath(), new ResourceLocation("neoforge", "item/bucket"))
+			withExistingParent(blockReg.getBucketRegistry().getId().getPath(), ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket"))
 					.customLoader(DynamicFluidContainerModelBuilder::begin)
 					.fluid(blockReg.getSource());
 		}

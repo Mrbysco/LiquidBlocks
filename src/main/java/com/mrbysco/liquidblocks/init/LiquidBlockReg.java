@@ -33,8 +33,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class LiquidBlockReg {
-	private static final ResourceLocation STILL_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_still");
-	private static final ResourceLocation FLOWING_METAL = new ResourceLocation(LiquidBlocks.MOD_ID, "block/molten_block_flow");
+	private static final ResourceLocation STILL_METAL = ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, "block/molten_block_still");
+	private static final ResourceLocation FLOWING_METAL = ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, "block/molten_block_flow");
 
 	private final String name;
 	private final DeferredHolder<FluidType, FluidType> fluidType;

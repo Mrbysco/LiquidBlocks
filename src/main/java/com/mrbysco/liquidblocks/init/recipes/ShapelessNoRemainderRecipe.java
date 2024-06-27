@@ -7,9 +7,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
@@ -35,8 +35,8 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer craftingContainer) {
-		return NonNullList.withSize(craftingContainer.getContainerSize(), ItemStack.EMPTY);
+	public NonNullList<ItemStack> getRemainingItems(CraftingInput craftingContainer) {
+		return NonNullList.withSize(craftingContainer.size(), ItemStack.EMPTY);
 	}
 
 	public static class Serializer implements RecipeSerializer<ShapelessNoRemainderRecipe> {

@@ -6,9 +6,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -39,8 +39,8 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
-		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
+	public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
+		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
 
 		return nonnulllist;
 	}
@@ -58,7 +58,7 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 								CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(recipe -> recipe.category),
 								ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
 								ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-								Codec.BOOL.optionalFieldOf("show_notification", Boolean.valueOf(true)).forGetter(recipe -> recipe.showNotification)
+								Codec.BOOL.optionalFieldOf("show_notification", Boolean.TRUE).forGetter(recipe -> recipe.showNotification)
 						)
 						.apply(instance, ShapedNoRemainderRecipe::new)
 		);
