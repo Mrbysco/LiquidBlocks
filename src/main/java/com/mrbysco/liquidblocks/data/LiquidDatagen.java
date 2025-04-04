@@ -7,13 +7,22 @@ import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithIceCondition;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBottleCondition;
 import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBucketCondition;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -21,141 +30,154 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
+import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class LiquidDatagen {
 	@SubscribeEvent
-	public static void gatherData(GatherDataEvent event) {
+	public static void gatherData(GatherDataEvent.Client event) {
 		DataGenerator generator = event.getGenerator();
-		ExistingFileHelper helper = event.getExistingFileHelper();
 		PackOutput packOutput = generator.getPackOutput();
 
-		generator.addProvider(event.includeServer(), new Recipes(packOutput, event.getLookupProvider()));
-		generator.addProvider(event.includeClient(), new Language(packOutput));
-		generator.addProvider(event.includeClient(), new ItemModels(packOutput, helper));
-		generator.addProvider(event.includeClient(), new BlockStates(packOutput, helper));
+		generator.addProvider(true, new LiquidRecipes.Runner(packOutput, event.getLookupProvider()));
+		generator.addProvider(true, new LiquidLanguage(packOutput));
+		generator.addProvider(true, new LiquidModels(packOutput));
 	}
 
-	public static class Recipes extends RecipeProvider {
+	public static class LiquidRecipes extends RecipeProvider {
+		private final HolderGetter<Item> items;
 
-		public Recipes(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-			super(packOutput, lookupProvider);
+		public LiquidRecipes(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
+			super(provider, recipeOutput);
+			this.items = registries.lookupOrThrow(Registries.ITEM);
 		}
 
 		@Override
-		protected void buildRecipes(RecipeOutput recipeOutput) {
-			buildWaterRecipes(LiquidRegistry.LIQUID_DIRT, Blocks.DIRT, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_COARSE_DIRT, Blocks.COARSE_DIRT, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PODZOL, Blocks.PODZOL, recipeOutput);
+		protected void buildRecipes() {
+			buildWaterRecipes(LiquidRegistry.LIQUID_DIRT, Blocks.DIRT);
+			buildWaterRecipes(LiquidRegistry.LIQUID_COARSE_DIRT, Blocks.COARSE_DIRT);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PODZOL, Blocks.PODZOL);
 
-			buildLavaRecipe(LiquidRegistry.LIQUID_STONE, Blocks.STONE, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GRANITE, Blocks.GRANITE, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_DIORITE, Blocks.DIORITE, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_ANDESITE, Blocks.ANDESITE, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_SANDSTONE, Blocks.SANDSTONE, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_RED_SANDSTONE, Blocks.RED_SANDSTONE, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_STONE, Blocks.STONE);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GRANITE, Blocks.GRANITE);
+			buildLavaRecipe(LiquidRegistry.LIQUID_DIORITE, Blocks.DIORITE);
+			buildLavaRecipe(LiquidRegistry.LIQUID_ANDESITE, Blocks.ANDESITE);
+			buildLavaRecipe(LiquidRegistry.LIQUID_SANDSTONE, Blocks.SANDSTONE);
+			buildLavaRecipe(LiquidRegistry.LIQUID_RED_SANDSTONE, Blocks.RED_SANDSTONE);
 
-			buildLavaRecipe(LiquidRegistry.LIQUID_NETHERRACK, Blocks.NETHERRACK, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_SOUL_SAND, Blocks.SOUL_SAND, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_MAGMA, Blocks.MAGMA_BLOCK, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GLOWSTONE, Blocks.GLOWSTONE, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_NETHERRACK, Blocks.NETHERRACK);
+			buildLavaRecipe(LiquidRegistry.LIQUID_SOUL_SAND, Blocks.SOUL_SAND);
+			buildLavaRecipe(LiquidRegistry.LIQUID_MAGMA, Blocks.MAGMA_BLOCK);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GLOWSTONE, Blocks.GLOWSTONE);
 
-			buildWaterRecipes(LiquidRegistry.LIQUID_SAND, Blocks.SAND, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_RED_SAND, Blocks.RED_SAND, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GRAVEL, Blocks.GRAVEL, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_SAND, Blocks.SAND);
+			buildWaterRecipes(LiquidRegistry.LIQUID_RED_SAND, Blocks.RED_SAND);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GRAVEL, Blocks.GRAVEL);
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(LiquidRegistry.LIQUID_ORE.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, LiquidRegistry.LIQUID_ORE.getBucket())
 					.requires(Items.LAVA_BUCKET)
 					.requires(Tags.Items.ORES_DIAMOND).requires(Tags.Items.ORES_REDSTONE)
 					.requires(Tags.Items.ORES_LAPIS).requires(Tags.Items.ORES_COAL)
 					.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-					.save(recipeOutput, "liquidblocks:ore_bucket_with_bucket");
+					.save(this.output, "liquidblocks:ore_bucket_with_bucket");
 
 
-			buildWaterRecipes(LiquidRegistry.LIQUID_CLAY, Blocks.CLAY, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_TERRACOTTA, Blocks.TERRACOTTA, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_CLAY, Blocks.CLAY);
+			buildLavaRecipe(LiquidRegistry.LIQUID_TERRACOTTA, Blocks.TERRACOTTA);
 
-			buildLavaRecipe(LiquidRegistry.LIQUID_WHITE_GLAZED_TERRACOTTA, Blocks.WHITE_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_ORANGE_GLAZED_TERRACOTTA, Blocks.ORANGE_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_MAGENTA_GLAZED_TERRACOTTA, Blocks.MAGENTA_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_YELLOW_GLAZED_TERRACOTTA, Blocks.YELLOW_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_LIME_GLAZED_TERRACOTTA, Blocks.LIME_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_PINK_GLAZED_TERRACOTTA, Blocks.PINK_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GRAY_GLAZED_TERRACOTTA, Blocks.GRAY_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA, Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_CYAN_GLAZED_TERRACOTTA, Blocks.CYAN_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_PURPLE_GLAZED_TERRACOTTA, Blocks.PURPLE_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_BLUE_GLAZED_TERRACOTTA, Blocks.BLUE_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_BROWN_GLAZED_TERRACOTTA, Blocks.BROWN_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_GREEN_GLAZED_TERRACOTTA, Blocks.GREEN_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA, Blocks.RED_GLAZED_TERRACOTTA, recipeOutput);
-			buildLavaRecipe(LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA, Blocks.BLACK_GLAZED_TERRACOTTA, recipeOutput);
+			buildLavaRecipe(LiquidRegistry.LIQUID_WHITE_GLAZED_TERRACOTTA, Blocks.WHITE_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_ORANGE_GLAZED_TERRACOTTA, Blocks.ORANGE_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_MAGENTA_GLAZED_TERRACOTTA, Blocks.MAGENTA_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_YELLOW_GLAZED_TERRACOTTA, Blocks.YELLOW_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_LIME_GLAZED_TERRACOTTA, Blocks.LIME_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_PINK_GLAZED_TERRACOTTA, Blocks.PINK_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GRAY_GLAZED_TERRACOTTA, Blocks.GRAY_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA, Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_CYAN_GLAZED_TERRACOTTA, Blocks.CYAN_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_PURPLE_GLAZED_TERRACOTTA, Blocks.PURPLE_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_BLUE_GLAZED_TERRACOTTA, Blocks.BLUE_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_BROWN_GLAZED_TERRACOTTA, Blocks.BROWN_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_GREEN_GLAZED_TERRACOTTA, Blocks.GREEN_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA, Blocks.RED_GLAZED_TERRACOTTA);
+			buildLavaRecipe(LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA, Blocks.BLACK_GLAZED_TERRACOTTA);
 
-			buildWaterRecipes(LiquidRegistry.LIQUID_WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_GREEN_CONCRETE, Blocks.GREEN_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_RED_CONCRETE, Blocks.RED_CONCRETE_POWDER, recipeOutput);
-			buildWaterRecipes(LiquidRegistry.LIQUID_BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER, recipeOutput);
+			buildWaterRecipes(LiquidRegistry.LIQUID_WHITE_CONCRETE, Blocks.WHITE_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_ORANGE_CONCRETE, Blocks.ORANGE_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_MAGENTA_CONCRETE, Blocks.MAGENTA_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_YELLOW_CONCRETE, Blocks.YELLOW_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIME_CONCRETE, Blocks.LIME_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PINK_CONCRETE, Blocks.PINK_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GRAY_CONCRETE, Blocks.GRAY_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_CYAN_CONCRETE, Blocks.CYAN_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_PURPLE_CONCRETE, Blocks.PURPLE_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BLUE_CONCRETE, Blocks.BLUE_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BROWN_CONCRETE, Blocks.BROWN_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_GREEN_CONCRETE, Blocks.GREEN_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_RED_CONCRETE, Blocks.RED_CONCRETE_POWDER);
+			buildWaterRecipes(LiquidRegistry.LIQUID_BLACK_CONCRETE, Blocks.BLACK_CONCRETE_POWDER);
 		}
 
-		private void buildWaterRecipes(LiquidBlockReg reg, Block block, RecipeOutput recipeOutput) {
+		private void buildWaterRecipes(LiquidBlockReg reg, Block block) {
 			ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
 			ItemStack waterBottle = Items.POTION.getDefaultInstance();
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
 					.requires(block).requires(Items.BUCKET).requires(DataComponentIngredient.of(true, waterBottle))
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-					.save(recipeOutput.withConditions(new CraftWithWaterBottleCondition()), ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, location.getPath() + "_with_bottle"));
+					.save(this.output.withConditions(new CraftWithWaterBottleCondition()), LiquidBlocks.modLoc(location.getPath() + "_with_bottle"));
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
 					.requires(block).requires(Items.WATER_BUCKET)
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-					.save(recipeOutput.withConditions(new CraftWithWaterBucketCondition()),
-							ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, location.getPath() + "_with_bucket"));
+					.save(this.output.withConditions(new CraftWithWaterBucketCondition()),
+							LiquidBlocks.modLoc(location.getPath() + "_with_bucket"));
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
 					.requires(block).requires(Items.ICE)
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-					.save(recipeOutput.withConditions(new CraftWithIceCondition()),
-							ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, location.getPath() + "_with_ice"));
+					.save(this.output.withConditions(new CraftWithIceCondition()),
+							LiquidBlocks.modLoc(location.getPath() + "_with_ice"));
 		}
 
-		private void buildLavaRecipe(LiquidBlockReg reg, Block block, RecipeOutput recipeConsumer) {
+		private void buildLavaRecipe(LiquidBlockReg reg, Block block) {
 			ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
-			ShapelessRecipeNoRemainderBuilder.shapeless(reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
 					.requires(block).requires(Items.LAVA_BUCKET)
 					.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-					.save(recipeConsumer, "liquidblocks:" + location.getPath() + "_with_lava_bucket");
+					.save(this.output, "liquidblocks:" + location.getPath() + "_with_lava_bucket");
+		}
+
+		public static class Runner extends RecipeProvider.Runner {
+			public Runner(PackOutput output, CompletableFuture<Provider> completableFuture) {
+				super(output, completableFuture);
+			}
+
+			@Override
+			protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
+				return new LiquidRecipes(provider, recipeOutput);
+			}
+
+			@Override
+			public String getName() {
+				return "LiquidBlocks Recipes";
+			}
 		}
 	}
 
-	private static class Language extends LanguageProvider {
-		public Language(PackOutput packOutput) {
+	private static class LiquidLanguage extends LanguageProvider {
+		public LiquidLanguage(PackOutput packOutput) {
 			super(packOutput, LiquidBlocks.MOD_ID, "en_us");
 		}
 
@@ -229,133 +251,77 @@ public class LiquidDatagen {
 		}
 	}
 
-	private static class BlockStates extends BlockStateProvider {
-		public BlockStates(PackOutput packOutput, ExistingFileHelper helper) {
-			super(packOutput, LiquidBlocks.MOD_ID, helper);
+	private static class LiquidModels extends ModelProvider {
+		public LiquidModels(PackOutput packOutput) {
+			super(packOutput, LiquidBlocks.MOD_ID);
 		}
 
 		@Override
-		protected void registerStatesAndModels() {
-			ModelFile liquidModel = models().getExistingFile(modLoc("block/liquid_block"));
-			simpleBlock(LiquidRegistry.LIQUID_DIRT.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_COARSE_DIRT.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_PODZOL.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_STONE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_GRANITE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_DIORITE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_ANDESITE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_SANDSTONE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_RED_SANDSTONE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_NETHERRACK.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_SOUL_SAND.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_MAGMA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_GLOWSTONE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_SAND.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_RED_SAND.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_GRAVEL.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_ORE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_CLAY.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_WHITE_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_ORANGE_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_MAGENTA_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_YELLOW_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_LIME_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_PINK_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_GRAY_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_CYAN_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_PURPLE_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_BLUE_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_BROWN_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_GREEN_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_WHITE_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_ORANGE_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_MAGENTA_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_YELLOW_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_LIME_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_PINK_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_GRAY_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_CYAN_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_PURPLE_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_BLUE_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_BROWN_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_GREEN_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_RED_CONCRETE.getFluidblock(), liquidModel);
-			simpleBlock(LiquidRegistry.LIQUID_BLACK_CONCRETE.getFluidblock(), liquidModel);
-		}
-	}
-
-	private static class ItemModels extends ItemModelProvider {
-		public ItemModels(PackOutput packOutput, ExistingFileHelper helper) {
-			super(packOutput, LiquidBlocks.MOD_ID, helper);
+		protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_DIRT);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_COARSE_DIRT);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_PODZOL);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_STONE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_GRANITE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_DIORITE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_ANDESITE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_SANDSTONE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_RED_SANDSTONE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_NETHERRACK);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_SOUL_SAND);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_MAGMA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_GLOWSTONE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_SAND);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_RED_SAND);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_GRAVEL);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_ORE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_CLAY);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_WHITE_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_ORANGE_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_MAGENTA_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_YELLOW_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_LIME_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_PINK_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_GRAY_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_CYAN_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_PURPLE_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_BLUE_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_BROWN_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_GREEN_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_WHITE_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_ORANGE_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_MAGENTA_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_YELLOW_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_LIME_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_PINK_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_GRAY_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_CYAN_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_PURPLE_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_BLUE_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_BROWN_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_GREEN_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_RED_CONCRETE);
+			generateLiquid(blockModels, LiquidRegistry.LIQUID_BLACK_CONCRETE);
 		}
 
-		@Override
-		protected void registerModels() {
-			generateBucket(LiquidRegistry.LIQUID_DIRT);
-			generateBucket(LiquidRegistry.LIQUID_COARSE_DIRT);
-			generateBucket(LiquidRegistry.LIQUID_PODZOL);
-			generateBucket(LiquidRegistry.LIQUID_STONE);
-			generateBucket(LiquidRegistry.LIQUID_GRANITE);
-			generateBucket(LiquidRegistry.LIQUID_DIORITE);
-			generateBucket(LiquidRegistry.LIQUID_ANDESITE);
-			generateBucket(LiquidRegistry.LIQUID_SANDSTONE);
-			generateBucket(LiquidRegistry.LIQUID_RED_SANDSTONE);
-			generateBucket(LiquidRegistry.LIQUID_NETHERRACK);
-			generateBucket(LiquidRegistry.LIQUID_SOUL_SAND);
-			generateBucket(LiquidRegistry.LIQUID_MAGMA);
-			generateBucket(LiquidRegistry.LIQUID_GLOWSTONE);
-			generateBucket(LiquidRegistry.LIQUID_SAND);
-			generateBucket(LiquidRegistry.LIQUID_RED_SAND);
-			generateBucket(LiquidRegistry.LIQUID_GRAVEL);
-			generateBucket(LiquidRegistry.LIQUID_ORE);
-			generateBucket(LiquidRegistry.LIQUID_CLAY);
-			generateBucket(LiquidRegistry.LIQUID_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_WHITE_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_ORANGE_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_MAGENTA_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_LIGHT_BLUE_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_YELLOW_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_LIME_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_PINK_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_GRAY_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_LIGHT_GRAY_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_CYAN_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_PURPLE_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_BLUE_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_BROWN_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_GREEN_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_RED_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_BLACK_GLAZED_TERRACOTTA);
-			generateBucket(LiquidRegistry.LIQUID_WHITE_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_ORANGE_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_MAGENTA_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_LIGHT_BLUE_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_YELLOW_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_LIME_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_PINK_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_GRAY_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_LIGHT_GRAY_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_CYAN_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_PURPLE_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_BLUE_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_BROWN_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_GREEN_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_RED_CONCRETE);
-			generateBucket(LiquidRegistry.LIQUID_BLACK_CONCRETE);
-		}
+		private void generateLiquid(BlockModelGenerators blockModels, LiquidBlockReg blockReg) {
+			blockModels.createNonTemplateModelBlock(blockReg.getFluidblock());
 
-		private void generateBucket(LiquidBlockReg blockReg) {
-			withExistingParent(blockReg.getBucketRegistry().getId().getPath(),
-					ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket"))
-					.customLoader(DynamicFluidContainerModelBuilder::begin)
-					.fluid(blockReg.getSource());
+			blockModels.itemModelOutput.accept(blockReg.getBucket(), new DynamicFluidContainerModel.Unbaked(
+					new DynamicFluidContainerModel.Textures(
+							Optional.of(ResourceLocation.withDefaultNamespace("item/bucket")),
+							Optional.of(ResourceLocation.withDefaultNamespace("item/bucket")),
+							Optional.of(ResourceLocation.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid")),
+							Optional.of(ResourceLocation.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid_cover"))
+					), blockReg.getSource(), false, true, false
+			));
 		}
 	}
 }

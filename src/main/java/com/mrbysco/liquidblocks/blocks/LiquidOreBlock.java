@@ -33,7 +33,7 @@ public class LiquidOreBlock extends LiquidBlockBlock {
 		int randNumber = level.random.nextInt(oreChance);
 
 		if (randNumber == 0) {
-			Optional<HolderSet.Named<Block>> oresTag = BuiltInRegistries.BLOCK.getTag(LiquidTags.ORES);
+			Optional<HolderSet.Named<Block>> oresTag = BuiltInRegistries.BLOCK.get(LiquidTags.ORES);
 			if (oresTag.isPresent()) {
 				Optional<Holder<Block>> blockHolder = oresTag.get().getRandomElement(level.random);
 				Block oreState = blockHolder.map(Holder::value).orElse(Blocks.STONE);

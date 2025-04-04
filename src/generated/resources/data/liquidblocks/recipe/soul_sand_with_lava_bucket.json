@@ -1,13 +1,9 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:shapeless_no_remainder",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:soul_sand"
-    },
-    {
-      "item": "minecraft:lava_bucket"
-    }
+    "minecraft:soul_sand",
+    "minecraft:lava_bucket"
   ],
   "result": {
     "count": 1,

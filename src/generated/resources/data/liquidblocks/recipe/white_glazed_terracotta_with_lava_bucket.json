@@ -1,13 +1,9 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:shapeless_no_remainder",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:white_glazed_terracotta"
-    },
-    {
-      "item": "minecraft:lava_bucket"
-    }
+    "minecraft:white_glazed_terracotta",
+    "minecraft:lava_bucket"
   ],
   "result": {
     "count": 1,

@@ -1,13 +1,9 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:shapeless_no_remainder",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:glowstone"
-    },
-    {
-      "item": "minecraft:lava_bucket"
-    }
+    "minecraft:glowstone",
+    "minecraft:lava_bucket"
   ],
   "result": {
     "count": 1,

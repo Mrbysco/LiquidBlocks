@@ -1,5 +1,6 @@
 package com.mrbysco.liquidblocks.fluid;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
@@ -43,7 +44,7 @@ public class LiquidBlockFluid {
 		}
 
 		@Override
-		protected boolean canConvertToSource(Level level) {
+		protected boolean canConvertToSource(ServerLevel level) {
 			return false;
 		}
 	}

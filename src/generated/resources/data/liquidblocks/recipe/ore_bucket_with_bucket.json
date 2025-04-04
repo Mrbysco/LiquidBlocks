@@ -1,22 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:shapeless_no_remainder",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:lava_bucket"
-    },
-    {
-      "tag": "c:ores/diamond"
-    },
-    {
-      "tag": "c:ores/redstone"
-    },
-    {
-      "tag": "c:ores/lapis"
-    },
-    {
-      "tag": "c:ores/coal"
-    }
+    "minecraft:lava_bucket",
+    "#c:ores/diamond",
+    "#c:ores/redstone",
+    "#c:ores/lapis",
+    "#c:ores/coal"
   ],
   "result": {
     "count": 1,

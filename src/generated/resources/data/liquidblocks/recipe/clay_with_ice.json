@@ -4,16 +4,12 @@
       "type": "liquidblocks:craft_with_ice"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:shapeless_no_remainder",
   "category": "misc",
   "group": "liquidblocks",
   "ingredients": [
-    {
-      "item": "minecraft:clay"
-    },
-    {
-      "item": "minecraft:ice"
-    }
+    "minecraft:clay",
+    "minecraft:ice"
   ],
   "result": {
     "count": 1,

@@ -11,7 +11,7 @@ public class CraftWithWaterBottleCondition implements ICondition {
 	public static final CraftWithWaterBottleCondition INSTANCE = new CraftWithWaterBottleCondition();
 
 	public static MapCodec<CraftWithWaterBottleCondition> CODEC = MapCodec.unit(INSTANCE).stable();
-	private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, "craft_with_water_bottle");
+	private static final ResourceLocation ID = LiquidBlocks.modLoc("craft_with_water_bottle");
 
 	@Override
 	public boolean test(IContext context) {

@@ -6,6 +6,7 @@ import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidConditions;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import com.mrbysco.liquidblocks.init.recipes.LiquidRecipes;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -34,8 +35,13 @@ public class LiquidBlocks {
 		eventBus.addListener(LiquidRegistry::registerCapabilities);
 
 		if (dist.isClient()) {
+			eventBus.addListener(ClientHandler::registerClientExtensions);
 			eventBus.addListener(ClientHandler::registerBlockColors);
 			eventBus.addListener(ClientHandler::registerItemColors);
 		}
+	}
+
+	public static ResourceLocation modLoc(String path) {
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 }

@@ -4,16 +4,12 @@
       "type": "liquidblocks:craft_with_water_bucket"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:shapeless_no_remainder",
   "category": "misc",
   "group": "liquidblocks",
   "ingredients": [
-    {
-      "item": "minecraft:magenta_concrete_powder"
-    },
-    {
-      "item": "minecraft:water_bucket"
-    }
+    "minecraft:magenta_concrete_powder",
+    "minecraft:water_bucket"
   ],
   "result": {
     "count": 1,

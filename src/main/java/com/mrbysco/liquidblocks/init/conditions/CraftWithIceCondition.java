@@ -12,7 +12,7 @@ public class CraftWithIceCondition implements ICondition {
 
 	public static MapCodec<CraftWithIceCondition> CODEC = MapCodec.unit(INSTANCE).stable();
 
-	private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LiquidBlocks.MOD_ID, "craft_with_ice");
+	private static final ResourceLocation ID = LiquidBlocks.modLoc("craft_with_ice");
 
 	@Override
 	public boolean test(IContext context) {

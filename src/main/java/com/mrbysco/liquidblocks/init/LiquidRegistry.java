@@ -98,7 +98,7 @@ public class LiquidRegistry {
 	public static final LiquidBlockReg LIQUID_BLACK_CONCRETE = new LiquidBlockReg.Builder("liquid_black_concrete", () -> Blocks.BLACK_CONCRETE, 0xFF1d1d21).mapColor(DyeColor.BLACK.getMapColor()).build();
 
 	public static final Supplier<BlockEntityType<LiquidBlockEntity>> LIQUID_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("liquid_tile",
-			() -> BlockEntityType.Builder.of(LiquidBlockEntity::new,
+			() -> new BlockEntityType<>(LiquidBlockEntity::new,
 					LIQUID_DIRT.getFluidblock(), LIQUID_COARSE_DIRT.getFluidblock(), LIQUID_PODZOL.getFluidblock(),
 					LIQUID_STONE.getFluidblock(), LIQUID_GRANITE.getFluidblock(), LIQUID_DIORITE.getFluidblock(),
 					LIQUID_ANDESITE.getFluidblock(), LIQUID_SANDSTONE.getFluidblock(), LIQUID_RED_SANDSTONE.getFluidblock(),
@@ -121,7 +121,7 @@ public class LiquidRegistry {
 					LIQUID_CYAN_CONCRETE.getFluidblock(), LIQUID_PURPLE_CONCRETE.getFluidblock(),
 					LIQUID_BLUE_CONCRETE.getFluidblock(), LIQUID_BROWN_CONCRETE.getFluidblock(),
 					LIQUID_GREEN_CONCRETE.getFluidblock(), LIQUID_RED_CONCRETE.getFluidblock(),
-					LIQUID_BLACK_CONCRETE.getFluidblock()).build(null));
+					LIQUID_BLACK_CONCRETE.getFluidblock()));
 
 
 	public static final Supplier<CreativeModeTab> MAIN_TAB = CREATIVE_MODE_TABS.register("tab", () -> CreativeModeTab.builder()
