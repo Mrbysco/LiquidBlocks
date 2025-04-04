@@ -27,7 +27,7 @@ public class LiquidBlockEntity extends BlockEntity {
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.loadAdditional(tag, provider);
-		this.solidifyTimer = tag.getShort("TimeLeft");
+		this.solidifyTimer = tag.getShortOr("TimeLeft", (short)0);
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, LiquidBlockEntity blockEntity) {

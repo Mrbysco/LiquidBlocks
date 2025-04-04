@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -51,15 +52,15 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn) {
-		super.entityInside(state, level, pos, entityIn);
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn, InsideBlockEffectApplier effectApplier) {
+		super.entityInside(state, level, pos, entityIn, effectApplier);
 		if (entityIn instanceof LivingEntity entity) {
 			if (state.getBlock() instanceof LiquidBlockBlock) {
 				if (LiquidConfig.COMMON.liquidCausesNausea.get()) {
-					entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 1, false, false));
+					entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200, 1, false, false));
 				}
 				if (LiquidConfig.COMMON.liquidCausesSlowness.get()) {
-					entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
+					entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200, 1, false, false));
 				}
 			}
 		}
