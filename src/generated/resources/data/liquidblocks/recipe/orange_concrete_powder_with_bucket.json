@@ -4,7 +4,7 @@
       "type": "liquidblocks:craft_with_water_bucket"
     }
   ],
-  "type": "minecraft:crafting_shapeless",
+  "type": "liquidblocks:shapeless_no_remainder",
   "category": "misc",
   "group": "liquidblocks",
   "ingredients": [

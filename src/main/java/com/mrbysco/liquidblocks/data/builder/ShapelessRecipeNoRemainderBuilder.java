@@ -1,5 +1,6 @@
 package com.mrbysco.liquidblocks.data.builder;
 
+import com.mrbysco.liquidblocks.init.recipes.ShapelessNoRemainderRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -14,7 +15,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.ItemLike;
 
 import javax.annotation.Nullable;
@@ -31,22 +31,22 @@ public class ShapelessRecipeNoRemainderBuilder implements RecipeBuilder {
 	@Nullable
 	private String group;
 
-	public ShapelessRecipeNoRemainderBuilder(ItemLike p_126180_, int p_126181_) {
+	public ShapelessRecipeNoRemainderBuilder(ItemLike item, int count) {
 		this.category = RecipeCategory.MISC;
-		this.result = p_126180_.asItem();
-		this.count = p_126181_;
+		this.result = item.asItem();
+		this.count = count;
 	}
 
-	public static ShapelessRecipeNoRemainderBuilder shapeless(ItemLike p_126190_) {
-		return new ShapelessRecipeNoRemainderBuilder(p_126190_, 1);
+	public static ShapelessRecipeNoRemainderBuilder shapeless(ItemLike itemLike) {
+		return new ShapelessRecipeNoRemainderBuilder(itemLike, 1);
 	}
 
-	public static ShapelessRecipeNoRemainderBuilder shapeless(ItemLike p_126192_, int p_126193_) {
-		return new ShapelessRecipeNoRemainderBuilder(p_126192_, p_126193_);
+	public static ShapelessRecipeNoRemainderBuilder shapeless(ItemLike itemLike, int count) {
+		return new ShapelessRecipeNoRemainderBuilder(itemLike, count);
 	}
 
-	public ShapelessRecipeNoRemainderBuilder requires(TagKey<Item> p_206420_) {
-		return this.requires(Ingredient.of(p_206420_));
+	public ShapelessRecipeNoRemainderBuilder requires(TagKey<Item> itemTagKey) {
+		return this.requires(Ingredient.of(itemTagKey));
 	}
 
 	public ShapelessRecipeNoRemainderBuilder requires(ItemLike p_126210_) {
@@ -94,9 +94,9 @@ public class ShapelessRecipeNoRemainderBuilder implements RecipeBuilder {
 				.rewards(AdvancementRewards.Builder.recipe(id))
 				.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
-		ShapelessRecipe shapelessrecipe = new ShapelessRecipe((String) Objects.requireNonNullElse(this.group, ""),
+		ShapelessNoRemainderRecipe noRemainderRecipe = new ShapelessNoRemainderRecipe(Objects.requireNonNullElse(this.group, ""),
 				RecipeBuilder.determineBookCategory(this.category), new ItemStack(this.result, this.count), this.ingredients);
-		recipeOutput.accept(id, shapelessrecipe, advancement$builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
+		recipeOutput.accept(id, noRemainderRecipe, advancement$builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
 	}
 
 	private void ensureValid(ResourceLocation p_126208_) {
