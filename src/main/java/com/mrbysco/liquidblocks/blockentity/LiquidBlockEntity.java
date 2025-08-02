@@ -4,11 +4,11 @@ import com.mrbysco.liquidblocks.blocks.LiquidBlockBlock;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class LiquidBlockEntity extends BlockEntity {
 	private int solidifyTimer;
@@ -19,15 +19,15 @@ public class LiquidBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.saveAdditional(tag, provider);
-		tag.putInt("TimeLeft", this.solidifyTimer);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.putInt("TimeLeft", this.solidifyTimer);
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.loadAdditional(tag, provider);
-		this.solidifyTimer = tag.getShortOr("TimeLeft", (short)0);
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.solidifyTimer = input.getShortOr("TimeLeft", (short)0);
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, LiquidBlockEntity blockEntity) {

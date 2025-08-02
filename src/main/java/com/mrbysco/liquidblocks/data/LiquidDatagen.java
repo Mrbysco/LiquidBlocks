@@ -10,8 +10,6 @@ import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBucketCondition;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.client.data.models.model.ItemModelUtils;
-import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
@@ -41,7 +39,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class LiquidDatagen {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent.Client event) {

@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -52,7 +53,8 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn, InsideBlockEffectApplier effectApplier) {
+	public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+	                         @NotNull Entity entityIn, @NotNull InsideBlockEffectApplier effectApplier) {
 		super.entityInside(state, level, pos, entityIn, effectApplier);
 		if (entityIn instanceof LivingEntity entity) {
 			if (state.getBlock() instanceof LiquidBlockBlock) {
@@ -68,13 +70,14 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 
 	@Nullable
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new LiquidBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
+	                                                              @NotNull BlockEntityType<T> blockEntityType) {
 		return createLiquidTicker(level, blockEntityType, LiquidRegistry.LIQUID_BLOCK_ENTITY.get());
 	}
 
@@ -84,7 +87,7 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 	}
 
 	@Nullable
-	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> p_152133_, BlockEntityType<E> p_152134_, BlockEntityTicker<? super E> p_152135_) {
-		return p_152134_ == p_152133_ ? (BlockEntityTicker<A>) p_152135_ : null;
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> serverType, BlockEntityType<E> clientType, BlockEntityTicker<? super E> ticker) {
+		return clientType == serverType ? (BlockEntityTicker<A>) ticker : null;
 	}
 }

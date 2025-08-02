@@ -10,6 +10,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -19,7 +21,7 @@ public class ClientHandler {
 	private static final ResourceLocation FLOWING_METAL = LiquidBlocks.modLoc("block/molten_block_flow");
 	
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-		for(var deferredHolder : LiquidRegistry.FLUID_TYPES.getEntries()) {
+		for(DeferredHolder<FluidType, ? extends FluidType> deferredHolder : LiquidRegistry.FLUID_TYPES.getEntries()) {
 			if (deferredHolder.get() instanceof BlockFluidType blockFluidType) {
 				event.registerFluidType(new IClientFluidTypeExtensions() {
 
