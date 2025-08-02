@@ -39,10 +39,8 @@ public class ShapedNoRemainderRecipe extends ShapedRecipe {
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
-		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
-
-		return nonnulllist;
+	public NonNullList<ItemStack> getRemainingItems(CraftingInput craftingInput) {
+		return NonNullList.withSize(craftingInput.size(), ItemStack.EMPTY);
 	}
 
 	@Override

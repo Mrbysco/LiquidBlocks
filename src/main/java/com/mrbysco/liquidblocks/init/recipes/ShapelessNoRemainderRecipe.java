@@ -35,8 +35,8 @@ public class ShapelessNoRemainderRecipe extends ShapelessRecipe {
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInput craftingContainer) {
-		return NonNullList.withSize(craftingContainer.size(), ItemStack.EMPTY);
+	public NonNullList<ItemStack> getRemainingItems(CraftingInput craftingInput) {
+		return NonNullList.withSize(craftingInput.size(), ItemStack.EMPTY);
 	}
 
 	public static class Serializer implements RecipeSerializer<ShapelessNoRemainderRecipe> {
