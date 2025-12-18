@@ -22,6 +22,7 @@ import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -137,7 +138,7 @@ public class LiquidRegistry {
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		for (DeferredHolder<Item, ? extends Item> itemDeferredHolder : LiquidRegistry.ITEMS.getEntries()) {
 			if (itemDeferredHolder.get() instanceof LiquidBucketItem) {
-				event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), itemDeferredHolder.get());
+				event.registerItem(Capabilities.Fluid.ITEM, (stack, access) -> new BucketResourceHandler(access), itemDeferredHolder.get());
 			}
 		}
 	}

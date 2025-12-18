@@ -92,10 +92,10 @@ public class LiquidBlockReg {
 
 		if (name.equals("ore")) {
 			fluidblock = LiquidRegistry.BLOCKS.registerBlock(name, (properties) -> new LiquidOreBlock(
-					properties.mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollission().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
+					properties.mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollision().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
 		} else {
 			fluidblock = LiquidRegistry.BLOCKS.registerBlock(name, (properties) -> new LiquidBlockBlock(
-					properties.mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollission().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
+					properties.mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollision().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
 		}
 		bucket = LiquidRegistry.ITEMS.registerItem(name + "_bucket", (properties) -> new LiquidBucketItem(properties.craftRemainder(Items.BUCKET).stacksTo(1), source));
 	}

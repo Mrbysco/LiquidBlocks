@@ -53,16 +53,15 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 	}
 
 	@Override
-	public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
-	                         @NotNull Entity entityIn, @NotNull InsideBlockEffectApplier effectApplier) {
-		super.entityInside(state, level, pos, entityIn, effectApplier);
-		if (entityIn instanceof LivingEntity entity) {
+	protected void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+	                            @NotNull Entity entity, @NotNull InsideBlockEffectApplier applier, boolean intersects) {
+		if (entity instanceof LivingEntity livingEntity) {
 			if (state.getBlock() instanceof LiquidBlockBlock) {
 				if (LiquidConfig.COMMON.liquidCausesNausea.get()) {
-					entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200, 1, false, false));
+					livingEntity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200, 1, false, false));
 				}
 				if (LiquidConfig.COMMON.liquidCausesSlowness.get()) {
-					entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200, 1, false, false));
+					livingEntity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200, 1, false, false));
 				}
 			}
 		}
@@ -83,7 +82,7 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 
 	@Nullable
 	protected static <T extends BlockEntity> BlockEntityTicker<T> createLiquidTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends LiquidBlockEntity> blockEntityType1) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, blockEntityType1, LiquidBlockEntity::serverTick);
+		return level.isClientSide() ? null : createTickerHelper(blockEntityType, blockEntityType1, LiquidBlockEntity::serverTick);
 	}
 
 	@Nullable

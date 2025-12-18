@@ -27,7 +27,7 @@ public class LiquidBlockEntity extends BlockEntity {
 	@Override
 	protected void loadAdditional(ValueInput input) {
 		super.loadAdditional(input);
-		this.solidifyTimer = input.getShortOr("TimeLeft", (short)0);
+		this.solidifyTimer = input.getIntOr("TimeLeft", 0);
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, LiquidBlockEntity blockEntity) {

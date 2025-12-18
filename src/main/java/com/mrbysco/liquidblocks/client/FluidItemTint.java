@@ -8,7 +8,8 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 import org.jetbrains.annotations.Nullable;
 
 public record FluidItemTint(int defaultColor) implements ItemTintSource {
@@ -23,9 +24,9 @@ public record FluidItemTint(int defaultColor) implements ItemTintSource {
 
 	@Override
 	public int calculate(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity) {
-		return FluidUtil.getFluidContained(stack)
-				.map(fluidStack -> IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack))
-				.orElse(defaultColor());
+		FluidStack fluidStack = FluidUtil.getFirstStackContained(stack);
+		if (fluidStack.isEmpty()) return defaultColor();
+		return IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack);
 	}
 
 	@Override
