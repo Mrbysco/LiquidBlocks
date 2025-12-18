@@ -35,6 +35,7 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -234,6 +235,18 @@ public class LiquidDatagen {
 			generateLang(LiquidRegistry.LIQUID_GREEN_CONCRETE, "Liquid Green Concrete");
 			generateLang(LiquidRegistry.LIQUID_RED_CONCRETE, "Liquid Red Concrete");
 			generateLang(LiquidRegistry.LIQUID_BLACK_CONCRETE, "Liquid Black Concrete");
+
+			addConfig("general", "General", "General Settings");
+			addConfig("liquidCausesNausea", "Liquid Causes Nausea", "When enabled causes water based liquid blocks to cause nausea when collided");
+			addConfig("liquidCausesSlowness", "Liquid Causes Slowness", "When enabled causes water based liquid blocks to cause slowness when collided");
+			addConfig("completelyFill", "Completely Fill", "When enabled causes will try to make the liquid turn every bit into a block");
+			addConfig("netherrackFireChance", "Netherrack Fire Chance", "Makes liquid netherrack have a 1 in X chance of drying with fire on top (0 = disabled)");
+			addConfig("oreChance", "Ore Chance", "Makes liquid ore have a 1 in X chance of drying into an ore block (higher = less chance)");
+			addConfig("crafting", "Crafting", "Crafting Settings");
+			addConfig("craftWithIce", "Craft With Ice", "Enable crafting buckets with ice");
+			addConfig("craftWithWaterBottle", "Craft With Water Bottle", "Enable crafting buckets with a water bottle where applicable");
+			addConfig("craftWithWaterBucket", "Craft With Water Bucket", "Enable crafting buckets with a bucket of the fitting liquid");
+			addConfig("craftLiquidOre", "Craft Liquid Ore", "Enables the crafting of the Liquid Ore bucket");
 		}
 
 		private void generateLang(LiquidBlockReg blockReg, String name) {
@@ -246,6 +259,19 @@ public class LiquidDatagen {
 
 		private void addFluid(String name, DeferredHolder<Fluid, BaseFlowingFluid> registryObject) {
 			add("fluid." + registryObject.getId().getNamespace() + "." + registryObject.getId().getPath(), name);
+		}
+
+		/**
+		 * Add the translation for a config entry
+		 *
+		 * @param path        The path of the config entry
+		 * @param name        The name of the config entry
+		 * @param description The description of the config entry (optional in case of targeting "title" or similar entries that have no tooltip)
+		 */
+		private void addConfig(String path, String name, @Nullable String description) {
+			this.add(LiquidBlocks.MOD_ID + ".configuration." + path, name);
+			if (description != null && !description.isEmpty())
+				this.add(LiquidBlocks.MOD_ID + ".configuration." + path + ".tooltip", description);
 		}
 	}
 

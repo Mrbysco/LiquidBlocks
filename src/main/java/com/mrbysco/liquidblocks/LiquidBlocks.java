@@ -12,6 +12,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.slf4j.Logger;
 
 @Mod(LiquidBlocks.MOD_ID)
@@ -35,6 +37,7 @@ public class LiquidBlocks {
 		eventBus.addListener(LiquidRegistry::registerCapabilities);
 
 		if (dist.isClient()) {
+			container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 			eventBus.addListener(ClientHandler::registerClientExtensions);
 			eventBus.addListener(ClientHandler::registerBlockColors);
 			eventBus.addListener(ClientHandler::registerItemColors);
