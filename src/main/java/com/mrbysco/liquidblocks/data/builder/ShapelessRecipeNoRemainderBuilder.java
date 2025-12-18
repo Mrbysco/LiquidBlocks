@@ -5,14 +5,14 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -114,7 +114,7 @@ public class ShapelessRecipeNoRemainderBuilder implements RecipeBuilder {
 		return this.result.getItem();
 	}
 
-	public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+	public void save(RecipeOutput recipeOutput, Identifier id) {
 		this.save(recipeOutput, ResourceKey.create(Registries.RECIPE, id));
 	}
 
@@ -129,13 +129,13 @@ public class ShapelessRecipeNoRemainderBuilder implements RecipeBuilder {
 		ShapelessNoRemainderRecipe shapelessrecipe = new ShapelessNoRemainderRecipe(Objects.requireNonNullElse(this.group, ""),
 				RecipeBuilder.determineBookCategory(this.category), this.result, this.ingredients);
 		recipeOutput.accept(
-				id, shapelessrecipe, advancement$builder.build(id.location().withPrefix("recipes/" + this.category.getFolderName() + "/"))
+				id, shapelessrecipe, advancement$builder.build(id.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/"))
 		);
 	}
 
 	private void ensureValid(ResourceKey<Recipe<?>> recipe) {
 		if (this.criteria.isEmpty()) {
-			throw new IllegalStateException("No way of obtaining recipe " + recipe.location());
+			throw new IllegalStateException("No way of obtaining recipe " + recipe.identifier());
 		}
 	}
 }

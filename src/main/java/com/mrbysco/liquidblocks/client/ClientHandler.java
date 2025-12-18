@@ -5,20 +5,18 @@ import com.mrbysco.liquidblocks.fluid.BlockFluidType;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class ClientHandler {
-	private static final ResourceLocation STILL_METAL = LiquidBlocks.modLoc("block/molten_block_still");
-	private static final ResourceLocation FLOWING_METAL = LiquidBlocks.modLoc("block/molten_block_flow");
+	private static final Identifier STILL_METAL = LiquidBlocks.modLoc("block/molten_block_still");
+	private static final Identifier FLOWING_METAL = LiquidBlocks.modLoc("block/molten_block_flow");
 	
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		for(DeferredHolder<FluidType, ? extends FluidType> deferredHolder : LiquidRegistry.FLUID_TYPES.getEntries()) {
@@ -26,12 +24,12 @@ public class ClientHandler {
 				event.registerFluidType(new IClientFluidTypeExtensions() {
 
 					@Override
-					public ResourceLocation getStillTexture() {
+					public Identifier getStillTexture() {
 						return STILL_METAL;
 					}
 
 					@Override
-					public ResourceLocation getFlowingTexture() {
+					public Identifier getFlowingTexture() {
 						return FLOWING_METAL;
 					}
 

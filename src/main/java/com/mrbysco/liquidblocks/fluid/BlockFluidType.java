@@ -1,5 +1,6 @@
 package com.mrbysco.liquidblocks.fluid;
 
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.Vec3;
@@ -19,7 +20,7 @@ public class BlockFluidType extends FluidType {
 
 	@Override
 	public double motionScale(Entity entity) {
-		return entity.level().dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
+		return entity.level().environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, entity.blockPosition()) ? 0.007D : 0.0023333333333333335D;
 	}
 
 	@Override

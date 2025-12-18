@@ -19,7 +19,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -128,7 +128,7 @@ public class LiquidDatagen {
 		}
 
 		private void buildWaterRecipes(LiquidBlockReg reg, Block block) {
-			ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
+			Identifier location = BuiltInRegistries.BLOCK.getKey(block);
 			ItemStack waterBottle = Items.POTION.getDefaultInstance();
 
 			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
@@ -150,7 +150,7 @@ public class LiquidDatagen {
 		}
 
 		private void buildLavaRecipe(LiquidBlockReg reg, Block block) {
-			ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
+			Identifier location = BuiltInRegistries.BLOCK.getKey(block);
 			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
 					.requires(block).requires(Items.LAVA_BUCKET)
 					.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
@@ -314,10 +314,10 @@ public class LiquidDatagen {
 
 			blockModels.itemModelOutput.accept(blockReg.getBucket(), new DynamicFluidContainerModel.Unbaked(
 					new DynamicFluidContainerModel.Textures(
-							Optional.of(ResourceLocation.withDefaultNamespace("item/bucket")),
-							Optional.of(ResourceLocation.withDefaultNamespace("item/bucket")),
-							Optional.of(ResourceLocation.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid")),
-							Optional.of(ResourceLocation.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid_cover"))
+							Optional.of(Identifier.withDefaultNamespace("item/bucket")),
+							Optional.of(Identifier.withDefaultNamespace("item/bucket")),
+							Optional.of(Identifier.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid")),
+							Optional.of(Identifier.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid_cover"))
 					), blockReg.getSource(), false, true, false
 			));
 		}

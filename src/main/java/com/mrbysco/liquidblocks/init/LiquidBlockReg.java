@@ -7,7 +7,7 @@ import com.mrbysco.liquidblocks.fluid.BlockFluidType;
 import com.mrbysco.liquidblocks.fluid.LiquidBlockFluid;
 import com.mrbysco.liquidblocks.item.LiquidBucketItem;
 import com.mrbysco.liquidblocks.util.FluidHelper;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -25,8 +25,8 @@ import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class LiquidBlockReg {
-	private static final ResourceLocation STILL_METAL = LiquidBlocks.modLoc("block/molten_block_still");
-	private static final ResourceLocation FLOWING_METAL = LiquidBlocks.modLoc("block/molten_block_flow");
+	private static final Identifier STILL_METAL = LiquidBlocks.modLoc("block/molten_block_still");
+	private static final Identifier FLOWING_METAL = LiquidBlocks.modLoc("block/molten_block_flow");
 
 	private final String name;
 	private final DeferredHolder<FluidType, FluidType> fluidType;
