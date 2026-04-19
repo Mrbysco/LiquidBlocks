@@ -1,13 +1,11 @@
 package com.mrbysco.liquidblocks.init;
 
-import com.mrbysco.liquidblocks.LiquidBlocks;
 import com.mrbysco.liquidblocks.blocks.LiquidBlockBlock;
 import com.mrbysco.liquidblocks.blocks.LiquidOreBlock;
 import com.mrbysco.liquidblocks.fluid.BlockFluidType;
 import com.mrbysco.liquidblocks.fluid.LiquidBlockFluid;
 import com.mrbysco.liquidblocks.item.LiquidBucketItem;
 import com.mrbysco.liquidblocks.util.FluidHelper;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -25,9 +23,6 @@ import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class LiquidBlockReg {
-	private static final Identifier STILL_METAL = LiquidBlocks.modLoc("block/molten_block_still");
-	private static final Identifier FLOWING_METAL = LiquidBlocks.modLoc("block/molten_block_flow");
-
 	private final String name;
 	private final DeferredHolder<FluidType, FluidType> fluidType;
 	private DeferredHolder<Fluid, BaseFlowingFluid> source;
@@ -56,8 +51,13 @@ public class LiquidBlockReg {
 	}
 
 	@Nonnull
-	public DeferredHolder<Fluid, BaseFlowingFluid> getFlowing() {
+	public DeferredHolder<Fluid, BaseFlowingFluid> getFlowingRegistry() {
 		return flowing;
+	}
+
+	@Nonnull
+	public BaseFlowingFluid getFlowing() {
+		return flowing.get();
 	}
 
 	@Nonnull
@@ -98,6 +98,8 @@ public class LiquidBlockReg {
 					properties.mapColor(mapColor).pushReaction(PushReaction.DESTROY).liquid().noCollision().strength(100.0F).randomTicks().noLootTable().lightLevel(state -> luminosity), source, blockSupplier));
 		}
 		bucket = LiquidRegistry.ITEMS.registerItem(name + "_bucket", (properties) -> new LiquidBucketItem(properties.craftRemainder(Items.BUCKET).stacksTo(1), source));
+
+		LiquidRegistry.LIQUID_BLOCK_REG_LIST.add(this);
 	}
 
 	public static class Builder {

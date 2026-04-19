@@ -11,6 +11,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class LiquidRecipes {
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, LiquidBlocks.MOD_ID);
 
-	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapedNoRemainderRecipe>> SHAPED_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shaped_no_remainder", ShapedNoRemainderRecipe.Serializer::new);
-	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapelessNoRemainderRecipe>> SHAPELESS_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shapeless_no_remainder", ShapelessNoRemainderRecipe.Serializer::new);
+	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapedNoRemainderRecipe>> SHAPED_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shaped_no_remainder", () -> ShapedNoRemainderRecipe.SERIALIZER);
+	public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapelessNoRemainderRecipe>> SHAPELESS_NO_REMAINDER_SERIALIZER = RECIPE_SERIALIZERS.register("shapeless_no_remainder", () -> ShapelessNoRemainderRecipe.SERIALIZER);
 }

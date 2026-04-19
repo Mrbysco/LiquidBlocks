@@ -10,19 +10,24 @@ import com.mrbysco.liquidblocks.init.conditions.CraftWithWaterBucketCondition;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
@@ -82,7 +87,7 @@ public class LiquidDatagen {
 			buildWaterRecipes(LiquidRegistry.LIQUID_RED_SAND, Blocks.RED_SAND);
 			buildWaterRecipes(LiquidRegistry.LIQUID_GRAVEL, Blocks.GRAVEL);
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, LiquidRegistry.LIQUID_ORE.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, RecipeCategory.MISC, LiquidRegistry.LIQUID_ORE.getBucket())
 					.requires(Items.LAVA_BUCKET)
 					.requires(Tags.Items.ORES_DIAMOND).requires(Tags.Items.ORES_REDSTONE)
 					.requires(Tags.Items.ORES_LAPIS).requires(Tags.Items.ORES_COAL)
@@ -130,29 +135,30 @@ public class LiquidDatagen {
 
 		private void buildWaterRecipes(LiquidBlockReg reg, Block block) {
 			Identifier location = BuiltInRegistries.BLOCK.getKey(block);
-			ItemStack waterBottle = Items.POTION.getDefaultInstance();
+			ItemStackTemplate waterBottle = new ItemStackTemplate(Items.POTION, DataComponentPatch.builder()
+					.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).build());
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, RecipeCategory.MISC, reg.getBucket())
 					.requires(block).requires(Items.BUCKET).requires(DataComponentIngredient.of(true, waterBottle))
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
-					.save(this.output.withConditions(new CraftWithWaterBottleCondition()), LiquidBlocks.modLoc(location.getPath() + "_with_bottle"));
+					.save(this.output.withConditions(new CraftWithWaterBottleCondition()), LiquidBlocks.modLoc(location.getPath() + "_with_bottle").toString());
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, RecipeCategory.MISC, reg.getBucket())
 					.requires(block).requires(Items.WATER_BUCKET)
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
 					.save(this.output.withConditions(new CraftWithWaterBucketCondition()),
-							LiquidBlocks.modLoc(location.getPath() + "_with_bucket"));
+							LiquidBlocks.modLoc(location.getPath() + "_with_bucket").toString());
 
-			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, RecipeCategory.MISC, reg.getBucket())
 					.requires(block).requires(Items.ICE)
 					.group("liquidblocks").unlockedBy("has_" + location.getPath(), has(block))
 					.save(this.output.withConditions(new CraftWithIceCondition()),
-							LiquidBlocks.modLoc(location.getPath() + "_with_ice"));
+							LiquidBlocks.modLoc(location.getPath() + "_with_ice").toString());
 		}
 
 		private void buildLavaRecipe(LiquidBlockReg reg, Block block) {
 			Identifier location = BuiltInRegistries.BLOCK.getKey(block);
-			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, reg.getBucket())
+			ShapelessRecipeNoRemainderBuilder.shapeless(this.items, RecipeCategory.MISC, reg.getBucket())
 					.requires(block).requires(Items.LAVA_BUCKET)
 					.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
 					.save(this.output, "liquidblocks:" + location.getPath() + "_with_lava_bucket");
@@ -251,7 +257,7 @@ public class LiquidDatagen {
 
 		private void generateLang(LiquidBlockReg blockReg, String name) {
 			addFluid(name, blockReg.getSourceRegistry());
-			addFluid("Flowing " + name, blockReg.getFlowing());
+			addFluid("Flowing " + name, blockReg.getFlowingRegistry());
 			add("fluid_type.liquidblocks." + blockReg.getFluidType().getId().getPath(), name);
 
 			addItem(blockReg.getBucketRegistry(), name + " Bucket");
@@ -340,10 +346,10 @@ public class LiquidDatagen {
 
 			blockModels.itemModelOutput.accept(blockReg.getBucket(), new DynamicFluidContainerModel.Unbaked(
 					new DynamicFluidContainerModel.Textures(
-							Optional.of(Identifier.withDefaultNamespace("item/bucket")),
-							Optional.of(Identifier.withDefaultNamespace("item/bucket")),
-							Optional.of(Identifier.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid")),
-							Optional.of(Identifier.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid_cover"))
+							Optional.of(new Material(Identifier.withDefaultNamespace("item/bucket"))),
+							Optional.of(new Material(Identifier.withDefaultNamespace("item/bucket"))),
+							Optional.of(new Material(Identifier.fromNamespaceAndPath("neoforge", "item/mask/bucket_fluid"))),
+							Optional.empty()
 					), blockReg.getSource(), false, true, false
 			));
 		}

@@ -9,7 +9,6 @@
     "#c:ores/coal"
   ],
   "result": {
-    "count": 1,
     "id": "liquidblocks:liquid_ore_bucket"
   }
 }

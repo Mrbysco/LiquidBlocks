@@ -23,6 +23,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -33,6 +34,8 @@ public class LiquidRegistry {
 	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, LiquidBlocks.MOD_ID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, LiquidBlocks.MOD_ID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, LiquidBlocks.MOD_ID);
+
+	public static final List<LiquidBlockReg> LIQUID_BLOCK_REG_LIST = new ArrayList<>();
 
 	//Dirts
 	public static final LiquidBlockReg LIQUID_DIRT = new LiquidBlockReg.Builder("liquid_dirt", () -> Blocks.DIRT, 0xFF392C20).mapColor(MapColor.DIRT).build();

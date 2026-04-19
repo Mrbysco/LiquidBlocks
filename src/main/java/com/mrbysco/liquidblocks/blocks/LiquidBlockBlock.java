@@ -40,8 +40,8 @@ public class LiquidBlockBlock extends LiquidBlock implements EntityBlock {
 		if (fireChance > 0) {
 			if (blockSupplier.get() == Blocks.NETHERRACK) {
 				if (!level.getBlockState(pos.above()).canOcclude() || level.getBlockState(pos.above()).canBeReplaced()) {
-					if (level.random.nextInt(fireChance) <= 1) {
-						level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, level.random.nextInt(15)));
+					if (level.getRandom().nextInt(fireChance) <= 1) {
+						level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState().setValue(FireBlock.AGE, level.getRandom().nextInt(15)));
 					}
 				}
 			}

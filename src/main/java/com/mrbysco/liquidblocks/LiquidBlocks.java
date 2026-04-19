@@ -1,7 +1,6 @@
 package com.mrbysco.liquidblocks;
 
 import com.mojang.logging.LogUtils;
-import com.mrbysco.liquidblocks.client.ClientHandler;
 import com.mrbysco.liquidblocks.config.LiquidConfig;
 import com.mrbysco.liquidblocks.init.LiquidConditions;
 import com.mrbysco.liquidblocks.init.LiquidRegistry;
@@ -38,9 +37,6 @@ public class LiquidBlocks {
 
 		if (dist.isClient()) {
 			container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-			eventBus.addListener(ClientHandler::registerClientExtensions);
-			eventBus.addListener(ClientHandler::registerBlockColors);
-			eventBus.addListener(ClientHandler::registerItemColors);
 		}
 	}
 

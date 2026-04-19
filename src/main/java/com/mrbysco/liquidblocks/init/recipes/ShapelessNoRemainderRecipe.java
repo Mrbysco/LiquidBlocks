@@ -1,41 +1,61 @@
 package com.mrbysco.liquidblocks.init.recipes;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.NormalCraftingRecipe;
 import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class ShapelessNoRemainderRecipe implements CraftingRecipe {
-	final String group;
-	final CraftingBookCategory category;
-	final ItemStack result;
-	final List<Ingredient> ingredients;
-	@Nullable
-	private PlacementInfo placementInfo;
+public class ShapelessNoRemainderRecipe extends NormalCraftingRecipe {
+	public static final MapCodec<ShapelessNoRemainderRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
+			i -> i.group(
+							Recipe.CommonInfo.MAP_CODEC.forGetter(o -> o.commonInfo),
+							CraftingRecipe.CraftingBookInfo.MAP_CODEC.forGetter(o -> o.bookInfo),
+							ItemStackTemplate.CODEC.fieldOf("result").forGetter(o -> o.result),
+							com.mojang.serialization.Codec.lazyInitialized(() ->
+											Ingredient.CODEC.listOf(1,
+													ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth()))
+									.fieldOf("ingredients").forGetter(o -> o.ingredients)
+					)
+					.apply(i, ShapelessNoRemainderRecipe::new)
+	);
+	public static final StreamCodec<RegistryFriendlyByteBuf, ShapelessNoRemainderRecipe> STREAM_CODEC = StreamCodec.composite(
+			Recipe.CommonInfo.STREAM_CODEC,
+			o -> o.commonInfo,
+			CraftingRecipe.CraftingBookInfo.STREAM_CODEC,
+			o -> o.bookInfo,
+			ItemStackTemplate.STREAM_CODEC,
+			o -> o.result,
+			Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()),
+			o -> o.ingredients,
+			ShapelessNoRemainderRecipe::new
+	);
+	public static final RecipeSerializer<ShapelessNoRemainderRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+	public final ItemStackTemplate result;
+	public final List<Ingredient> ingredients;
 	private final boolean isSimple;
 
-	public ShapelessNoRemainderRecipe(String group, CraftingBookCategory category, ItemStack result, List<Ingredient> ingredients) {
-		this.group = group;
-		this.category = category;
+	public ShapelessNoRemainderRecipe(Recipe.CommonInfo commonInfo, CraftingRecipe.CraftingBookInfo bookInfo, ItemStackTemplate result, List<Ingredient> ingredients) {
+		super(commonInfo, bookInfo);
 		this.result = result;
 		this.ingredients = ingredients;
 		this.isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
@@ -47,24 +67,11 @@ public class ShapelessNoRemainderRecipe implements CraftingRecipe {
 	}
 
 	@Override
-	public String group() {
-		return this.group;
+	protected PlacementInfo createPlacementInfo() {
+		return PlacementInfo.create(this.ingredients);
 	}
 
 	@Override
-	public CraftingBookCategory category() {
-		return this.category;
-	}
-
-	@Override
-	public PlacementInfo placementInfo() {
-		if (this.placementInfo == null) {
-			this.placementInfo = PlacementInfo.create(this.ingredients);
-		}
-
-		return this.placementInfo;
-	}
-
 	public boolean matches(CraftingInput input, Level level) {
 		if (input.ingredientCount() != this.ingredients.size()) {
 			return false;
@@ -81,8 +88,16 @@ public class ShapelessNoRemainderRecipe implements CraftingRecipe {
 		}
 	}
 
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider provider) {
-		return this.result.copy();
+	/**
+	 * {@return the result of this shapeless recipe or null if it is not static and needs ot be obtained by assembling it}
+	 */
+	public @Nullable ItemStackTemplate result() {
+		return result;
+	}
+
+	@Override
+	public ItemStack assemble(CraftingInput input) {
+		return this.result.create();
 	}
 
 	@Override
@@ -99,38 +114,5 @@ public class ShapelessNoRemainderRecipe implements CraftingRecipe {
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInput craftingContainer) {
 		return NonNullList.withSize(craftingContainer.size(), ItemStack.EMPTY);
-	}
-
-	public static class Serializer implements RecipeSerializer<ShapelessNoRemainderRecipe> {
-		private static final MapCodec<ShapelessNoRemainderRecipe> CODEC = RecordCodecBuilder.mapCodec(
-				p_360072_ -> p_360072_.group(
-								Codec.STRING.optionalFieldOf("group", "").forGetter(p_301127_ -> p_301127_.group),
-								CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(p_301133_ -> p_301133_.category),
-								ItemStack.STRICT_CODEC.fieldOf("result").forGetter(p_301142_ -> p_301142_.result),
-								Codec.lazyInitialized(() -> Ingredient.CODEC.listOf(1, 3 * 3)).fieldOf("ingredients").forGetter(p_360071_ -> p_360071_.ingredients)
-						)
-						.apply(p_360072_, ShapelessNoRemainderRecipe::new)
-		);
-		public static final StreamCodec<RegistryFriendlyByteBuf, ShapelessNoRemainderRecipe> STREAM_CODEC = StreamCodec.composite(
-				ByteBufCodecs.STRING_UTF8,
-				p_360074_ -> p_360074_.group,
-				CraftingBookCategory.STREAM_CODEC,
-				p_360073_ -> p_360073_.category,
-				ItemStack.STREAM_CODEC,
-				p_360070_ -> p_360070_.result,
-				Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()),
-				p_360069_ -> p_360069_.ingredients,
-				ShapelessNoRemainderRecipe::new
-		);
-
-		@Override
-		public MapCodec<ShapelessNoRemainderRecipe> codec() {
-			return CODEC;
-		}
-
-		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, ShapelessNoRemainderRecipe> streamCodec() {
-			return STREAM_CODEC;
-		}
 	}
 }
